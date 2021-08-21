@@ -195,8 +195,6 @@ div.notification-container--top-center {
       grid-template-rows: repeat(2, 1fr);
       padding-top: 20px;
       a {
-        &:hover {
-        }
         font-size: 1rem;
         color: white;
       }
@@ -281,6 +279,9 @@ div.notification-container--top-center {
     }
     .form-fields-register {
       grid-template-rows: repeat(5, 1fr);
+    }
+    .form-fields-add-run {
+      grid-template-rows: repeat(4, 1fr);
     }
   }
 }

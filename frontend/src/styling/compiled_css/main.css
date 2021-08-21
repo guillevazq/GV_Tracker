@@ -1,0 +1,493 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+button:hover,
+:focus {
+  outline: none !important;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+a,
+a:hover,
+a:visited,
+a:focus,
+a:link {
+  text-decoration: none;
+}
+
+div.notification-container--top-center .notification {
+  width: 1000px !important;
+}
+
+div.notification-container--top-center .notification .notification__item {
+  height: 100px;
+}
+
+div.notification-container--top-center .notification .notification__item .notification__title {
+  font-size: 1.2rem;
+}
+
+div.notification-container--top-center .notification .notification__item .notification__message {
+  font-size: 1rem;
+}
+
+.empirical_data_dashboard {
+  width: 100%;
+  padding: 20px;
+}
+
+.empirical_data_dashboard > div {
+  margin-bottom: 50px;
+}
+
+.empirical_data_dashboard .top_gadgets {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[5];
+      grid-template-columns: repeat(5, 1fr);
+  grid-gap: 3rem;
+  color: white;
+}
+
+.empirical_data_dashboard .top_charts {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[10];
+      grid-template-columns: repeat(10, 1fr);
+}
+
+.empirical_data_dashboard .top_charts .line_track_history {
+  grid-column: span 6;
+  margin: auto;
+  width: 100%;
+}
+
+.empirical_data_dashboard .top_charts .donut_run_distance {
+  grid-column: span 4;
+  margin: auto;
+  width: 80%;
+}
+
+.empirical_data_dashboard .mid_charts {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[10];
+      grid-template-columns: repeat(10, 1fr);
+}
+
+.empirical_data_dashboard .mid_charts .distance_time_bar {
+  grid-column: span 4;
+}
+
+.icon_stat_gadget {
+  border-radius: 7px;
+  background-color: red;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+}
+
+.icon_stat_gadget .stat_number_name {
+  grid-column: span 2;
+  text-align: left;
+  padding: 10px;
+}
+
+.icon_stat_gadget .stat_number_name .total_number {
+  font-size: 2.2rem;
+}
+
+.icon_stat_gadget .stat_number_name .name_of_stat {
+  font-size: 1rem;
+}
+
+.icon_stat_gadget .icon_stat {
+  margin: auto;
+}
+
+.recent-runs-box {
+  border: lightgray 1px solid;
+  border-radius: 15px;
+  padding: 30px;
+  grid-column: span 6;
+  margin: auto;
+  width: 80%;
+}
+
+.recent-runs-box > h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.recent-runs-box .title-runs {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[4];
+      grid-template-columns: repeat(4, 1fr);
+  padding: 25px 35px;
+  color: gray;
+  font-weight: 400;
+}
+
+.recent-runs-box .actual-recent-runs hr {
+  border: 1px solid lightgray;
+}
+
+.recent-runs-box .actual-recent-runs .single-run {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  padding: 25px 35px;
+  border-bottom: 1px solid lightgray;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[4];
+      grid-template-columns: repeat(4, 1fr);
+}
+
+.recent-runs-box .actual-recent-runs .single-run:hover {
+  background: #d6eaff;
+}
+
+.recent-runs-box .actual-recent-runs .single-run:hover .pace-single-run p {
+  background-color: #3399ff !important;
+}
+
+.recent-runs-box .actual-recent-runs .single-run .pace-single-run {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.recent-runs-box .actual-recent-runs .single-run .pace-single-run p {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: white;
+}
+
+.recent-runs-box .actual-recent-runs .single-run .total_distance {
+  font-weight: 800;
+}
+
+.recent-runs-box .actual-recent-runs .single-run .total_time-bold {
+  color: gray;
+  font-weight: 600;
+}
+
+::-moz-selection {
+  color: #3069c0;
+  background: white;
+}
+
+::selection {
+  color: #3069c0;
+  background: white;
+}
+
+.login-div {
+  margin-top: 50px;
+}
+
+.login-div .form-login {
+  background-color: #3069c0 !important;
+  width: 500px;
+  margin: auto;
+  border-radius: 15px;
+  padding: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.login-div .form-login h3 {
+  padding-bottom: 40px;
+  text-align: center;
+  font-size: 1.8rem;
+  color: white;
+}
+
+.login-div .form-login .help-anchortags {
+  text-align: center;
+  grid-gap: 0.5rem;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[2];
+      grid-template-rows: repeat(2, 1fr);
+  padding-top: 20px;
+}
+
+.login-div .form-login .help-anchortags a {
+  font-size: 1rem;
+  color: white;
+}
+
+.login-div .form-login .form-fields {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[3];
+      grid-template-rows: repeat(3, 1fr);
+  grid-gap: 2rem;
+  color: white;
+}
+
+.login-div .form-login .form-fields .username-field,
+.login-div .form-login .form-fields .password-field,
+.login-div .form-login .form-fields .email-field {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[5];
+      grid-template-rows: repeat(5, 1fr);
+}
+
+.login-div .form-login .form-fields .username-field .password-visibility,
+.login-div .form-login .form-fields .password-field .password-visibility,
+.login-div .form-login .form-fields .email-field .password-visibility {
+  margin-top: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: auto;
+  background-color: #3069c0;
+  color: white;
+  border: none;
+  padding: 0px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.login-div .form-login .form-fields .username-field .password-visibility:focus,
+.login-div .form-login .form-fields .password-field .password-visibility:focus,
+.login-div .form-login .form-fields .email-field .password-visibility:focus {
+  outline: none;
+}
+
+.login-div .form-login .form-fields .username-field small,
+.login-div .form-login .form-fields .password-field small,
+.login-div .form-login .form-fields .email-field small {
+  font-size: 1rem;
+  grid-row: span 2;
+}
+
+.login-div .form-login .form-fields input {
+  background-color: #3069c0;
+  grid-row: span 3;
+  height: 50px;
+  border-radius: 10px;
+  border: none;
+  margin: auto;
+  width: 100%;
+  border: 1px solid lightgray;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 1.3rem;
+}
+
+.login-div .form-login .form-fields input:focus {
+  outline: none;
+  border: 1px solid lightgray;
+}
+
+.login-div .form-login .form-fields .email-field,
+.login-div .form-login .form-fields .username-field {
+  -ms-grid-rows: (1fr)[4];
+      grid-template-rows: repeat(4, 1fr);
+}
+
+.login-div .form-login .form-fields .email-field input,
+.login-div .form-login .form-fields .username-field input {
+  grid-row: span 3 !important;
+}
+
+.login-div .form-login .form-fields .email-field small,
+.login-div .form-login .form-fields .username-field small {
+  grid-row: span 1 !important;
+}
+
+.login-div .form-login .form-fields .submit-btn-form {
+  font-size: 1.2rem;
+  width: 100%;
+  margin: auto;
+  height: 50%;
+  border: 1px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+  color: white;
+  background-color: #3069c0;
+}
+
+.login-div .form-login .form-fields .submit-btn-form:hover {
+  background-color: white;
+  color: #3069c0;
+}
+
+.login-div .form-login .form-fields-register {
+  -ms-grid-rows: (1fr)[5];
+      grid-template-rows: repeat(5, 1fr);
+}
+
+.login-div .form-login .form-fields-add-run {
+  -ms-grid-rows: (1fr)[4];
+      grid-template-rows: repeat(4, 1fr);
+}
+
+.navbar-gv {
+  background-color: #3069c0;
+  display: -ms-grid;
+  display: grid;
+  height: 7vh;
+  -ms-grid-columns: (1fr)[10];
+      grid-template-columns: repeat(10, 1fr);
+}
+
+.navbar-gv .important-pages {
+  -ms-grid-column: 2;
+      grid-column-start: 2;
+  grid-column-end: 7;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
+}
+
+.navbar-gv .important-pages h1 {
+  margin: auto;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.navbar-gv .important-pages h1 span {
+  font-weight: 500;
+}
+
+.navbar-gv .important-pages .main-pages {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.navbar-gv .important-pages .main-pages a {
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  margin: auto;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.navbar-gv .important-pages .main-pages a:hover {
+  color: black;
+}
+
+.navbar-gv .user-flag {
+  -ms-grid-column: 8;
+      grid-column-start: 8;
+  grid-column-end: 10;
+  display: -ms-grid;
+  display: grid;
+  font-size: 1.1rem;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+}
+
+.navbar-gv .user-flag .flag-emoji {
+  font-size: 1.5rem;
+}
+
+.navbar-gv .user-flag a {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  color: white;
+  margin: auto;
+}
+
+.navbar-gv .user-flag a:hover {
+  color: black;
+}
+
+.nightmode-switcher {
+  margin: auto;
+  /* Rounded sliders */
+}
+
+.nightmode-switcher .switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+.nightmode-switcher .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.nightmode-switcher .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.nightmode-switcher .slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.nightmode-switcher input:checked + .slider {
+  background-color: #2196F3;
+}
+
+.nightmode-switcher input:focus + .slider {
+  -webkit-box-shadow: 0 0 1px #2196F3;
+          box-shadow: 0 0 1px #2196F3;
+}
+
+.nightmode-switcher input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+.nightmode-switcher .slider.round {
+  border-radius: 17px;
+}
+
+.nightmode-switcher .slider.round:before {
+  border-radius: 50%;
+}
+/*# sourceMappingURL=main.css.map */

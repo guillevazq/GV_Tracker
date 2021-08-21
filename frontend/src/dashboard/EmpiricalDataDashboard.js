@@ -11,11 +11,15 @@ import SetAccumulativeStatsGadget from './gadgets/SetAccumulativeStatsGadget';
 
 // Context
 import {AuthenticationContext} from "../context/AuthenticationContext";
+import {RunsContext} from '../context/RunsContext';
 
 const EmpiricalDataDashboard = props => {
 
     const authenticationContext = useContext(AuthenticationContext);
     const {isLogged} = authenticationContext;
+
+    const runsContext = useContext(RunsContext);
+    const {recentlyAdded, removeRecentlyAdded, getRuns, runs} = runsContext;
 
     useEffect(() => {
         if (isLogged === false) {
@@ -23,9 +27,19 @@ const EmpiricalDataDashboard = props => {
         }
     }, [isLogged, props.history]);
 
+    useEffect(() => {
+        if (recentlyAdded) {
+            removeRecentlyAdded();
+        };
+    }, [recentlyAdded]);
+
+    useEffect(() => {
+        getRuns();
+    }, []);
+
     return (
         <>
-        {isLogged && (
+        {isLogged && runs && (
             <div className="empirical_data_dashboard">
                 <div className="top_gadgets">
                     <SetAccumulativeStatsGadget />

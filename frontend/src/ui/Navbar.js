@@ -3,7 +3,7 @@ import {AuthenticationContext} from "../context/AuthenticationContext";
 
 const Navbar = () => {
   const authenticationContext = useContext(AuthenticationContext);
-  const {isLogged, setTokenFromLS, logout} = authenticationContext;
+  const {isLogged, setTokenFromLS, logout, username} = authenticationContext;
 
   useEffect(() => {
     setTokenFromLS();
@@ -25,7 +25,7 @@ const Navbar = () => {
             <>
             <a href="/">HOME</a>
             <a href="/">PREDICTIONS</a>
-            <a href="/">ADD RUN</a>
+            <a href="/add">ADD RUN</a>
             </>
           )}
         </div>
@@ -33,7 +33,7 @@ const Navbar = () => {
       <div className="user-flag">
         {isLogged ? (
             <>
-                <a href="/">Guillermo</a>
+                <a href="/">{username}</a>
                 <a onClick={logOutUser} href="#">Logout</a>
             </>
         ) : (

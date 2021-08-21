@@ -1,11 +1,20 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import AnimatedNumber from "animated-number-react";
+import {RunsContext} from '../../context/RunsContext';
 import ColorPalette from "../ColorPalette";
 
 const AccumulativeStatsGadget = ({totalNumber, nameOfStat, iconImageClassName, iconColor, backgroundColor, minutes, seconds, unit, index}) => {
 
-    const formatTime = value => value.toFixed(0);
-    const formatDistance = value => value.toFixed(2);
+    const formatTime = value => {
+        value = parseInt(value).toFixed(0);
+        if (value < 10) {
+            value = "0" + value;
+        };
+        return value;
+    };
+    const formatDistance = value => {
+        return value.toFixed(2)
+    };
 
     let duration = 500;
     let timeoutEachNumber = 400;
@@ -41,6 +50,38 @@ const AccumulativeStatsGadget = ({totalNumber, nameOfStat, iconImageClassName, i
 };
 
 const SetAccumulativeStatsGadget = () => {
+    const runsContext = useContext(RunsContext);
+    const {runs} = runsContext;
+
+    const secondsToHms = d => {
+        d = Number(d);
+        let h = Math.floor(d / 3600);
+        let m = Math.floor(d % 3600 / 60);
+        let s = Math.floor(d % 3600 % 60);
+
+        return [h, m, s]; 
+    }
+
+    let speedArr = [];
+    let distance = 0;
+    let totalTime = 0;
+    let sumSpeed = 0;
+    runs.forEach(run => {
+        let speed = (run.minutes + run.seconds / 60) / run.distance;
+        sumSpeed += speed;
+        speedArr.push(speed);
+        distance = distance + run.distance;
+        totalTime = totalTime + (run.minutes * 60 + run.seconds);
+    });
+
+    let [totalHours, totalMinutes, totalSeconds] = secondsToHms(totalTime);
+
+    let max_speed = Math.min(...speedArr);
+    let averageSpeed = Math.round(sumSpeed / speedArr.length);
+    let [averageHours, averageMinutes, averageSeconds] = secondsToHms(averageSpeed * 60);
+    averageMinutes = averageMinutes + (averageHours * 60);
+    let minutes = Math.floor(max_speed);
+    let seconds = Math.round((max_speed - minutes) * 60);
     let icons = [
         {
             title: "Best speed",
@@ -48,8 +89,8 @@ const SetAccumulativeStatsGadget = () => {
             color: "black",
             backgroundColor: ColorPalette[0],
             stat: null,
-            minutes: 5,
-            seconds: 33,
+            minutes: minutes,
+            seconds: seconds,
             unit: "MIN/KM",
             iconColor: "white",
         },
@@ -58,7 +99,7 @@ const SetAccumulativeStatsGadget = () => {
             nameOfClass: "fas fa-running fa-4x",
             color: "black",
             backgroundColor: ColorPalette[1],
-            stat: 267,
+            stat: distance,
             minutes: null,
             seconds: null,
             unit: "KM",
@@ -70,8 +111,8 @@ const SetAccumulativeStatsGadget = () => {
             color: "black",
             backgroundColor: ColorPalette[2],
             stat: null,
-            minutes: 6,
-            seconds: 35,
+            minutes: averageMinutes,
+            seconds: averageSeconds,
             iconColor: "white",
             unit: 'MIN/KM',
         },
@@ -80,9 +121,9 @@ const SetAccumulativeStatsGadget = () => {
             nameOfClass: "far fa-clock fa-4x",
             color: "black",
             backgroundColor: ColorPalette[3],
-            stat: 34.5,
-            minutes: null,
-            seconds: null,
+            stat: null,
+            minutes: totalHours,
+            seconds: totalMinutes,
             unit: "HRS",
             iconColor: "white",
         },

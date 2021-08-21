@@ -45,11 +45,11 @@ const Login = props => {
                 <div className="form-fields">
                     <div className="username-field">
                         <small>Username</small>
-                        <input type="text" name="username" id="username" value={username} onChange={e => setUsername(e.target.value)} />
+                        <input required type="text" name="username" id="username" value={username} onChange={e => setUsername(e.target.value)} />
                     </div>
                     <div className="password-field">
                         <small>Password</small>
-                        <input type={passwordVisibility} name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
+                        <input required type={passwordVisibility} name="password" id="password" value={password} onChange={e => setPassword(e.target.value)} />
                         <button type="button" className="password-visibility" onClick={togglePasswordVisibility}>See password</button>
                     </div>
                     <button className="submit-btn-form" type="submit">Log In</button>
