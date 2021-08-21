@@ -10,14 +10,12 @@ export const AuthenticationContext = createContext();
 
 const reducer = (state, action) => {
     switch(action.type) {
-        case 'LOGIN':
-            return {...state, token: action.payload.token, isLogged: true};
-        case 'REGISTER':
-            return {...state, token: action.payload.token, isLogged: true};
         case 'SET_TOKEN':
             return {...state, token: action.payload.token, isLogged: true};
+        case 'SET_USER_INFO':
+            return {...state, username:action.payload.username};
         case 'CLEAN_USER':
-            return {...state, token: null, isLogged:false};
+            return {...state, token: null, isLogged:false, username: null};
         default:
             return state;
     };
@@ -27,7 +25,7 @@ const AuthenticationState = props => {
 
     // Initialize alert context
     const notificationContext = useContext(NotificationContext);
-    const {addAlert} = notificationContext;
+    const {addAlert, handleError} = notificationContext;
 
     const initialState = {
         token: null,
@@ -46,20 +44,25 @@ const AuthenticationState = props => {
     const setTokenFromLS = () => {
         let tokenLS = localStorage.getItem("authentication-token");
         if (tokenLS) {
-            // Check if token is valid 
             checkForTokenValidity(tokenLS);
+        } else {
+            dispatch({type: 'CLEAN_USER'});
         }
     }
 
-    const checkForTokenValidity = token => {
-        return axios.get("http://localhost:8000/users/user/", {
+    const checkForTokenValidity = (token, greetUserTitle=false, greetUserMessage=false) => {
+        axios.get("http://localhost:8000/users/user/", {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Token " + token + "",
             },
-        }).then(() => {
+        }).then(response => {
             // Is valid
             dispatch({type: 'SET_TOKEN', payload: {token}});
+            dispatch({type: 'SET_USER_INFO', payload: {username: response.data.username}});
+            if (greetUserTitle && greetUserMessage) {
+                addAlert(`${greetUserTitle} ${response.data.username}!`, greetUserMessage, "success", "top-center");
+            };
         }).catch(() => {
             // Isn't valid
             dispatch({type: 'CLEAN_USER'});
@@ -67,35 +70,24 @@ const AuthenticationState = props => {
     };
 
     const logout = () => {
-        // request to logout
-        localStorage.removeItem("authentication-token");
-        dispatch({type: 'CLEAN_USER'});
+        axios.post("http://localhost:8000/users/logout/", {}, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Token " + state.token + "",
+            },
+        }).then(response => {
+            // Is valid
+            localStorage.removeItem("authentication-token");
+            dispatch({type: 'CLEAN_USER'});
+        }).catch(error => {
+            // Isn't valid
+            localStorage.removeItem("authentication-token");
+            dispatch({type: 'CLEAN_USER'});
+        });
     };
     
     const setTokenInLS = token => {
         localStorage.setItem("authentication-token", token);
-    }
-
-    const removeToken = () => {
-        localStorage.removeItem("authentication-token");
-    }
-
-    const getToken = () => {
-        return localStorage.getItem("authentication-token")
-    }
-
-    const handleError = error => {
-        if (error.response.data.non_field_errors) {
-            error.response.data.non_field_errors.forEach(current_err => {
-                addAlert("Error", current_err + " (" + error.response.status + ")", "danger", "top-center")
-            });
-        } else if (typeof(error.response.data) === "object") {
-            let error_field = Object.keys(error.response.data)[0];
-            let error_description = error.response.data[error_field][0]
-            addAlert("Error in " + error_field, error_description, "danger", "top-center");
-        } else {
-            addAlert("Unknown Server Error", "An unexpected server error has ocurred", "danger", "top-center");
-        }
     }
 
     const register = (username, email, password1, password2) => {
@@ -103,9 +95,8 @@ const AuthenticationState = props => {
             addAlert("Passwords don't match!", "The password fields didn't match", "danger", "top-center");
         } else {
             axios.post('http://localhost:8000/users/registration/', {username, email, password1, password2}, requestJSONConfig).then(response => {
-                dispatch({type: 'REGISTER', payload:{token: response.data.token}});
-                setTokenInLS(state.token);
-                addAlert("Welcome guillermo!", "Your account was created succesfully", "success", "top-center");
+                setTokenInLS(response.data.key);
+                checkForTokenValidity(response.data.key, "Welcome", "Your account was created succesfully");
             }).catch(error => {
                 handleError(error);
             });
@@ -115,8 +106,7 @@ const AuthenticationState = props => {
     const logIn = (username, password) => {
         axios.post('http://localhost:8000/users/login/', {username, password}, requestJSONConfig).then(response => {
             setTokenInLS(response.data.key);
-            dispatch({type: 'LOGIN', payload: {token: response.data.key}});
-            addAlert("Hi guillermo!", "You've succesfully logged into your account", "success", "top-center");
+            checkForTokenValidity(response.data.key, "Hi", "You've succesfully logged into your account");
         }).catch(error => {
             handleError(error);
         });
@@ -126,9 +116,12 @@ const AuthenticationState = props => {
         <AuthenticationContext.Provider value={{
             token: state.token,
             isLogged: state.isLogged,
+            username: state.username,
             logIn,
             register,
             setTokenFromLS,
+            logout,
+            handleError,
         }}>
             {props.children}
         </AuthenticationContext.Provider>

@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # Custom
     'runs.apps.RunsConfig',
@@ -26,16 +27,15 @@ INSTALLED_APPS = [
 
     # Third-Party
     'rest_framework',
+    'dj_rest_auth',
     'corsheaders',
     'rest_framework.authtoken',
-    'dj_rest_auth',
+    'allauth.socialaccount',
 
-    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'dj_rest_auth.registration',
 
-    'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.apple',
     'allauth.socialaccount.providers.google',
@@ -111,9 +111,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SITE_ID = 1
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.isAuthen',
@@ -128,3 +125,9 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://localhost:8000',
 )
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+SITE_ID = 1

@@ -29,11 +29,29 @@ const NotificationState = props => {
             animationIn: ["animate__animated animate__bounceInDown"],
             animationOut: ["animate__animated animate__fadeOut"],
           });
+
     };
+
+    const handleError = error => {
+        if (error.response.data.non_field_errors) {
+            error.response.data.non_field_errors.forEach(current_err => {
+                addAlert("Error", current_err + " (" + error.response.status + ")", "danger", "top-center")
+            });
+        } else if (error.response.data.detail) {
+            addAlert("Error " + error.response.status, error.response.data.detail, "danger", "top-center");
+        } else if (typeof(error.response.data) === "object") {
+            let error_field = Object.keys(error.response.data)[0];
+            let error_description = error.response.data[error_field][0]
+            addAlert("Error in " + error_field, error_description, "danger", "top-center");
+        } else {
+            addAlert("Unknown Server Error", "An unexpected server error has ocurred", "danger", "top-center");
+        }
+    }
 
     return (
         <NotificationContext.Provider value={{
             addAlert,
+            handleError,
         }}>
             {props.children}
         </NotificationContext.Provider>
