@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Custom
+    'runs.apps.RunsConfig',
+    'users.apps.UsersConfig',
 
     # Third-Party
     'rest_framework',
@@ -31,12 +33,14 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
     'dj_rest_auth.registration',
 
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.facebook',
-    # 'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.apple',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.instagram',
+    'allauth.socialaccount.providers.twitter',
 ]
 
 MIDDLEWARE = [
@@ -111,9 +115,9 @@ SITE_ID = 1
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.isAuthen',
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
