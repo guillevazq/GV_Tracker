@@ -32,7 +32,7 @@ const NotificationState = props => {
 
     };
 
-    const handleError = error => {
+    const handleError = (error, password=false) => {
         if (error.response.data.non_field_errors) {
             error.response.data.non_field_errors.forEach(current_err => {
                 addAlert("Error", current_err + " (" + error.response.status + ")", "danger", "top-center")
@@ -42,7 +42,11 @@ const NotificationState = props => {
         } else if (typeof(error.response.data) === "object") {
             let error_field = Object.keys(error.response.data)[0];
             let error_description = error.response.data[error_field][0]
-            addAlert("Error in " + error_field, error_description, "danger", "top-center");
+            if (password) {
+                addAlert("Error in password fields", error_description, "danger", "top-center");
+            } else {
+                addAlert("Error in " + error_field, error_description, "danger", "top-center");
+            }
         } else {
             addAlert("Unknown Server Error", "An unexpected server error has ocurred", "danger", "top-center");
         }

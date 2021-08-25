@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import AnimatedNumber from "animated-number-react";
 import {RunsContext} from '../../context/RunsContext';
-import ColorPalette from "../ColorPalette";
+import {getColor} from "../ColorPalette";
 
 const AccumulativeStatsGadget = ({totalNumber, nameOfStat, iconImageClassName, iconColor, backgroundColor, minutes, seconds, unit, index}) => {
 
@@ -51,16 +51,7 @@ const AccumulativeStatsGadget = ({totalNumber, nameOfStat, iconImageClassName, i
 
 const SetAccumulativeStatsGadget = () => {
     const runsContext = useContext(RunsContext);
-    const {runs} = runsContext;
-
-    const secondsToHms = d => {
-        d = Number(d);
-        let h = Math.floor(d / 3600);
-        let m = Math.floor(d % 3600 / 60);
-        let s = Math.floor(d % 3600 % 60);
-
-        return [h, m, s]; 
-    }
+    const {runs, secondsToRawHMS} = runsContext;
 
     let speedArr = [];
     let distance = 0;
@@ -74,20 +65,21 @@ const SetAccumulativeStatsGadget = () => {
         totalTime = totalTime + (run.minutes * 60 + run.seconds);
     });
 
-    let [totalHours, totalMinutes, totalSeconds] = secondsToHms(totalTime);
+    let [totalHours, totalMinutes, totalSeconds] = secondsToRawHMS(totalTime);
 
     let max_speed = Math.min(...speedArr);
-    let averageSpeed = Math.round(sumSpeed / speedArr.length);
-    let [averageHours, averageMinutes, averageSeconds] = secondsToHms(averageSpeed * 60);
+    let averageSpeed = (sumSpeed / speedArr.length);
+    let [averageHours, averageMinutes, averageSeconds] = secondsToRawHMS(averageSpeed * 60);
     averageMinutes = averageMinutes + (averageHours * 60);
     let minutes = Math.floor(max_speed);
     let seconds = Math.round((max_speed - minutes) * 60);
+
     let icons = [
         {
             title: "Best speed",
             nameOfClass: "fas fa-fighter-jet fa-4x",
             color: "black",
-            backgroundColor: ColorPalette[0],
+            backgroundColor: getColor(0),
             stat: null,
             minutes: minutes,
             seconds: seconds,
@@ -98,7 +90,7 @@ const SetAccumulativeStatsGadget = () => {
             title: "Total distance",
             nameOfClass: "fas fa-running fa-4x",
             color: "black",
-            backgroundColor: ColorPalette[1],
+            backgroundColor: getColor(1),
             stat: distance,
             minutes: null,
             seconds: null,
@@ -109,7 +101,7 @@ const SetAccumulativeStatsGadget = () => {
             title: "Average speed",
             nameOfClass: "fas fa-flag-checkered fa-4x",
             color: "black",
-            backgroundColor: ColorPalette[2],
+            backgroundColor: getColor(2),
             stat: null,
             minutes: averageMinutes,
             seconds: averageSeconds,
@@ -120,7 +112,7 @@ const SetAccumulativeStatsGadget = () => {
             title: "Total time",
             nameOfClass: "far fa-clock fa-4x",
             color: "black",
-            backgroundColor: ColorPalette[3],
+            backgroundColor: getColor(3),
             stat: null,
             minutes: totalHours,
             seconds: totalMinutes,
@@ -131,8 +123,8 @@ const SetAccumulativeStatsGadget = () => {
             title: "Percentile",
             nameOfClass: "fas fa-medal fa-4x",
             color: "black",
-            backgroundColor: ColorPalette[4],
-            stat: 73.45,
+            backgroundColor: getColor(4),
+            stat: 100.0,
             minutes: null,
             seconds: null,
             unit: "%",

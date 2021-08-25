@@ -5,8 +5,11 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Login from './users/authentication/Login';
 import Register from './users/authentication/Register';
 import EmpiricalDataDashboard from './dashboard/EmpiricalDataDashboard';
-import RunSubmission from './run_submission/RunSubmission';
+import RunningHistory from './run_submission/RunningHistory';
 import Navbar from './ui/Navbar';
+import AccountSettings from './users/settings/AccountSettings';
+import ForgotPassword from './users/authentication/ForgotPassword';
+import PredictionsDashboard from './predictions/PredictionsDashboard';
 
 // Third-Party libraries
 import ReactNotifications from 'react-notifications-component';
@@ -34,7 +37,10 @@ const App = () => {
                 <Route component={Login} exact path='/login' />
                 <Route component={Register} exact path='/register' />
                 <Route component={EmpiricalDataDashboard} exact path='/' />
-                <Route component={RunSubmission} exact path='/add' />
+                <Route component={RunningHistory} exact path='/add' />
+                <Route component={AccountSettings} exact path='/account' />
+                <Route component={ForgotPassword} exact path='/forgotpassword' />
+                <Route component={PredictionsDashboard} exact path='/predictions' />
               </Switch>
             </div>
           </Router>

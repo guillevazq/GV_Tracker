@@ -1,48 +1,45 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import ReactApexChart from 'react-apexcharts';
-import ColorPalette from "../ColorPalette";
+import {colors} from "../ColorPalette";
+import {RunsContext} from '../../context/RunsContext';
 
 
 const LineTrackHistory = () => {
+    
+    const runsContext = useContext(RunsContext);
+    const {runs, getSpeedMinKM, labelRun} = runsContext;
+    let daysSpeedDict = {};
 
-    const getDateDaysAgo = days => {
-        let d = new Date();
-        d.setDate(d.getDate() - days);
-        let utc = d.toJSON().slice(0, 10).replace(/-/g, '/');
-        return utc;
-    }
+    runs.map(run => {
+        let {minutes, seconds, distance} = run;
+        let daysPassed = Math.floor((new Date().getTime() - new Date(run.unix_date * 1000).getTime()) / 1000 / 3600 / 24);
+        let currentSpeed = getSpeedMinKM(minutes, seconds, distance, true);
+        let label = labelRun(distance);
+        let dayPosition = 60 - daysPassed;
+        if (dayPosition >= 0) {
+            if (daysSpeedDict[label]) {
+                if (daysSpeedDict[label][dayPosition]) {
+                    daysSpeedDict[label][dayPosition].push(currentSpeed);
+                } else {
+                    daysSpeedDict[label][dayPosition] = [currentSpeed];
+                }
+            } else {
+                daysSpeedDict[label] = {};
+                daysSpeedDict[label][dayPosition] = [currentSpeed];
+            }
+        }
+    });
 
-    getDateDaysAgo(30);
-
-    let runs_5k = {
-        7: 5,
-        13: 4.9,
-        17: 5.1,
-        23: 5.2,
-        33: 5,
-        43: 4.8,
-        53: 4.7,
-        59: 4.9,
-    }
-
-    let runs_10k = {
-        4: 6,
-        11: 5.5,
-        18: 5.7,
-        25: 5.8,
-        30: 6.1,
-        47: 5.8,
-        50: 5.6,
-        57: 5.9,
-    }
-
-    const generateGraphReadyArr = runs => {
-        let graphArr = [];
-        for (const [key, value] of Object.entries(runs)) {
-            graphArr.push({ x: parseInt(key), y: value });
+    let series = [];
+    for (const [distancesRange, dayPositions] of Object.entries(daysSpeedDict)) {
+        let currentSeries = [];
+        for (const [currentDay, times] of Object.entries(dayPositions)) {
+            times.map(time => {
+                currentSeries.push({x:parseInt(currentDay), y:parseFloat(time.toFixed(2))});
+            });
         };
-        return graphArr;
-    }
+        series.push({name: distancesRange, type: "line", data: currentSeries});
+    };
 
     const responsive = [{
         breakpoint: undefined,
@@ -51,7 +48,7 @@ const LineTrackHistory = () => {
 
     let legend = {
         show: true,
-        showForSingleSeries: false,
+        showForSingleSeries: true,
         showForNullSeries: true,
         showForZeroSeries: true,
         position: 'bottom',
@@ -96,8 +93,19 @@ const LineTrackHistory = () => {
         },
     }
 
+
+
     let options = {
-        colors: ColorPalette,
+        colors: colors,
+        xaxis: {
+            type: 'numeric',
+            decimalsInFloat: 0,
+            title: {
+                text: "Last 60 days",
+                offsetY: -10,
+                offsetX: 0,
+            }
+        },
         yaxis: {
             title: {
                 rotate: 0,
@@ -136,23 +144,7 @@ const LineTrackHistory = () => {
         legend: legend,
     };
 
-    let runs5k_dict = generateGraphReadyArr(runs_5k);
-    let runs10k_dict = generateGraphReadyArr(runs_10k);
-
-    let series = [
-        {
-            name: "5K",
-            type: 'line',
-            data: runs5k_dict,
-        },
-        {
-            name: "10K",
-            type: 'line',
-            data: runs10k_dict,
-        },
-    ]
-
-    return <ReactApexChart labels={["this", "that", "thiose", "these"]} legend={legend} responsive={responsive} options={options} series={series} type="line" height={400} />;
+    return <ReactApexChart legend={legend} responsive={responsive} options={options} series={series} type="line" height={400} />;
 };
 
 export default LineTrackHistory;

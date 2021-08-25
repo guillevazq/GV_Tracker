@@ -1,4 +1,4 @@
-const Colors = [
+export const colors = [
     "#dba203",
     "#cfc204",
     "#47d17e",
@@ -6,4 +6,10 @@ const Colors = [
     "#e2733c",
 ];
 
-export default Colors;
+export const getColor = index => {
+    while (index > colors.length - 1) {
+        index -= colors.length;
+    };
+
+    return colors[index];
+};

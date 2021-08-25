@@ -7,7 +7,15 @@ const Navbar = () => {
 
   useEffect(() => {
     setTokenFromLS();
-  }, [isLogged]);
+  }, [isLogged, username]);
+
+  let currentPath = window.location.href;
+  let anchorTags = document.getElementsByTagName("a");
+  for (var i = 0; i < anchorTags.length; i++) {
+    if (anchorTags[i].href === currentPath) {
+      anchorTags[i].style.color = "black";    
+    };
+  };
 
   const logOutUser = e => {
     e.preventDefault();
@@ -23,9 +31,9 @@ const Navbar = () => {
         <div className="main-pages">
           {isLogged && (
             <>
-            <a href="/">HOME</a>
-            <a href="/">PREDICTIONS</a>
-            <a href="/add">ADD RUN</a>
+              <a href="/">HOME</a>
+              <a href="/predictions">PREDICTIONS</a>
+              <a href="/add">ADD RUN</a>
             </>
           )}
         </div>
@@ -33,7 +41,8 @@ const Navbar = () => {
       <div className="user-flag">
         {isLogged ? (
             <>
-                <a href="/">{username}</a>
+                {/* <a href="/account">{username}</a> */}
+                <a href="/account">Account</a>
                 <a onClick={logOutUser} href="#">Logout</a>
             </>
         ) : (

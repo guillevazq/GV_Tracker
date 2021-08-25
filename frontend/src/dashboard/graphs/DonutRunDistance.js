@@ -1,16 +1,35 @@
-import React from "react";
+import React, {useContext} from "react";
 import ReactApexChart from "react-apexcharts";
-import ColorPalette from "../ColorPalette";
+import {colors} from "../ColorPalette";
+import {RunsContext} from "../../context/RunsContext";
 
 const DonutRunDistance = () => {
-    let series = [44, 55, 13, 33];
+    const runsContext = useContext(RunsContext);
+    const {runs, labelRun} = runsContext;
+
+    let allRanges = {};
+    let values = [];
+    let series = [];
+
+    runs.forEach(run => {
+        let currentLabel = labelRun(run.distance);
+        if (allRanges[currentLabel]) {
+            allRanges[currentLabel] += 1;
+        } else {
+            allRanges[currentLabel] = 1;
+        }
+    });
+    for (const [key, value] of Object.entries(allRanges)) {
+        series.push(value);
+        values.push(key);
+    };
 
     let options = {
-        colors: ColorPalette,
+        colors: colors,
         chart: {
             type: "donut",
         },
-        labels: ["5K-10K", "1K-5K", "10K-15K", ">15K"],
+        labels: values,
         dataLabels: {
             enabled: false,
             formatter: function (val) {
@@ -25,7 +44,10 @@ const DonutRunDistance = () => {
                         value: {
                             show: true,
                             formatter: function (value) {
-                                return value + " Runs";
+                                if (runs.length === 0) {
+                                    return "Runs: 0";
+                                };
+                                return "Runs: " + value;
                             }
                         },
                     }
@@ -34,13 +56,18 @@ const DonutRunDistance = () => {
         }
     }
 
-  return(
-    <ReactApexChart
-      options = {options}
-      series = {series}
-      type = "donut"
-                />
-  );
-    };
+    let dummyOptions = {...options};
+
+    let dummySeries = [1];
+    dummyOptions.labels = ["No runs yet"];
+
+    return (
+        runs.length !== 0 ? (
+            <ReactApexChart type = "donut" series = {series} options = {options} />
+        ) : (
+            <ReactApexChart type = "donut" series = {dummySeries} options = {dummyOptions} />
+        )
+    );
+};
 
     export default DonutRunDistance;

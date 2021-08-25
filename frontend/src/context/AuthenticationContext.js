@@ -13,9 +13,13 @@ const reducer = (state, action) => {
         case 'SET_TOKEN':
             return {...state, token: action.payload.token, isLogged: true};
         case 'SET_USER_INFO':
-            return {...state, username:action.payload.username};
+            return {...state, username:action.payload.username, email: action.payload.email, pk: action.payload.pk};
         case 'CLEAN_USER':
             return {...state, token: null, isLogged:false, username: null};
+        case 'SET_EMAIL':
+            return {...state, email: action.payload.email};
+        case 'SET_USERNAME':
+            return {...state, username: action.payload.username};
         default:
             return state;
     };
@@ -57,9 +61,8 @@ const AuthenticationState = props => {
                 Authorization: "Token " + token + "",
             },
         }).then(response => {
-            // Is valid
             dispatch({type: 'SET_TOKEN', payload: {token}});
-            dispatch({type: 'SET_USER_INFO', payload: {username: response.data.username}});
+            dispatch({type: 'SET_USER_INFO', payload: {username: response.data.username, email: response.data.email, pk: response.data.pk}});
             if (greetUserTitle && greetUserMessage) {
                 addAlert(`${greetUserTitle} ${response.data.username}!`, greetUserMessage, "success", "top-center");
             };
@@ -112,16 +115,62 @@ const AuthenticationState = props => {
         });
     };
 
+    const sendResetPasswordEmail = email => {
+        axios.post("http://localhost:8000/users/password/reset/", {email}, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            addAlert("Email sent!", `An email has been sent to ${email}`, "success", "top-center");
+        }).catch(error => {
+            handleError(error);
+        });
+    };
+
+    const resetPasswordInAccount = (new_password1, new_password2) => {
+        let token = localStorage.getItem("authentication-token");
+        axios.post("http://localhost:8000/users/password/change/", {new_password1, new_password2}, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Token " + token + "",
+            }
+        }).then(response => {
+            addAlert("Password reset", "Password was reset successfully", "success", "top-center")
+            checkForTokenValidity(token);
+        }).catch(error => {
+            handleError(error, true);
+        });
+    };
+
+    const changeUsername = username => {
+        let token = localStorage.getItem("authentication-token");
+        axios.put("http://localhost:8000/users/user/", {username}, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Token " + token + "",
+            }
+        }).then(response => {
+            addAlert("Username changed!", "Your username was changed succesfully", "success", "top-center");
+            dispatch({type: 'SET_USERNAME', payload: {username: response.data.username}});
+        }).catch(error => {
+            handleError(error);
+        });
+    };
+
     return (
         <AuthenticationContext.Provider value={{
             token: state.token,
             isLogged: state.isLogged,
             username: state.username,
+            email: state.email,
             logIn,
             register,
             setTokenFromLS,
             logout,
             handleError,
+            sendResetPasswordEmail,
+            resetPasswordInAccount,
+            changeUsername,
         }}>
             {props.children}
         </AuthenticationContext.Provider>

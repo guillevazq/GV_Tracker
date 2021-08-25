@@ -113,7 +113,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.isAuthen',
+        # 'rest_framework.permissions.IsAuthenticated',
     # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -131,3 +131,14 @@ ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 SITE_ID = 1
+
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend',
+# )
+
+ACCOUNT_USERNAME_BLACKLIST = []
+
+ACCOUNT_USERNAME_VALIDATORS = 'users.validators.custom_username_validators'
+ACCOUNT_ADAPTER = 'users.adapter.UsernameMaxAdapter'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True

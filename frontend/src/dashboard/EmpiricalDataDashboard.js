@@ -56,7 +56,7 @@ const EmpiricalDataDashboard = props => {
                     <div className="distance_time_bar">
                         <DistanceTimeBar />
                     </div>
-                    <RecentRuns />
+                    <RecentRuns cap={4} title="Latest runs" />
                 </div>
             </div>
         )}

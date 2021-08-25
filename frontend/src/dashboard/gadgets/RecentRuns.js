@@ -1,107 +1,174 @@
-import React, {useContext} from 'react';
-import ColorPalette from '../ColorPalette';
+import React, {useContext, useEffect, useState} from 'react';
 import {RunsContext} from "../../context/RunsContext";
+import {getColor} from "../ColorPalette";
 
-const SingleRun = ({daysAgo, distance, minutes, seconds, color, currentDate}) => {
-    // minutes
-    let timeAgo = (currentDate - new Date(daysAgo).getTime()) / 1000 / 60;
+const SingleRun = ({dateRun, distance, minutes, seconds, color, dataKey, dummy=false, edit, setEditMode, editMode}) => {
+    const [cursorIcons, setCursorIcons] = useState("pointer");
+    const [iconStyleHover, setIconStyleHover] = useState("");
 
-    let hoursDecimal;
-    let hours;
-    let days;
+    let runsContext = useContext(RunsContext);
+    const {
+        deleteRun, 
+        getSpeedMinKM, 
+        representTimedeltaInPrettyString,
+        minutesSecondsToStringHMS,
+    } = runsContext;
 
-    if (timeAgo >= 60) {
-        hoursDecimal = timeAgo / 60
-        hours = Math.floor(hoursDecimal)
-        if (hours >= 24) {
-            days = Math.floor(hours / 24);
-            if (days === 1) {
-                timeAgo = `${days} day ago`
-            } else {
-                timeAgo = `${days} days ago`
-            }
+    let timeAgo = representTimedeltaInPrettyString(dateRun);
+    let [minutes_per_km, seconds_per_km] = getSpeedMinKM(minutes, seconds, distance);
+    let [hoursFormatted, minutesFormatted, secondsFormatted] = minutesSecondsToStringHMS(minutes, seconds);
+
+    const deleteItem = e => {
+        if (!editMode) {
+            let itemId = e.target.parentElement.parentElement.parentElement.getAttribute("data-key");
+            deleteRun(itemId);
         }
-        else if (hours === 1) {
-            timeAgo = `${hours} hour ago`
-        } else {
-            timeAgo = `${hours} hours ago`
-        }
-    } else {
-        timeAgo = `${Math.floor(timeAgo)} minutes ago`
-    } 
-
-    let time_per_km = (minutes + (seconds / 60)) / distance;
-    let minutes_per_km = Math.floor(time_per_km);
-    let seconds_per_km = Math.round((time_per_km - minutes_per_km) * 60)
-
-    // Duration
-    let hoursDuration = 0;
-    if (minutes >= 60) {
-        hoursDuration = Math.floor(minutes / 60);
-    }
-    if (hoursDuration < 10) {
-        hoursDuration = "0" + hoursDuration;
-    } 
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    while (minutes >= 60) {
-        minutes = minutes - 60;
-    }
-    if (minutes < 10) {
-        minutes = "0" + minutes;
     }
 
     if (seconds_per_km < 10) {
         seconds_per_km = "0" + seconds_per_km;
     }
 
+    const setRunInEditMode = e => {
+        if (!editMode) {
+            setEditMode({minutes, seconds, distance, dateRun, id: dataKey});
+        }
+    };
+
+    useEffect(() => {
+        if (!editMode) {
+            setCursorIcons("pointer");
+            setIconStyleHover("");
+        } else {
+            setCursorIcons("not-allowed");
+            setIconStyleHover("not-allowed-icons");
+        };
+    }, [editMode]);
+
     return (
-        <div className="single-run">
-            <div className="days-ago">
-                <p>{timeAgo}</p>
+        <>
+        {dummy ? (
+            <div data-key={dataKey} className="single-run">
+                <div className="important-stat days-ago">
+                    <p>Empty</p>
+                </div>
+                <div className="important-stat pace-single-run">
+                    <p style={{color: "black"}}>Empty</p>
+                </div>
+                <div className="important-stat total_distance">
+                    <p>Empty</p>
+                </div>
+                <div className="important-stat total_time-bold">
+                    <p>Empty</p>
+                </div>
+                <div className="icons" >
+                    <div className="edit-icon">
+                        <i className="far fa-edit"></i>
+                    </div>
+                    <div className="delete-icon">
+                        <i className="far fa-trash-alt"></i>
+                    </div>
+                </div>
             </div>
-            <div className="pace-single-run">
-                <p style={{backgroundColor: color}}>{minutes_per_km}:{seconds_per_km} Min / KM</p>
+        ): (
+            <div data-key={dataKey} className="single-run">
+                <div className="important-stat days-ago">
+                    <p>{timeAgo}</p>
+                </div>
+                <div className="important-stat pace-single-run">
+                    <p style={{backgroundColor: color}}>{minutes_per_km}:{seconds_per_km} Min / KM</p>
+                </div>
+                <div className="important-stat total_distance">
+                    <p>{distance.toFixed(2)} KM</p>
+                </div>
+                <div className="important-stat total_time-bold">
+                    <p>{hoursFormatted}:{minutesFormatted}:{secondsFormatted}</p>
+                </div>
+                <div className={"icons " + iconStyleHover} >
+                    {edit && setEditMode && (
+                        <div className="edit-icon">
+                            <i style={{cursor: cursorIcons}} onClick={setRunInEditMode} className="far fa-edit"></i>
+                        </div>
+                    )}
+                    <div className="delete-icon">
+                        <i style={{cursor: cursorIcons}} onClick={deleteItem} className="far fa-trash-alt"></i>
+                    </div>
+                </div>
             </div>
-            <div className="total_distance">
-                <p>{distance.toFixed(2)} KM</p>
-            </div>
-            <div className="total_time-bold">
-                <p>{hoursDuration}:{minutes}:{seconds}</p>
-            </div>
-        </div>
+        )}
+        </>
     );
 };
 
-const RecentRuns = () => {
+const RecentRuns = ({title, setEditMode, editMode, cap=false}) => {
     let runsContext = useContext(RunsContext);
     const {runs} = runsContext;
     let currentDate = (new Date()).getTime();
 
     return (
         <div className="recent-runs-box">
-            <h4>Recent Runs</h4>
+            <h4>{title}</h4>
             <div className="title-runs">
-                <p>Date</p>
+                <p>Ran</p>
                 <p>Pace</p>
                 <p>Distance</p>
                 <p>Time</p>
             </div>
-            <div className="actual-recent-runs">
-                <hr />
-                    {runs.slice(0, 4).map((run, index) => (
-                    <SingleRun 
-                        key={run.id} 
-                        color={ColorPalette[index]} 
-                        daysAgo={run.date} 
-                        distance={run.distance} 
-                        minutes={run.minutes} 
-                        seconds={run.seconds}
-                        currentDate={currentDate}
-                    />
-                    ))}
-            </div>
+                {runs.length === 0 ? (
+                    <>
+                    <div className="actual-recent-runs dummy-recent">
+                        <hr />
+                        <SingleRun dataKey={1} key={1} dummy={true}/>
+                        <SingleRun dataKey={2} key={2} dummy={true}/>
+                        <SingleRun dataKey={3} key={3} dummy={true}/>
+                        <SingleRun dataKey={4} key={4} dummy={true}/>
+                    </div>
+                    </>
+                ) : (
+                <>
+                    <div className="actual-recent-runs">
+                        <hr />
+                        {cap ? (
+                                <>
+                                    {runs.slice(0, cap).map((run, index) => (
+                                        <SingleRun 
+                                            key={run.id} 
+                                            dataKey={run.id} 
+                                            color={getColor(index)} 
+                                            dateRun={run.unix_date} 
+                                            distance={run.distance} 
+                                            minutes={run.minutes} 
+                                            seconds={run.seconds}
+                                            currentDate={currentDate}
+                                            edit={false}
+                                            setEditMode={setEditMode}
+                                            editMode={editMode}
+                                        />
+                                    ))}
+                                </>
+                            ) : (
+                                <>
+                                    {runs.map((run, index) => (
+                                    <SingleRun 
+                                        key={run.id} 
+                                        dataKey={run.id} 
+                                        color={getColor(index)} 
+                                        dateRun={run.unix_date} 
+                                        distance={run.distance} 
+                                        minutes={run.minutes} 
+                                        seconds={run.seconds}
+                                        currentDate={currentDate}
+                                        edit={true}
+                                        setEditMode={setEditMode}
+                                        editMode={editMode}
+                                    />
+                                    ))}
+                                </>
+                            )
+                        }
+                    </div>
+                </>
+            )}
         </div>
     );
 };

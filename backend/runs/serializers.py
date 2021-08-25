@@ -4,5 +4,5 @@ from .models import Run
 
 class RunSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ("minutes", "seconds", "distance", "date", "id")
+        fields = ("minutes", "seconds", "distance", "unix_date", "id")
         model = Run
