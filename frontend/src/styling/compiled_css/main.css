@@ -101,6 +101,21 @@ div.notification-container--top-center .notification .notification__item .notifi
   grid-column: span 4;
 }
 
+.empirical_data_dashboard .bottom_charts {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[6];
+      grid-template-columns: repeat(6, 1fr);
+}
+
+.empirical_data_dashboard .bottom_charts .heatmap-runs {
+  grid-column: span 2;
+}
+
+.empirical_data_dashboard .bottom_charts .speed-distance-scatter {
+  grid-column: span 4;
+}
+
 .icon_stat_gadget {
   border-radius: 7px;
   background-color: red;
@@ -962,5 +977,14 @@ div.notification-container--top-center .notification .notification__item .notifi
 .predictions-dashboard .main-graph-predictions h1 {
   padding: 30px 0px;
   color: black;
+}
+
+.mid_charts .recent-runs-box .actual-recent-runs .single-run .icons {
+  -ms-grid-columns: (1fr)[1];
+      grid-template-columns: repeat(1, 1fr);
+}
+
+.mid_charts .recent-runs-box .actual-recent-runs .single-run .icons .delete-icon {
+  margin: auto;
 }
 /*# sourceMappingURL=main.css.map */

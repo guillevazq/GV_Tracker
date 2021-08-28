@@ -139,7 +139,7 @@ const LineTrackHistory = () => {
         },
         tooltip: {
             shared: false,
-            intersect: true,
+            intersect: false,
         },
         legend: legend,
     };

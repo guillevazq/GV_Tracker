@@ -12,8 +12,7 @@ def present_or_future_date(value):
 
 class Run(models.Model):
     runner = models.ForeignKey(User, on_delete=models.CASCADE)
-    minutes = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4320)])
-    seconds = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(59)])
+    seconds = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(260_000)])
     distance = models.FloatField(validators=[MinValueValidator(0.1), MaxValueValidator(1000)])
     unix_date = models.IntegerField(validators=[present_or_future_date])
 

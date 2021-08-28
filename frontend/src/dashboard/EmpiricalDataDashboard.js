@@ -4,7 +4,10 @@ import React, {useContext, useEffect} from 'react';
 import LineTrackHistory from './graphs/LineTrackHistory';
 import DonutRunDistance from './graphs/DonutRunDistance';
 import DistanceTimeBar from './graphs/DistanceTimeBar';
+import SpeedDistanceScatter from "./graphs/SpeedDistanceScatter";
 import RecentRuns from './gadgets/RecentRuns';
+import DaysRanMonth from './gadgets/DaysRanMonth';
+import SyncedPaceDistance from './graphs/SyncedPaceDistance';
 
 // Gadgets
 import SetAccumulativeStatsGadget from './gadgets/SetAccumulativeStatsGadget';
@@ -42,7 +45,7 @@ const EmpiricalDataDashboard = props => {
         {isLogged && runs && (
             <div className="empirical_data_dashboard">
                 <div className="top_gadgets">
-                    <SetAccumulativeStatsGadget />
+                    <SetAccumulativeStatsGadget runs={runs} />
                 </div>
                 <div className="top_charts">
                     <div className="line_track_history">
@@ -57,6 +60,13 @@ const EmpiricalDataDashboard = props => {
                         <DistanceTimeBar />
                     </div>
                     <RecentRuns cap={4} title="Latest runs" />
+                </div>
+                <div className="bottom_charts">
+                    <SpeedDistanceScatter />
+                    <DaysRanMonth />
+                </div>
+                <div className="last_charts">
+                    <SyncedPaceDistance />
                 </div>
             </div>
         )}

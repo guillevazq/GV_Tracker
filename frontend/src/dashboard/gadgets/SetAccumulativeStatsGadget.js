@@ -1,6 +1,12 @@
 import React, {useContext} from 'react';
+
+// Context
+import {RunsContext} from "../../context/RunsContext";
+
+// Number animations
 import AnimatedNumber from "animated-number-react";
-import {RunsContext} from '../../context/RunsContext';
+
+// Colors
 import {getColor} from "../ColorPalette";
 
 const AccumulativeStatsGadget = ({totalNumber, nameOfStat, iconImageClassName, iconColor, backgroundColor, minutes, seconds, unit, index}) => {
@@ -49,9 +55,9 @@ const AccumulativeStatsGadget = ({totalNumber, nameOfStat, iconImageClassName, i
     );
 };
 
-const SetAccumulativeStatsGadget = () => {
+const SetAccumulativeStatsGadget = ({runs}) => {
     const runsContext = useContext(RunsContext);
-    const {runs, secondsToRawHMS} = runsContext;
+    const {secondsToRawHMS} = runsContext;
 
     let speedArr = [];
     let distance = 0;

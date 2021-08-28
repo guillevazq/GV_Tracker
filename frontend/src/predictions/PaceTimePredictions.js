@@ -113,7 +113,7 @@ const PaceTimePredictions = () => {
         },
     }
 
-    let options = {
+    let options = { 
         colors: colors,
         xaxis: {
             type: 'numeric',
@@ -158,9 +158,21 @@ const PaceTimePredictions = () => {
         },
         tooltip: {
             shared: false,
-            intersect: true,
+            intersect: false,
         },
         legend: legend,
+        annotations: {
+            xaxis: [{
+                x: 60,
+                strokeDashArray: 0,
+                borderColor: "#775DD0",
+                label: {
+                    borderColor: "#775DD0",
+                    style: {color: "#fff", background: "#775DD0"},
+                    text: "Today",
+                }
+            }],
+        }
     };
 
 

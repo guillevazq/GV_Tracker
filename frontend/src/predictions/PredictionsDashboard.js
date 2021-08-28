@@ -1,7 +1,10 @@
 import React, {useEffect, useContext} from 'react';
-import PaceTimePredictions from './PaceTimePredictions';
 import {RunsContext} from '../context/RunsContext';
 import {AuthenticationContext} from "../context/AuthenticationContext";
+
+// Graphs
+import PaceTimePredictions from './PaceTimePredictions';
+import WeeklyGoal from "./WeeklyGoal";
 
 const PredictionsDashboard = props => {
 
@@ -24,6 +27,9 @@ const PredictionsDashboard = props => {
     return (
         <div className="predictions-dashboard">
             <PaceTimePredictions />
+            <div className="goals">
+                <WeeklyGoal />
+            </div>
         </div>
     );
 };
