@@ -1,21 +1,32 @@
 import React, {useState, useContext, useEffect} from 'react';
+
+// Context
 import {AuthenticationContext} from '../context/AuthenticationContext';
-import RecentRuns from '../dashboard/gadgets/RecentRuns';
 import {RunsContext} from '../context/RunsContext';
+
+// Components
+import RecentRuns from '../dashboard/gadgets/RecentRuns';
 import RunEditForm from './RunEditForm';
 import RunSubmissionForm from './RunSubmissionForm';
 
+// UI
+import Loader from "../ui/Loader";
+import Backdrop from '@material-ui/core/Backdrop';
+import {makeStyles} from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
+
 const RunningHistory = props => {
-
-    // Instantiating the context
-    const authenticationContext = useContext(AuthenticationContext);
-    const runsContext = useContext(RunsContext);
-
-    // Destructure it
-    const {isLogged} = authenticationContext;
-    const {recentlyAdded, getRuns, runs} = runsContext;
-
-    const [editMode, setEditMode] = useState(false);
+    const {isLogged} = useContext(AuthenticationContext);
+    const {getRuns, runs, submitFormVisibility, toggleSubmitForm, editFormVisibility, toggleEditForm, editFormData} = useContext(RunsContext);
+    const classes = useStyles();
 
     useEffect(() => {
         getRuns();
@@ -25,27 +36,30 @@ const RunningHistory = props => {
         if (isLogged === false) {
             props.history.push("/login");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLogged]);
-
-    useEffect(() => {
-        if (recentlyAdded) {
-            props.history.push("/");
-        };
-    }, [recentlyAdded]);
 
     return (
         <>
-        {runs && (
+        {(runs && isLogged) ? (
             <div className="run-info-page">
                 <div className='recent-runs-div'>
-                    <RecentRuns editMode={editMode} title={"All Runs"} setEditMode={setEditMode} />
+                    <RecentRuns editCapability={true} runs={runs} title={"All Runs"} toggleEditForm={toggleEditForm}/>
                 </div>
-                {!editMode ? (
+                <Backdrop className={classes.backdrop} open={editFormVisibility}>
+                    {editFormData && (
+                        <RunEditForm toggleEditForm={toggleEditForm} />
+                    )}
+                </Backdrop>
+                <Backdrop className={classes.backdrop} open={submitFormVisibility}>
                     <RunSubmissionForm />
-                ) : (
-                    <RunEditForm editMode={editMode} setEditMode={setEditMode} />
-                )}
+                </Backdrop>
+                <Fab className="add-new-run-btn" onClick={() => toggleSubmitForm()} color="primary" aria-label="add">
+                    <AddIcon />
+                </Fab>
             </div>
+        ) : (
+            <Loader />
         )}
         </>
     );

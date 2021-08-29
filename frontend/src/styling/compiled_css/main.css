@@ -274,11 +274,11 @@ div.notification-container--top-center .notification .notification__item .notifi
   background: white;
 }
 
-.login-div {
+.login-div, .register-div, .reset-password {
   margin-top: 50px;
 }
 
-.login-div .form-login {
+.login-div .form-login, .register-div .form-login, .reset-password .form-login, .register-div .form-register, .reset-password .form-reset {
   background-color: #3069c0;
   width: 500px;
   margin: auto;
@@ -288,14 +288,14 @@ div.notification-container--top-center .notification .notification__item .notifi
   padding-bottom: 20px;
 }
 
-.login-div .form-login h3 {
+.login-div .form-login h3, .register-div .form-login h3, .reset-password .form-login h3, .register-div .form-register h3, .reset-password .form-reset h3 {
   padding-bottom: 40px;
   text-align: center;
   font-size: 1.8rem;
   color: white;
 }
 
-.login-div .form-login .help-anchortags {
+.login-div .form-login .help-anchortags, .register-div .form-login .help-anchortags, .reset-password .form-login .help-anchortags, .register-div .form-register .help-anchortags, .reset-password .form-reset .help-anchortags {
   text-align: center;
   grid-gap: 0.5rem;
   display: -ms-grid;
@@ -305,12 +305,12 @@ div.notification-container--top-center .notification .notification__item .notifi
   padding-top: 20px;
 }
 
-.login-div .form-login .help-anchortags a {
+.login-div .form-login .help-anchortags a, .register-div .form-login .help-anchortags a, .reset-password .form-login .help-anchortags a, .register-div .form-register .help-anchortags a, .reset-password .form-reset .help-anchortags a {
   font-size: 1rem;
   color: white;
 }
 
-.login-div .form-login .form-fields {
+.login-div .form-login .form-fields, .register-div .form-login .form-fields, .reset-password .form-login .form-fields, .register-div .form-register .form-fields, .reset-password .form-reset .form-fields {
   display: -ms-grid;
   display: grid;
   -ms-grid-rows: (1fr)[3];
@@ -319,18 +319,49 @@ div.notification-container--top-center .notification .notification__item .notifi
   color: white;
 }
 
-.login-div .form-login .form-fields .username-field,
+.login-div .form-login .form-fields .username-field, .register-div .form-login .form-fields .username-field, .reset-password .form-login .form-fields .username-field, .register-div .form-register .form-fields .username-field, .reset-password .form-reset .form-fields .username-field,
 .login-div .form-login .form-fields .password-field,
-.login-div .form-login .form-fields .email-field {
+.register-div .form-login .form-fields .password-field,
+.reset-password .form-login .form-fields .password-field,
+.register-div .form-register .form-fields .password-field,
+.reset-password .form-reset .form-fields .password-field,
+.login-div .form-login .form-fields .email-field,
+.register-div .form-login .form-fields .email-field,
+.reset-password .form-login .form-fields .email-field,
+.register-div .form-register .form-fields .email-field,
+.reset-password .form-reset .form-fields .email-field {
   display: -ms-grid;
   display: grid;
   -ms-grid-rows: (1fr)[5];
       grid-template-rows: repeat(5, 1fr);
 }
 
-.login-div .form-login .form-fields .username-field .password-visibility,
+.login-div .form-login .form-fields .username-field small, .register-div .form-login .form-fields .username-field small, .reset-password .form-login .form-fields .username-field small, .register-div .form-register .form-fields .username-field small, .reset-password .form-reset .form-fields .username-field small,
+.login-div .form-login .form-fields .password-field small,
+.register-div .form-login .form-fields .password-field small,
+.reset-password .form-login .form-fields .password-field small,
+.register-div .form-register .form-fields .password-field small,
+.reset-password .form-reset .form-fields .password-field small,
+.login-div .form-login .form-fields .email-field small,
+.register-div .form-login .form-fields .email-field small,
+.reset-password .form-login .form-fields .email-field small,
+.register-div .form-register .form-fields .email-field small,
+.reset-password .form-reset .form-fields .email-field small {
+  font-size: 1rem;
+  grid-row: span 2;
+}
+
+.login-div .form-login .form-fields .username-field .password-visibility, .register-div .form-login .form-fields .username-field .password-visibility, .reset-password .form-login .form-fields .username-field .password-visibility, .register-div .form-register .form-fields .username-field .password-visibility, .reset-password .form-reset .form-fields .username-field .password-visibility,
 .login-div .form-login .form-fields .password-field .password-visibility,
-.login-div .form-login .form-fields .email-field .password-visibility {
+.register-div .form-login .form-fields .password-field .password-visibility,
+.reset-password .form-login .form-fields .password-field .password-visibility,
+.register-div .form-register .form-fields .password-field .password-visibility,
+.reset-password .form-reset .form-fields .password-field .password-visibility,
+.login-div .form-login .form-fields .email-field .password-visibility,
+.register-div .form-login .form-fields .email-field .password-visibility,
+.reset-password .form-login .form-fields .email-field .password-visibility,
+.register-div .form-register .form-fields .email-field .password-visibility,
+.reset-password .form-reset .form-fields .email-field .password-visibility {
   margin-top: 5px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -344,20 +375,21 @@ div.notification-container--top-center .notification .notification__item .notifi
   width: fit-content;
 }
 
-.login-div .form-login .form-fields .username-field .password-visibility:focus,
+.login-div .form-login .form-fields .username-field .password-visibility:focus, .register-div .form-login .form-fields .username-field .password-visibility:focus, .reset-password .form-login .form-fields .username-field .password-visibility:focus, .register-div .form-register .form-fields .username-field .password-visibility:focus, .reset-password .form-reset .form-fields .username-field .password-visibility:focus,
 .login-div .form-login .form-fields .password-field .password-visibility:focus,
-.login-div .form-login .form-fields .email-field .password-visibility:focus {
+.register-div .form-login .form-fields .password-field .password-visibility:focus,
+.reset-password .form-login .form-fields .password-field .password-visibility:focus,
+.register-div .form-register .form-fields .password-field .password-visibility:focus,
+.reset-password .form-reset .form-fields .password-field .password-visibility:focus,
+.login-div .form-login .form-fields .email-field .password-visibility:focus,
+.register-div .form-login .form-fields .email-field .password-visibility:focus,
+.reset-password .form-login .form-fields .email-field .password-visibility:focus,
+.register-div .form-register .form-fields .email-field .password-visibility:focus,
+.reset-password .form-reset .form-fields .email-field .password-visibility:focus {
   outline: none;
 }
 
-.login-div .form-login .form-fields .username-field small,
-.login-div .form-login .form-fields .password-field small,
-.login-div .form-login .form-fields .email-field small {
-  font-size: 1rem;
-  grid-row: span 2;
-}
-
-.login-div .form-login .form-fields input {
+.login-div .form-login .form-fields input, .register-div .form-login .form-fields input, .reset-password .form-login .form-fields input, .register-div .form-register .form-fields input, .reset-password .form-reset .form-fields input {
   background-color: #3069c0;
   grid-row: span 3;
   height: 50px;
@@ -372,28 +404,40 @@ div.notification-container--top-center .notification .notification__item .notifi
   font-size: 1.3rem;
 }
 
-.login-div .form-login .form-fields input:focus {
+.login-div .form-login .form-fields input:focus, .register-div .form-login .form-fields input:focus, .reset-password .form-login .form-fields input:focus, .register-div .form-register .form-fields input:focus, .reset-password .form-reset .form-fields input:focus {
   outline: none;
   border: 1px solid lightgray;
 }
 
+
 .login-div .form-login .form-fields .email-field,
-.login-div .form-login .form-fields .username-field {
+.register-div .form-login .form-fields .email-field,
+.reset-password .form-login .form-fields .email-field,
+.register-div .form-register .form-fields .email-field,
+.reset-password .form-reset .form-fields .email-field, .login-div .form-login .form-fields .username-field, .register-div .form-login .form-fields .username-field, .reset-password .form-login .form-fields .username-field, .register-div .form-register .form-fields .username-field, .reset-password .form-reset .form-fields .username-field {
   -ms-grid-rows: (1fr)[4];
       grid-template-rows: repeat(4, 1fr);
 }
 
-.login-div .form-login .form-fields .email-field input,
-.login-div .form-login .form-fields .username-field input {
-  grid-row: span 3 !important;
+.login-div .form-login .form-fields .email-field input, .register-div .form-login .form-fields .email-field input, .reset-password .form-login .form-fields .email-field input, .register-div .form-register .form-fields .email-field input, .reset-password .form-reset .form-fields .email-field input,
+.login-div .form-login .form-fields .username-field input,
+.register-div .form-login .form-fields .username-field input,
+.reset-password .form-login .form-fields .username-field input,
+.register-div .form-register .form-fields .username-field input,
+.reset-password .form-reset .form-fields .username-field input {
+  grid-row: span 3;
 }
+
 
 .login-div .form-login .form-fields .email-field small,
-.login-div .form-login .form-fields .username-field small {
-  grid-row: span 1 !important;
+.register-div .form-login .form-fields .email-field small,
+.reset-password .form-login .form-fields .email-field small,
+.register-div .form-register .form-fields .email-field small,
+.reset-password .form-reset .form-fields .email-field small, .login-div .form-login .form-fields .username-field small, .register-div .form-login .form-fields .username-field small, .reset-password .form-login .form-fields .username-field small, .register-div .form-register .form-fields .username-field small, .reset-password .form-reset .form-fields .username-field small {
+  grid-row: span 1;
 }
 
-.login-div .form-login .form-fields .submit-btn-form {
+.login-div .form-login .form-fields .submit-btn-form, .register-div .form-login .form-fields .submit-btn-form, .reset-password .form-login .form-fields .submit-btn-form, .register-div .form-register .form-fields .submit-btn-form, .reset-password .form-reset .form-fields .submit-btn-form {
   font-size: 1.2rem;
   width: 100%;
   height: 40px;
@@ -407,17 +451,22 @@ div.notification-container--top-center .notification .notification__item .notifi
   background-color: #3069c0;
 }
 
-.login-div .form-login .form-fields .submit-btn-form:hover {
+.login-div .form-login .form-fields .submit-btn-form:hover, .register-div .form-login .form-fields .submit-btn-form:hover, .reset-password .form-login .form-fields .submit-btn-form:hover, .register-div .form-register .form-fields .submit-btn-form:hover, .reset-password .form-reset .form-fields .submit-btn-form:hover {
   background-color: white;
   color: #3069c0;
 }
 
-.login-div .form-login .form-fields-register {
+.login-div .form-login .form-fields-add-run, .register-div .form-login .form-fields-add-run, .reset-password .form-login .form-fields-add-run, .register-div .form-register .form-fields-add-run, .reset-password .form-reset .form-fields-add-run {
+  -ms-grid-rows: (1fr)[2];
+      grid-template-rows: repeat(2, 1fr);
+}
+
+.register-div .form-fields-register {
   -ms-grid-rows: (1fr)[5];
       grid-template-rows: repeat(5, 1fr);
 }
 
-.login-div .form-login .form-fields-add-run {
+.reset-password .form-reset .form-fields {
   -ms-grid-rows: (1fr)[2];
       grid-template-rows: repeat(2, 1fr);
 }
@@ -571,8 +620,8 @@ div.notification-container--top-center .notification .notification__item .notifi
 .run-info-page {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[3];
-      grid-template-columns: repeat(3, 1fr);
+  -ms-grid-columns: (1fr)[1];
+      grid-template-columns: repeat(1, 1fr);
   width: 100%;
   padding: 0px;
 }
@@ -586,9 +635,10 @@ div.notification-container--top-center .notification .notification__item .notifi
   width: 95%;
   margin: 0px;
   margin: auto;
+  margin-bottom: 30px;
 }
 
-.run-info-page .login-div {
+.run-info-page .login-div, .run-info-page .register-div, .run-info-page .reset-password {
   padding: 0px;
 }
 
@@ -840,11 +890,6 @@ div.notification-container--top-center .notification .notification__item .notifi
   border-bottom-right-radius: 0px;
 }
 
-.reset-password form .form-fields {
-  -ms-grid-rows: (1fr)[2] !important;
-      grid-template-rows: repeat(2, 1fr) !important;
-}
-
 .hms-input {
   display: -ms-grid;
   display: grid;
@@ -872,32 +917,32 @@ div.notification-container--top-center .notification .notification__item .notifi
   height: 40px;
 }
 
-.add-run-div .form-login {
-  border: 2px solid #3069c0;
+.add-run-div .form-login, .add-run-div .register-div .form-register, .register-div .add-run-div .form-register, .add-run-div .reset-password .form-reset, .reset-password .add-run-div .form-reset {
+  border: 0px solid #3069c0;
   background-color: white;
 }
 
-.add-run-div .form-login h3 {
+.add-run-div .form-login h3, .add-run-div .register-div .form-register h3, .register-div .add-run-div .form-register h3, .add-run-div .reset-password .form-reset h3, .reset-password .add-run-div .form-reset h3 {
   color: #3069c0;
 }
 
-.add-run-div .form-login .form-fields {
+.add-run-div .form-login .form-fields, .add-run-div .register-div .form-register .form-fields, .register-div .add-run-div .form-register .form-fields, .add-run-div .reset-password .form-reset .form-fields, .reset-password .add-run-div .form-reset .form-fields {
   color: black;
 }
 
-.add-run-div .form-login .form-fields #date {
+.add-run-div .form-login .form-fields #date, .add-run-div .register-div .form-register .form-fields #date, .register-div .add-run-div .form-register .form-fields #date, .add-run-div .reset-password .form-reset .form-fields #date, .reset-password .add-run-div .form-reset .form-fields #date {
   margin: 0px;
   background-color: white;
   color: #3069c0;
   border: 2px solid #3069c0;
 }
 
-.add-run-div .form-login .form-fields .submit-btn-form:hover {
+.add-run-div .form-login .form-fields .submit-btn-form:hover, .add-run-div .register-div .form-register .form-fields .submit-btn-form:hover, .register-div .add-run-div .form-register .form-fields .submit-btn-form:hover, .add-run-div .reset-password .form-reset .form-fields .submit-btn-form:hover, .reset-password .add-run-div .form-reset .form-fields .submit-btn-form:hover {
   background-color: #3399ff;
   color: white;
 }
 
-.add-run-div .form-login .form-fields .username-field input, .add-run-div .form-login .form-fields .password-field input, .add-run-div .form-login .form-fields .email-field input {
+.add-run-div .form-login .form-fields .username-field input, .add-run-div .register-div .form-register .form-fields .username-field input, .register-div .add-run-div .form-register .form-fields .username-field input, .add-run-div .reset-password .form-reset .form-fields .username-field input, .reset-password .add-run-div .form-reset .form-fields .username-field input, .add-run-div .form-login .form-fields .password-field input, .add-run-div .register-div .form-register .form-fields .password-field input, .register-div .add-run-div .form-register .form-fields .password-field input, .add-run-div .reset-password .form-reset .form-fields .password-field input, .reset-password .add-run-div .form-reset .form-fields .password-field input, .add-run-div .form-login .form-fields .email-field input, .add-run-div .register-div .form-register .form-fields .email-field input, .register-div .add-run-div .form-register .form-fields .email-field input, .add-run-div .reset-password .form-reset .form-fields .email-field input, .reset-password .add-run-div .form-reset .form-fields .email-field input {
   border: 2px solid #3069c0;
   text-align: center;
   background-color: white;
@@ -906,14 +951,13 @@ div.notification-container--top-center .notification .notification__item .notifi
   height: 40px;
 }
 
-.add-run-div .form-login .form-fields .distance-input-div input {
+.add-run-div .form-login .form-fields .distance-input-div input, .add-run-div .register-div .form-register .form-fields .distance-input-div input, .register-div .add-run-div .form-register .form-fields .distance-input-div input, .add-run-div .reset-password .form-reset .form-fields .distance-input-div input, .reset-password .add-run-div .form-reset .form-fields .distance-input-div input {
   width: 100px;
   height: 40px;
 }
 
 .add-run-div .edit-form {
   background-color: #FFD697;
-  border: 2px solid #FFB84B;
 }
 
 .add-run-div .edit-form h3 {
@@ -986,5 +1030,54 @@ div.notification-container--top-center .notification .notification__item .notifi
 
 .mid_charts .recent-runs-box .actual-recent-runs .single-run .icons .delete-icon {
   margin: auto;
+}
+
+.goals-predictions {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+}
+
+.outer {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+}
+
+.add-new-run-btn {
+  position: fixed !important;
+  bottom: 5%;
+  right: 5%;
+}
+
+.my-node-enter {
+  opacity: 0;
+}
+
+.my-node-enter-active {
+  opacity: 1;
+}
+
+.my-node-exit {
+  opacity: 1;
+}
+
+.my-node-exit-active {
+  opacity: 0;
 }
 /*# sourceMappingURL=main.css.map */

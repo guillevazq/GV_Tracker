@@ -1,20 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
+
 import ReactApexChart from "react-apexcharts";
+import {daysRanMonthOptions} from '../../graph_settings/GraphSettings';
 
-import {RunsContext} from "../../context/RunsContext";
-
-const DaysRanMonth = () => {
-
-    let runsContext = useContext(RunsContext);
-    const {runs} = runsContext;
-
-    let currentUnixDate = new Date().getTime() / 1000;
-
-    let total = 100;
-    let step = 10;
-    let series = [];
-
-    let solidity = 0.8153345;
+const DaysRanMonth = ({runs}) => {
+    let total = 100, step = 10, series = [], solidity = 0.8153345;
 
     for (let i = 0; i < total; i += step) {
         let nameOfSeries = i + "-" + (i + step);
@@ -28,65 +18,28 @@ const DaysRanMonth = () => {
         };
     };
 
+    let daysAgo, position, currentSet, currentSetPosition;
     runs.forEach(run => {
-        let daysAgo = Math.floor((currentUnixDate - run.unix_date) / 3600 / 24);
-        let position = total - daysAgo;
-        let currentSet = Math.floor(position / 10);
-        let currentSetPosition = (position - (currentSet * 10));
-        series[currentSet]["data"][currentSetPosition]["y"] = run.distance;
+        daysAgo = Math.floor((new Date().getTime() / 1000 - run.unix_date) / 3600 / 24);
+        position = total - daysAgo - 1;
+        if (position >= 0 && position <= 99) {
+            currentSet = Math.floor(position / 10);
+            currentSetPosition = (position - (currentSet * 10));
+            series[currentSet]["data"][currentSetPosition]["y"] = run.distance;
+        } 
     });
 
     series.reverse();
-
-    let options = {
-        xaxis: {
-            position: "top",
-            labels: {
-                show: false,
-            },
-        },
-        yaxis: {
-            show: true,
-        },
-        chart: {
-            type: 'heatmap',
-            toolbar: {
-                show: false,
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        colors: ["#008FFB"],
-        title: {
-            text: 'Last 100 Days'
-        },
-        tooltip: {
-            enabled: true,
-            style: {
-                fontFamily: 'Roboto'
-            },
-            x: {
-                show: false,
-            },
-            y: {
-                formatter:(value) => {
-                    if (value === solidity) {
-
-                        return "0KM";
-                    }
-                    return `${value}KM`;
-                },
-            },
-            marker: {
-                show: false,
-            },
-        },
+    daysRanMonthOptions.tooltip.y.formatter = value => {
+        if (value === solidity) {
+            return "0KM";
+        };
+        return `${value}KM`;
     };
 
     return (
         <div className="heatmap-runs">
-            <ReactApexChart options={options} series={series} type="heatmap" height={350} />
+            <ReactApexChart options={daysRanMonthOptions} series={series} type="heatmap" height={350} />
         </div>
     );
 };

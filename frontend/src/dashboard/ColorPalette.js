@@ -1,3 +1,5 @@
+import {createTheme} from "@material-ui/core";
+
 export const colors = [
     "#dba203",
     "#cfc204",
@@ -13,3 +15,18 @@ export const getColor = index => {
 
     return colors[index];
 };
+
+export const theme = createTheme({
+  typography: {
+    fontSize: 16,
+  },
+  palette: {
+    primary: {
+      main: "#3069c0",
+    },
+    secondary: {
+      main: "#FFB84B",
+
+    }
+  },
+});

@@ -1,12 +1,18 @@
 import React, {useState, useContext, useEffect} from 'react';
+
+// Context
 import {RunsContext} from '../context/RunsContext';
 
-const RunEditForm = ({editMode, setEditMode}) => {
+// UI
+import Button from '@material-ui/core/Button';
 
-    let initialMinutes = editMode["minutes"];
-    let initialSeconds = editMode["seconds"];
-    let initialDistance = editMode["distance"];
-    let initialDate = new Date(editMode["dateRun"] * 1000);
+const RunEditForm = ({toggleEditForm}) => {
+
+    const {editRun, editFormData, cleanEditFormData} = useContext(RunsContext);
+    let initialMinutes = editFormData["minutes"];
+    let initialSeconds = editFormData["seconds"];
+    let initialDistance = editFormData["distance"];
+    let initialDate = new Date(editFormData["dateRun"] * 1000);
     initialDate.setMinutes(initialDate.getMinutes() - initialDate.getTimezoneOffset());
     initialDate = initialDate.toISOString().slice(0,16);
 
@@ -21,54 +27,37 @@ const RunEditForm = ({editMode, setEditMode}) => {
         initialHours += 1;
     };
 
-    // Instantiating the context
-    const runsContext = useContext(RunsContext);
 
-    // Destructure it
-    const {addRun, editRun} = runsContext;
-
-    // Controlled inputs
     const [hours, setHours] = useState(initialHours);
     const [minutes, setMinutes] = useState(initialMinutes);
     const [seconds, setSeconds] = useState(initialSeconds);
     const [distance, setDistance] = useState(initialDistance);
     const [dateRun, setDateRun] = useState(initialDate);
 
-    const handleHours = e => {
-        if (e.target.value >= 0 && e.target.value < 100){
-            setHours(Math.floor(e.target.value).toFixed(0));
-        };
-
-    };
-    const handleMinutes = e => {
-        if (e.target.value < 60 && e.target.value >= 0){
-            setMinutes(Math.floor(e.target.value).toFixed(0));
-        };
-    };
-    const handleSeconds = e => {
-        if (e.target.value < 60 && e.target.value >= 0){
-            setSeconds(Math.floor(e.target.value).toFixed(0));
-        };
-    };
 
     const handleDistance = e => {
         setDistance(e.target.value);
-    }
+    };
+
+    const handleNumericInput = (e, max, min, changeFunction) => {
+        if (e.target.value <= max && e.target.value >= min){
+            changeFunction(Math.floor(e.target.value).toFixed(0));
+        };
+    };
 
     const cancelEdit = e => {
-        setEditMode(false);
+        cleanEditFormData();
+        toggleEditForm();
     };
 
     const submitEditedRun = e => {
         e.preventDefault();
         editRun(
-            hours * 60 + parseInt(minutes),
-            parseInt(seconds), 
+            hours * 3600 + minutes * 60 + parseInt(seconds),
             parseFloat(distance),
             new Date(dateRun).getTime() / 1000,
-            editMode.id
+            editFormData.id
         );
-        setEditMode(false);
     };
 
     return (
@@ -79,15 +68,21 @@ const RunEditForm = ({editMode, setEditMode}) => {
                     <div className="hms-input">
                         <div className="username-field">
                             <small>Hours</small>
-                            <input className="input-time" required step={"1"} min={0} max={59} type="number" name="hours" id="hours" value={hours} onChange={handleHours} />
+                            <input className="input-time" required step={"1"} min={0} max={100} type="number" name="hours" id="hours"
+                            value={hours}
+                            onChange={e => handleNumericInput(e, 100, 0, setHours)} />
                         </div>
                         <div className="username-field">
                             <small>Minutes</small>
-                            <input className="input-time" required step={"1"} min={1} max={59} type="number" name="minutes" id="minutes" value={minutes} onChange={handleMinutes} />
+                            <input className="input-time" required step={"1"} min={0} max={59} type="number" name="minutes" id="minutes"
+                            value={minutes}
+                            onChange={e => handleNumericInput(e, 59, 0, setMinutes)} />
                         </div>
                         <div className="username-field">
                             <small>Seconds</small>
-                            <input className="input-time" required step={"1"} min={0} max={59} type="number" name="seconds" id="seconds" value={seconds} onChange={handleSeconds} />
+                            <input className="input-time" required step={"1"} min={0} max={59} type="number" name="seconds" id="seconds"
+                            value={seconds}
+                            onChange={e => handleNumericInput(e, 59, 0, setSeconds)} />
                         </div>
                     </div>
                     <div className="password-field distance-input-div">
@@ -96,8 +91,8 @@ const RunEditForm = ({editMode, setEditMode}) => {
                     </div>
                     <input max={today} value={dateRun} onChange={e => setDateRun(e.target.value)} type="datetime-local" name="date" id="date" />
                     <div className="buttons-div-edit">
-                        <button className="submit-btn-form" type="submit">Save Edit</button>
-                        <button onClick={cancelEdit} className="submit-btn-form cancel-btn" type="button">Cancel</button>
+                        <Button onClick={cancelEdit} variant="contained">Cancel</Button>
+                        <Button type="submit" variant="contained" color="secondary">Save changes</Button>
                     </div>
                 </div>
             </form>

@@ -1,19 +1,19 @@
 import React, {useContext} from 'react';
-import ReactApexChart from 'react-apexcharts';
-import {colors} from "../ColorPalette";
+
 import {RunsContext} from '../../context/RunsContext';
 
+import ReactApexChart from 'react-apexcharts';
+import {lineTrackHistoryOptions} from '../../graph_settings/GraphSettings';
 
-const LineTrackHistory = () => {
+const LineTrackHistory = ({runs}) => {
     
-    const runsContext = useContext(RunsContext);
-    const {runs, getSpeedMinKM, labelRun} = runsContext;
+    const {secondsToPace, labelRun} = useContext(RunsContext);
     let daysSpeedDict = {};
 
     runs.map(run => {
-        let {minutes, seconds, distance} = run;
+        let {seconds, distance} = run;
         let daysPassed = Math.floor((new Date().getTime() - new Date(run.unix_date * 1000).getTime()) / 1000 / 3600 / 24);
-        let currentSpeed = getSpeedMinKM(minutes, seconds, distance, true);
+        let currentSpeed = secondsToPace(seconds, distance, true);
         let label = labelRun(distance);
         let dayPosition = 60 - daysPassed;
         if (dayPosition >= 0) {
@@ -41,110 +41,7 @@ const LineTrackHistory = () => {
         series.push({name: distancesRange, type: "line", data: currentSeries});
     };
 
-    const responsive = [{
-        breakpoint: undefined,
-        options: {},
-    }];
-
-    let legend = {
-        show: true,
-        showForSingleSeries: true,
-        showForNullSeries: true,
-        showForZeroSeries: true,
-        position: 'bottom',
-        horizontalAlign: 'center',
-        floating: false,
-        fontSize: '14px',
-        fontFamily: 'Helvetica, Arial',
-        fontWeight: 400,
-        formatter: undefined,
-        inverseOrder: false,
-        width: undefined,
-        height: undefined,
-        tooltipHoverFormatter: undefined,
-        customLegendItems: [],
-        offsetX: 0,
-        offsetY: 0,
-        labels: {
-            colors: undefined,
-            useSeriesColors: false
-        },
-        markers: {
-            width: 12,
-            height: 12,
-            strokeWidth: 0,
-            strokeColor: '#fff',
-            fillColors: undefined,
-            radius: 12,
-            customHTML: undefined,
-            onClick: undefined,
-            offsetX: 0,
-            offsetY: 0
-        },
-        itemMargin: {
-            horizontal: 5,
-            vertical: 0
-        },
-        onItemClick: {
-            toggleDataSeries: true
-        },
-        onItemHover: {
-            highlightDataSeries: true
-        },
-    }
-
-
-
-    let options = {
-        colors: colors,
-        xaxis: {
-            type: 'numeric',
-            decimalsInFloat: 0,
-            title: {
-                text: "Last 60 days",
-                offsetY: -10,
-                offsetX: 0,
-            }
-        },
-        yaxis: {
-            title: {
-                rotate: 0,
-                offsetX: -20,
-                text: 'MIN / KM',
-                style : {
-                    fontSize: '0.9rem',
-                }
-            },
-            labels: {
-                rotate: 0,
-            }
-        },
-        chart: {
-            height: 350,
-            type: '',
-            toolbar: {
-                show: false,
-            },
-            animations: {
-                enabled: true,
-                easing: 'easeinout',
-                speed: 800,
-            }
-        },
-        fill: {
-            type: 'solid',
-        },
-        markers: {
-            size: [6, 6]
-        },
-        tooltip: {
-            shared: false,
-            intersect: false,
-        },
-        legend: legend,
-    };
-
-    return <ReactApexChart legend={legend} responsive={responsive} options={options} series={series} type="line" height={400} />;
+    return <ReactApexChart options={lineTrackHistoryOptions} series={series} type="line" height={400} />;
 };
 
 export default LineTrackHistory;

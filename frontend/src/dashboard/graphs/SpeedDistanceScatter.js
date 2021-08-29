@@ -1,39 +1,16 @@
-import React, {useContext} from 'react';
+import React from 'react';
+
 import ReactApexChart from "react-apexcharts";
-import {RunsContext} from "../../context/RunsContext";
+import {SpeedDistanceScatterOptions} from "../../graph_settings/GraphSettings";
 
-const SpeedDistanceScatter = () => {
-    const runsContext = useContext(RunsContext);
-    const {runs} = runsContext;
-
+const SpeedDistanceScatter = ({runs}) => {
     let series = [{name: "Minutes", data: []}];
     runs.map(run => {
-        series[0].data.push([run.distance, run.minutes + run.seconds / 60]);
+        series[0].data.push([run.distance, run.seconds / 60]);
     });
-
-    let options = {
-        chart: {
-            height: 350,
-            type: 'scatter',
-            toolbar: {
-                show: false
-            },
-        },
-        xaxis: {
-            // tickAmount: 10,
-            labels: {
-                formatter: function (val) {
-                    return parseFloat(val).toFixed(2)
-                }
-            }
-        },
-        yaxis: {
-            // tickAmount: 20
-        }
-    };
     return (
         <div className="speed-distance-scatter">
-            <ReactApexChart options={options} series={series} type="scatter" height={350} />
+            <ReactApexChart options={SpeedDistanceScatterOptions} series={series} type="scatter" height={350} />
         </div>
     );
 };

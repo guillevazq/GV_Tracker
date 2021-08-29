@@ -1,74 +1,90 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect} from "react";
+
+// Context
 import {RunsContext} from '../context/RunsContext';
 
-const RunSubmissionForm = () => {
-    // Instantiating the context
-    const runsContext = useContext(RunsContext);
+// UI
+import Button from '@material-ui/core/Button';
 
-    // Destructure it
-    const {addRun} = runsContext;
+const RunSubmissionForm = () => {
+    const {addRun, toggleSubmitForm} = useContext(RunsContext);
 
     let now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     let today = now.toISOString().slice(0,16);
 
-    // Controlled inputs
     const [hours, setHours] = useState(0);
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [distance, setDistance] = useState(0);
     const [dateRun, setDateRun] = useState(today);
 
+    useEffect(() => {
+        setDateRun(today);
+    }, []);
+
     const submitRun = e => {
         e.preventDefault();
         addRun(minutes, seconds, distance, parseInt(new Date(dateRun).getTime() / 1000));
     };
 
-    const handleHours = e => {
-        if (e.target.value >= 0 && e.target.value < 100){
-            setHours(Math.floor(e.target.value).toFixed(0));
-        };
-    };
-    const handleMinutes = e => {
-        if (e.target.value < 60 && e.target.value >= 0){
-            setMinutes(Math.floor(e.target.value).toFixed(0));
-        };
-    };
-    const handleSeconds = e => {
-        if (e.target.value < 60 && e.target.value >= 0){
-            setSeconds(Math.floor(e.target.value).toFixed(0));
+    const handleNumericInput = (e, max, min, changeFunction) => {
+        if (e.target.value <= max && e.target.value >= min){
+            changeFunction(Math.floor(e.target.value).toFixed(0));
         };
     };
 
-    const handleDistance = e => {
-        setDistance(e.target.value);
-    }
+    const cancelSubmission = () => {
+        toggleSubmitForm();
+        setTimeout(() => {
+            setHours(0);
+            setMinutes(0);
+            setSeconds(0);
+            setDistance(0);
+            setDateRun(today);
+        }, 200)
+    };
 
     return (
         <div className="login-div add-run-div">
-            <form className="form-login" action="POST" onSubmit={e => submitRun(e)}>
+            <form className="form-login" action="POST" onSubmit={submitRun}>
                 <h3>Submit Run</h3>
                 <div className="form-fields form-fields-add-run">
                     <div className="hms-input">
                         <div className="username-field">
                             <small>Hours</small>
-                            <input className="input-time" required step={"1"} min={0} max={59} type="number" name="hours" id="hours" value={hours} onChange={handleHours} />
+                            <input className="input-time" required 
+                                step={"1"} 
+                                min={0}
+                                max={99}
+                                type="number"
+                                name="hours"
+                                id="hours"
+                                value={hours}
+                                onChange={e => handleNumericInput(e, 100, 0, setHours)}
+                                />
                         </div>
                         <div className="username-field">
                             <small>Minutes</small>
-                            <input className="input-time" required step={"1"} min={1} max={59} type="number" name="minutes" id="minutes" value={minutes} onChange={handleMinutes} />
+                            <input className="input-time" required step={"1"} min={0} max={59} type="number" name="minutes" id="minutes"
+                            value={minutes} onChange={e => handleNumericInput(e, 59, 0, setMinutes)} />
                         </div>
                         <div className="username-field">
                             <small>Seconds</small>
-                            <input className="input-time" required step={"1"} min={0} max={59} type="number" name="seconds" id="seconds" value={seconds} onChange={handleSeconds} />
+                            <input className="input-time" required step={"1"} min={0} max={59} type="number" name="seconds" id="seconds"
+                            value={seconds} onChange={e => handleNumericInput(e, 59, 0, setSeconds)} />
                         </div>
                     </div>
                     <div className="password-field distance-input-div">
                         <small>Distance (KM)</small>
-                        <input required step={"0.000000000000001"} min={0} type="number" name="distance" id="distance" value={distance} onChange={handleDistance}/>
+                        <input required step={"0.000000000000001"} min={0} type="number" name="distance" id="distance" value={distance}
+                        onChange={e => setDistance(e.target.value)}/>
                     </div>
                     <input max={today} value={dateRun} onChange={e => setDateRun(e.target.value)} type="datetime-local" name="date" id="date" />
-                    <button className="submit-btn-form" type="submit">Add</button>
+                    <div className="buttons-div-edit">
+                        <Button onClick={cancelSubmission} variant="contained">Cancel</Button>
+                        <Button type="submit" variant="contained" color="primary">Add</Button>
+                    </div>
                 </div>
             </form>
         </div>

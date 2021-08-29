@@ -6,27 +6,44 @@ export const RunsContext = createContext();
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case "RECENTLY_ADDED_RUN":
-            return {...state, recentlyAdded: true};
-        case "REMOVE_RECENTLY_ADDED_RUN":
-            return {...state, recentlyAdded: false};
         case "SET_RUNS":
             return {...state, runs: action.payload.runs};
         case "SET_FUNCTION":
             return {...state, predictionFunction: action.payload.predictionFunction};
+        case "TOGGLE_SUBMISSION_FORM":
+            return {...state, submitFormVisibility: !state.submitFormVisibility};
+        case "TOGGLE_EDIT_FORM":
+            return {...state, editFormVisibility: !state.editFormVisibility};
+        case "POPULATE_EDIT_FORM_DATA":
+            return {...state, editFormData: {...action.payload}};
+        case "CLEAN_EDIT_FORM_DATA":
+            return {...state, editFormData: null};
         default:
             return {...state};
     };
 };
 
 const RunState = props => {
-    const notificationContext = useContext(NotificationContext);
-    const {handleError, addAlert} = notificationContext;
+    const {handleError, addAlert} = useContext(NotificationContext);
 
     const initialState = {
         recentlyAdded: false,
         runs: null,
         predictionFunction: null,
+        submitFormVisibility: false,
+        submitFormData: {
+            minutes: 0
+        },
+        editFormVisibility: false,
+        editFormData: null,
+    };
+
+    const toggleSubmitForm = () => {
+        dispatch({type: "TOGGLE_SUBMISSION_FORM"});
+    };
+
+    const toggleEditForm = () => {
+        dispatch({type: "TOGGLE_EDIT_FORM"});
     };
 
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -40,17 +57,18 @@ const RunState = props => {
         currentToken = "Token " + currentToken;
 
         minutes = parseInt(minutes);
-        seconds = parseInt(seconds);
+        seconds = minutes * 60 + parseInt(seconds);
         distance = parseFloat(distance);
 
-        axios.post("http://localhost:8000/runs/", {minutes, seconds, distance, unix_date: dateRun}, {
+        axios.post("http://localhost:8000/runs/", {seconds, distance, unix_date: dateRun}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: currentToken,
             },
         }).then(response => {
-            dispatch({type: 'RECENTLY_ADDED_RUN'});
-            addAlert("Run added succesfully!", "Your run was submitted correctly", "success", "top-center");
+            getRuns();
+            toggleSubmitForm();
+            addAlert("Run added correctly!", "Your run was submitted correctly", "success", "top-center")
         }).catch(error => {
             handleError(error);
         });
@@ -78,18 +96,18 @@ const RunState = props => {
         });
     }
 
-    const getSpeedMinKM = (minutes, seconds, distance, decimal=false) => {
-        let minutes_per_km_raw = (minutes + (seconds / 60)) / distance;
-        if (decimal) {
-            return minutes_per_km_raw;    
+    const secondsToPace = (seconds, distance, raw=false) => {
+        let decimal_mins_per_unit = seconds / 60 / distance;
+        if (raw) {
+            return decimal_mins_per_unit;
         }
-        let full_minutes_per_km = Math.floor(minutes_per_km_raw);
-        let full_seconds_per_km = Math.round((minutes_per_km_raw - full_minutes_per_km) * 60)
-        return [full_minutes_per_km, full_seconds_per_km];
+        let full_minutes_pace = Math.floor(decimal_mins_per_unit);
+        let full_seconds_pace = Math.round((decimal_mins_per_unit - full_minutes_pace) * 60);
+        return [full_minutes_pace, full_seconds_pace];
     };
 
     const labelRun = (distance, step=3) => {
-        for (let i = 1; i < step * 11; i = i + step) {
+        for (let i = 1; i < 1000; i = i + step) {
             if (distance < i) {
                 return `${i - step}-${i} KM`;
             };
@@ -97,7 +115,7 @@ const RunState = props => {
     };
 
     const representTimedeltaInPrettyString = runDate => {
-        runDate = (new Date(runDate * 1000));
+        runDate = new Date(runDate * 1000);
         let timeAgo = (((new Date()).getTime()) - runDate.getTime()) / 1000 / 60;
         let hoursDecimal;
         let hours;
@@ -130,39 +148,53 @@ const RunState = props => {
         return timeAgo;
     };
 
-    const minutesSecondsToStringHMS = (minutesTransform, secondsTransform) => {
-        // Duration
-        let hoursDuration = 0;
-        if (minutesTransform >= 60) {
-            hoursDuration = Math.floor(minutesTransform / 60);
-        };
-        if (hoursDuration < 10) {
-            hoursDuration = "0" + hoursDuration;
-        };
-        if (secondsTransform < 10) {
-            secondsTransform = "0" + secondsTransform;
-        };
-        while (minutesTransform >= 60) {
-            minutesTransform = minutesTransform - 60;
-        };
-        if (minutesTransform < 10) {
-            minutesTransform = "0" + minutesTransform;
-        };
-        return [hoursDuration, minutesTransform, secondsTransform];
+    const secondsToStringHMS = seconds => {
+        let hms = secondsToHoursMinutesSeconds(seconds);
+        let formattedHMS = [];
+        hms.map(measure => {
+            if (measure < 10) {
+                measure = "0" + measure;
+            };
+            formattedHMS.push(measure);
+        });
+        return formattedHMS;
     };
 
-    const secondsToRawHMS = seconds => {
-        seconds = Number(seconds);
-        let h = Math.floor(seconds / 3600);
-        let m = Math.floor(seconds % 3600 / 60);
-        let s = Math.floor(seconds % 3600 % 60);
+    const secondsToHoursMinutesSeconds = secondsHMS => {
+        let hoursHMS = Math.floor(secondsHMS / 3600);
+        let minutesHMS = Math.floor(secondsHMS % 3600 / 60);
+        secondsHMS = Math.floor(secondsHMS % 3600 % 60);
 
-        return [h, m, s]; 
+        return [hoursHMS, minutesHMS, secondsHMS]; 
     };
 
-    const editRun = (minutes, seconds, distance, date, id) => {
+    const secondsToMinutesSeconds = seconds => {
+        let minutes = 0;
+        while (seconds >= 60) {
+            minutes += 1;
+            seconds -= 60;
+        };
+        return [minutes, seconds];
+    };
+
+    const secondsToHoursMinutes = seconds => {
+        let minutes = 0, hours = 0;
+        while (seconds >= 3600) {
+            hours += 1;
+            seconds -= 3600;
+        };
+
+        while (seconds >= 60) {
+            minutes += 1;
+            seconds -= 60;
+        };
+
+        return [hours, minutes];
+    };
+
+    const editRun = (seconds, distance, date, id) => {
         let currentToken = localStorage.getItem("authentication-token");
-        axios.put(`http://localhost:8000/runs/${id}/`, {minutes, seconds, distance, unix_date: date}, {
+        axios.put(`http://localhost:8000/runs/${id}/`, {seconds, distance, unix_date: date}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Token " + currentToken,
@@ -170,6 +202,8 @@ const RunState = props => {
         }).then(response => {
             getRuns();
             addAlert("Succesfully edited run!", "Your run was changed correctly", "success", "top-center");
+            toggleEditForm();
+            cleanEditFormData();
         }).catch(error => {
             handleError(error);
         });
@@ -189,22 +223,40 @@ const RunState = props => {
         });
     };
 
+    const populateEditFormData = (minutes, seconds, distance, dateRun, id) => {
+        dispatch({type: "POPULATE_EDIT_FORM_DATA", payload: {minutes, seconds, distance, dateRun, id}});
+    };
+
+    const cleanEditFormData = () => {
+        dispatch({type: "CLEAN_EDIT_FORM_DATA"});
+    };
+
     return (
         <RunsContext.Provider value={{
             recentlyAdded: state.recentlyAdded,
             runs: state.runs,
             predictionFunction: state.predictionFunction,
+            submitFormVisibility: state.submitFormVisibility,
+            submitFormData: state.submitFormData,
+            editFormVisibility: state.editFormVisibility,
+            editFormData: state.editFormData,
             addRun,
             removeRecentlyAdded,
             getRuns,
             deleteRun,
-            getSpeedMinKM,
+            secondsToPace,
             labelRun,
             representTimedeltaInPrettyString,
-            minutesSecondsToStringHMS,
-            secondsToRawHMS,
+            secondsToStringHMS,
+            secondsToHoursMinutesSeconds,
             editRun,
             getPredictionFunction,
+            secondsToMinutesSeconds,
+            secondsToHoursMinutes,
+            toggleSubmitForm,
+            toggleEditForm,
+            populateEditFormData,
+            cleanEditFormData,
         }}>
             {props.children}
         </RunsContext.Provider>

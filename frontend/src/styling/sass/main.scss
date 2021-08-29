@@ -271,6 +271,12 @@ div.notification-container--top-center {
       .username-field,
       .password-field,
       .email-field {
+        display: grid;
+        grid-template-rows: repeat(5, 1fr);
+        small {
+          font-size: 1rem;
+          grid-row: span 2;
+        }
         .password-visibility {
           margin-top: 5px;
           cursor: pointer;
@@ -284,12 +290,6 @@ div.notification-container--top-center {
           &:focus {
             outline: none;
           }
-        }
-        display: grid;
-        grid-template-rows: repeat(5, 1fr);
-        small {
-          font-size: 1rem;
-          grid-row: span 2;
         }
       }
 
@@ -316,10 +316,10 @@ div.notification-container--top-center {
       .username-field {
         grid-template-rows: repeat(4, 1fr);
         input {
-          grid-row: span 3 !important;
+          grid-row: span 3;
         }
         small {
-          grid-row: span 1 !important;
+          grid-row: span 1;
         }
       }
 
@@ -340,10 +340,27 @@ div.notification-container--top-center {
         background-color: #3069c0;
       }
     }
-    .form-fields-register {
-      grid-template-rows: repeat(5, 1fr);
-    }
     .form-fields-add-run {
+      grid-template-rows: repeat(2, 1fr);
+    }
+  }
+}
+
+.register-div {
+  @extend .login-div;
+  .form-register {
+    @extend .form-login;
+  }
+  .form-fields-register {
+    grid-template-rows: repeat(5, 1fr);
+  }
+}
+
+.reset-password {
+  @extend .login-div;
+  .form-reset {
+    @extend .form-login;
+    .form-fields {
       grid-template-rows: repeat(2, 1fr);
     }
   }
@@ -476,7 +493,7 @@ div.notification-container--top-center {
 
 .run-info-page {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   width: 100%;
   padding: 0px;
   .recent-runs-div {
@@ -486,6 +503,7 @@ div.notification-container--top-center {
       width: 95%;
       margin: 0px;
       margin: auto;
+      margin-bottom: 30px;
     }
   }
   .login-div {
@@ -705,14 +723,6 @@ div.notification-container--top-center {
   border-bottom-right-radius: 0px;
 }
 
-.reset-password {
-  form {
-    .form-fields {
-      grid-template-rows: repeat(2, 1fr) !important;
-    }
-  }
-}
-
 // Run submission
 .hms-input {
   display: grid;
@@ -739,7 +749,7 @@ div.notification-container--top-center {
 
 .add-run-div {
   .form-login {
-    border: 2px solid #3069c0;
+    border: 0px solid #3069c0;
     background-color: white;
     h3 {
       color: #3069c0;
@@ -778,7 +788,7 @@ div.notification-container--top-center {
   }
   .edit-form {
     background-color: #FFD697;
-    border: 2px solid #FFB84B;
+    // border: 2px solid #FFB84B;
     // border: 1px solid black;
     h3 {
       color: black;
@@ -865,4 +875,48 @@ div.notification-container--top-center {
       }
     }
   }
+}
+
+.goals-predictions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.outer {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+}
+
+.add-new-run-btn {
+  position: fixed !important;
+  bottom: 5%;
+  right: 5%;
+}
+
+.my-node-enter {
+  opacity: 0;
+}
+.my-node-enter-active {
+  opacity: 1;
+}
+.my-node-exit {
+  opacity: 1;
+}
+.my-node-exit-active {
+  opacity: 0;
 }

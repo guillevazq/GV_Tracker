@@ -9,6 +9,9 @@ import RecentRuns from './gadgets/RecentRuns';
 import DaysRanMonth from './gadgets/DaysRanMonth';
 import SyncedPaceDistance from './graphs/SyncedPaceDistance';
 
+// UI
+import Loader from '../ui/Loader';
+
 // Gadgets
 import SetAccumulativeStatsGadget from './gadgets/SetAccumulativeStatsGadget';
 
@@ -17,7 +20,6 @@ import {AuthenticationContext} from "../context/AuthenticationContext";
 import {RunsContext} from '../context/RunsContext';
 
 const EmpiricalDataDashboard = props => {
-
     const authenticationContext = useContext(AuthenticationContext);
     const {isLogged} = authenticationContext;
 
@@ -25,10 +27,15 @@ const EmpiricalDataDashboard = props => {
     const {recentlyAdded, removeRecentlyAdded, getRuns, runs} = runsContext;
 
     useEffect(() => {
+        getRuns();
+    }, []);
+
+    useEffect(() => {
         if (isLogged === false) {
             props.history.push("/login");
         }
-    }, [isLogged, props.history]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLogged]);
 
     useEffect(() => {
         if (recentlyAdded) {
@@ -36,39 +43,38 @@ const EmpiricalDataDashboard = props => {
         };
     }, [recentlyAdded]);
 
-    useEffect(() => {
-        getRuns();
-    }, []);
 
     return (
         <>
-        {isLogged && runs && (
+        {(isLogged && runs) ? (
             <div className="empirical_data_dashboard">
                 <div className="top_gadgets">
                     <SetAccumulativeStatsGadget runs={runs} />
                 </div>
                 <div className="top_charts">
                     <div className="line_track_history">
-                        <LineTrackHistory />
+                        <LineTrackHistory runs={runs} />
                     </div>
                     <div className="donut_run_distance">
-                        <DonutRunDistance />
+                        <DonutRunDistance runs={runs} />
                     </div>
                 </div>
                 <div className="mid_charts">
                     <div className="distance_time_bar">
-                        <DistanceTimeBar />
+                        <DistanceTimeBar runs={runs} />
                     </div>
-                    <RecentRuns cap={4} title="Latest runs" />
+                    <RecentRuns cap={4} title="Latest runs" runs={runs} />
                 </div>
                 <div className="bottom_charts">
-                    <SpeedDistanceScatter />
-                    <DaysRanMonth />
+                    <SpeedDistanceScatter runs={runs} />
+                    <DaysRanMonth runs={runs} />
                 </div>
                 <div className="last_charts">
-                    <SyncedPaceDistance />
+                    <SyncedPaceDistance runs={runs} />
                 </div>
             </div>
+        ) : (
+            <Loader />
         )}
         </>
    );

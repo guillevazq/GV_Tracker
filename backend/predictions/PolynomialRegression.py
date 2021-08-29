@@ -6,7 +6,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
 
 # Create usable function
-def get_polynomial_function(pace_each_day, specific_days, degree=2, model_to_use="ridge", alpha=12):
+def get_polynomial_function(pace_each_day, specific_days, degree=1, model_to_use="ridge", alpha=0):
 
   # Transform data
   x = pd.DataFrame(specific_days)

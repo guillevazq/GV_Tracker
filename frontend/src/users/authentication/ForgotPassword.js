@@ -3,13 +3,11 @@ import React, { useState, useContext, useEffect } from 'react';
 // Context
 import { AuthenticationContext } from '../../context/AuthenticationContext';
 
-const ForgotPassword = props => {
+const ForgotPassword = () => {
 
-    // Instantiating the context
     const authenticationContext = useContext(AuthenticationContext);
     const {sendResetPasswordEmail} = authenticationContext;
 
-    // Controlled inputs
     const [email, setEmail] = useState("");
 
     const sendEmail = e => {
@@ -18,11 +16,11 @@ const ForgotPassword = props => {
     };
 
     return (
-        <div className="login-div reset-password">
-            <form className="form-login" action="POST" onSubmit={e => sendEmail(e)}>
+        <div className="reset-password">
+            <form className="form-reset" action="POST" onSubmit={e => sendEmail(e)}>
                 <h3>Reset Password</h3>
                 <div className="form-fields">
-                    <div className="username-field">
+                    <div className="email-field">
                         <small>Email</small>
                         <input required type="email" name="email" id="email" value={email} onChange={e => setEmail(e.target.value)} />
                     </div>

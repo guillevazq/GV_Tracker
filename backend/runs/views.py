@@ -40,7 +40,6 @@ class RunPrediction(APIView):
 
     def get(self, request, *args, **kwargs):
 
-        degree = 2
         step = 3
         days_range = 60
         days_prediction = 60
@@ -52,7 +51,7 @@ class RunPrediction(APIView):
         for run in runs:
             days_ago = math.floor((time() - run.unix_date) / 3600 / 24)
             if days_ago <= days_range:
-                minutes_per_km = (run.minutes + (run.seconds / 60)) / run.distance
+                minutes_per_km = run.seconds / 60 / run.distance
                 for range_ in [i for i in range(step + 1, 1000, step)]:
                     if run.distance <= range_:
                         current_range = range_

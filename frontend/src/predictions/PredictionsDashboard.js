@@ -1,10 +1,15 @@
 import React, {useEffect, useContext} from 'react';
+
+// Context
 import {RunsContext} from '../context/RunsContext';
 import {AuthenticationContext} from "../context/AuthenticationContext";
 
 // Graphs
 import PaceTimePredictions from './PaceTimePredictions';
 import WeeklyGoal from "./WeeklyGoal";
+
+// UI
+import Loader from "../ui/Loader";
 
 const PredictionsDashboard = props => {
 
@@ -15,22 +20,30 @@ const PredictionsDashboard = props => {
     const {runs, getRuns} = runsContext;
 
     useEffect(() => {
+        getRuns();
+    }, []);
+
+    useEffect(() => {
         if (isLogged === false) {
             props.history.push("/login");
         }
-    }, [isLogged, props.history]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLogged]);
 
-    useEffect(() => {
-        getRuns();
-    }, [])
 
     return (
-        <div className="predictions-dashboard">
-            <PaceTimePredictions />
-            <div className="goals">
-                <WeeklyGoal />
-            </div>
-        </div>
+        <>
+            {(isLogged && runs) ? (
+                <div className="predictions-dashboard">
+                    <PaceTimePredictions runs={runs} />
+                    <div className="goals">
+                        <WeeklyGoal runs={runs} />
+                    </div>
+                </div>
+            ): (
+                <Loader />
+            )}
+        </>
     );
 };
 
