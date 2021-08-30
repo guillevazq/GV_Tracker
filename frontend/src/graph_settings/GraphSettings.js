@@ -8,6 +8,9 @@ export let distanceTimeBarSeries = [{
 export let distanceTimeBarOptions = {
     colors: colors,
     chart: {
+        zoom: {
+            enabled: false
+        },
         type: 'bar',
         height: 350,
         toolbar: {
@@ -29,6 +32,9 @@ export let distanceTimeBarOptions = {
     xaxis: {
         categories:  [],
     },
+    tooltip: {
+        intersect: false,
+    }
 };
 
 
@@ -78,6 +84,9 @@ export let lineTrackHistoryLegend = {
     onItemHover: {
         highlightDataSeries: true
     },
+    tooltip: {
+        intersect: false,
+    }
 };
 
 export let lineTrackHistoryOptions = {
@@ -105,6 +114,9 @@ export let lineTrackHistoryOptions = {
         }
     },
     chart: {
+        zoom: {
+            enabled: false
+        },
         height: 350,
         type: '',
         toolbar: {
@@ -133,6 +145,9 @@ export let lineTrackHistoryOptions = {
 export let donutRunDistanceOptions = {
     colors: colors,
     chart: {
+        zoom: {
+            enabled: false
+        },
         type: "donut",
     },
     dataLabels: {
@@ -159,6 +174,9 @@ export let donutRunDistanceOptions = {
 
 export let SpeedDistanceScatterOptions = {
     chart: {
+        zoom: {
+            enabled: false
+        },
         height: 350,
         type: 'scatter',
         toolbar: {
@@ -193,6 +211,9 @@ export let daysRanMonthOptions = {
         show: true,
     },
     chart: {
+        zoom: {
+            enabled: false
+        },
         type: 'heatmap',
         toolbar: {
             show: false,
@@ -223,6 +244,9 @@ export let daysRanMonthOptions = {
    
 export let syncedOptionsArea = {
     chart: {
+        zoom: {
+            enabled: false
+        },
         toolbar: {
             show: false,
         },
@@ -243,6 +267,9 @@ export let syncedOptionsArea = {
 
 export let syncedOptionsArea2 = {
     chart: {
+        zoom: {
+            enabled: false
+        },
         toolbar: {
             show: false,
         },
@@ -335,6 +362,9 @@ export let paceTimePredictionsOptions = {
         }
     },
     chart: {
+        zoom: {
+            enabled: false
+        },
         height: 350,
         type: 'line',
         toolbar: {
@@ -375,6 +405,9 @@ export let paceTimePredictionsOptions = {
 export let weeklyGoalOptions1 = {
     options: {
         chart: {
+            zoom: {
+                enabled: false
+            },
             height: 350,
             type: 'radialBar',
         },
@@ -393,6 +426,9 @@ export let weeklyGoalOptions1 = {
 export let weeklyGoalOptions2 = {
     options: {
         chart: {
+            zoom: {
+                enabled: false
+            },
             height: 350,
             type: 'radialBar',
         },

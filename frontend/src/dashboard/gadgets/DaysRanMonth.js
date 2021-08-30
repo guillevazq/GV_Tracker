@@ -6,6 +6,9 @@ import {daysRanMonthOptions} from '../../graph_settings/GraphSettings';
 const DaysRanMonth = ({runs}) => {
     let total = 100, step = 10, series = [], solidity = 0.8153345;
 
+    let today = new Date();
+    today.setUTCHours(23,59,59,999);
+
     for (let i = 0; i < total; i += step) {
         let nameOfSeries = i + "-" + (i + step);
         series.push({name: nameOfSeries, data: []});
@@ -20,13 +23,13 @@ const DaysRanMonth = ({runs}) => {
 
     let daysAgo, position, currentSet, currentSetPosition;
     runs.forEach(run => {
-        daysAgo = Math.floor((new Date().getTime() / 1000 - run.unix_date) / 3600 / 24);
+        daysAgo = Math.floor((today.getTime() / 1000 - run.unix_date) / 3600 / 24);
         position = total - daysAgo - 1;
         if (position >= 0 && position <= 99) {
             currentSet = Math.floor(position / 10);
             currentSetPosition = (position - (currentSet * 10));
-            series[currentSet]["data"][currentSetPosition]["y"] = run.distance;
-        } 
+            series[currentSet]["data"][currentSetPosition]["y"] += run.distance;
+        };
     });
 
     series.reverse();
@@ -34,7 +37,7 @@ const DaysRanMonth = ({runs}) => {
         if (value === solidity) {
             return "0KM";
         };
-        return `${value}KM`;
+        return `${value.toFixed(2)} KM`;
     };
 
     return (
