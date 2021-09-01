@@ -1,43 +1,41 @@
 import {colors} from "../dashboard/ColorPalette";
 
-export let distanceTimeBarSeries = [{
-    name: "Total KM",
-    data: [],
-}];
+export let distanceTimeBarSeries = [];
 
 export let distanceTimeBarOptions = {
-    colors: colors,
     chart: {
-        zoom: {
-            enabled: false
-        },
         type: 'bar',
-        height: 350,
-        toolbar: {
-            show: false,
-        }
+        height: 430
     },
     plotOptions: {
         bar: {
-            borderRadius: 4,
-            horizontal: false,
+            horizontal: true,
+            dataLabels: {
+                position: 'top',
+            },
         }
     },
     dataLabels: {
-        enabled: false,
-        formatter: function (value) {
-            return value + " KM";
+        enabled: true,
+        offsetX: -6,
+        style: {
+            fontSize: '12px',
+            colors: ['#fff']
         },
     },
-    xaxis: {
-        categories:  [],
+    stroke: {
+        show: true,
+        width: 1,
+        colors: ['#fff']
     },
     tooltip: {
-        intersect: false,
-    }
+        shared: true,
+        intersect: false
+    },
+    xaxis: {
+        categories: [],
+    },
 };
-
-
 
 export let lineTrackHistoryLegend = {
     show: true,
@@ -457,6 +455,11 @@ export let treeMapDistancesOptions = {
     title: {
         text: 'Distances',
         align: 'center'
+    },
+    yaxis: {
+        labels: {
+            formatter: value => parseFloat(value).toFixed(2)
+        },
     },
     colors: colors,
     plotOptions: {

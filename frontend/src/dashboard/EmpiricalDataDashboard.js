@@ -53,21 +53,43 @@ const EmpiricalDataDashboard = props => {
                 </div>
                 <div className="top_charts">
                     <div className="line_track_history">
-                        <LineTrackHistory runs={personalRuns} />
+                        <LineTrackHistory
+                            personalRuns={personalRuns}
+                            followingRuns={followingRuns}
+                            followingRunsVisibility={followingRunsVisibility} />
                     </div>
                     <div className="donut_run_distance">
-                        <DonutRunDistance runs={personalRuns} />
+                        <DonutRunDistance
+                            personalRuns={personalRuns}
+                            followingRuns={followingRuns}
+                            followingRunsVisibility={followingRunsVisibility} />
                     </div>
                 </div>
                 <div className="mid_charts">
                     <div className="distance_time_bar">
-                        <DistanceTimeBar runs={personalRuns} />
+                        <DistanceTimeBar
+                            personalRuns={personalRuns}
+                            followingRuns={followingRuns}
+                            followingRunsVisibility={followingRunsVisibility} />
                     </div>
-                    <RecentRuns cap={4} title="Latest runs" runs={personalRuns} editCapability={false} />
+                    <RecentRuns
+                        cap={4}
+                        title="Latest runs"
+                        runs={personalRuns}
+                        editCapability={false}
+                        personalRuns={personalRuns}
+                        followingRuns={followingRuns}
+                        followingRunsVisibility={followingRunsVisibility} />
                 </div>
                 <div className="bottom_charts">
-                    <SpeedDistanceScatter runs={personalRuns} />
-                    <TreeMapDistances personalRuns={personalRuns} followingRuns={followingRuns} followingRunsVisibility={followingRunsVisibility} />
+                    <SpeedDistanceScatter
+                        personalRuns={personalRuns}
+                        followingRuns={followingRuns}
+                        followingRunsVisibility={followingRunsVisibility} />
+                    <TreeMapDistances
+                        personalRuns={personalRuns}
+                        followingRuns={followingRuns}
+                        followingRunsVisibility={followingRunsVisibility} />
                 </div>
                 <h3>Personal</h3>
                 <div className="last_charts">

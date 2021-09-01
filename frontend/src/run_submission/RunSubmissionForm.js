@@ -7,7 +7,7 @@ import {RunsContext} from '../context/RunsContext';
 import Button from '@material-ui/core/Button';
 
 const RunSubmissionForm = () => {
-    const {addRun, toggleSubmitForm} = useContext(RunsContext);
+    const {addRun, toggleSubmitForm, submitFormVisibility} = useContext(RunsContext);
 
     let now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -19,9 +19,23 @@ const RunSubmissionForm = () => {
     const [distance, setDistance] = useState(0);
     const [dateRun, setDateRun] = useState(today);
 
+    const resetAllFields = () => {
+        setHours(0);
+        setMinutes(0);
+        setSeconds(0);
+        setDistance(0);
+        setDateRun(today);
+    };
+
     useEffect(() => {
         setDateRun(today);
     }, []);
+
+    useEffect(() => {
+        if (!submitFormVisibility) {
+            setTimeout(() => {resetAllFields()}, 200);
+        };
+    }, [submitFormVisibility]);
 
     const submitRun = e => {
         e.preventDefault();
@@ -36,13 +50,7 @@ const RunSubmissionForm = () => {
 
     const cancelSubmission = () => {
         toggleSubmitForm();
-        setTimeout(() => {
-            setHours(0);
-            setMinutes(0);
-            setSeconds(0);
-            setDistance(0);
-            setDateRun(today);
-        }, 200)
+        setTimeout(() => {resetAllFields()}, 200);
     };
 
     return (

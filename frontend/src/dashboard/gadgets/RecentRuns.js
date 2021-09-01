@@ -6,11 +6,18 @@ import SingleRun from './SingleRun';
 // UI
 import {getColor} from "../ColorPalette";
 
-const RecentRuns = ({runs, title, cap, editCapability=false, toggleEditForm=false}) => {
+const RecentRuns = ({personalRuns, followingRuns, followingRunsVisibility, title, cap, editCapability=false, toggleEditForm=false}) => {
+    let runs;
+    if (followingRunsVisibility) {
+        runs = followingRuns;
+    } else {
+        runs = personalRuns;
+    };
     return (
         <div className="recent-runs-box">
             <h4>{title}</h4>
             <div className="title-runs">
+                {cap && <p>Runner</p>}
                 <p>Ran</p>
                 <p>Pace</p>
                 <p>Distance</p>
@@ -42,6 +49,8 @@ const RecentRuns = ({runs, title, cap, editCapability=false, toggleEditForm=fals
                                 currentDate={new Date().getTime()}
                                 editCapability={editCapability}
                                 toggleEditForm={toggleEditForm}
+                                authorUsername={run.username}
+                                cap={cap}
                             />
                         </>
                     ))}

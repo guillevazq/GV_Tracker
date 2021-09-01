@@ -38,9 +38,6 @@ const RunState = props => {
         followingRuns: null,
         predictionFunction: null,
         submitFormVisibility: false,
-        submitFormData: {
-            minutes: 0
-        },
         editFormVisibility: false,
         editFormData: null,
         followingRunsVisibility: true,
@@ -68,7 +65,7 @@ const RunState = props => {
         seconds = minutes * 60 + parseInt(seconds);
         distance = parseFloat(distance);
 
-        axios.post("http://localhost:8000/runs/", {seconds, distance, unix_date: dateRun}, {
+        axios.post("http://localhost:8000/runs/get/true/", {seconds, distance, unix_date: dateRun}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: currentToken,
@@ -90,7 +87,7 @@ const RunState = props => {
     const getFollowingRuns = () => {
         let currentToken = localStorage.getItem("authentication-token");
         currentToken = "Token " + currentToken;
-        axios.get("http://localhost:8000/runs/true/", {headers: {Authorization: currentToken}}).then(response => {
+        axios.get("http://localhost:8000/runs/get/true/", {headers: {Authorization: currentToken}}).then(response => {
             dispatch({type: 'SET_FOLLOWING_RUNS', payload: {runs: response.data}});
         }).catch(error => {
             console.log(error);
@@ -101,7 +98,7 @@ const RunState = props => {
         let currentToken = localStorage.getItem("authentication-token");
         currentToken = "Token " + currentToken;
 
-        axios.get("http://localhost:8000/runs/false/", {headers: {Authorization: currentToken}}).then(response => {
+        axios.get("http://localhost:8000/runs/get/false/", {headers: {Authorization: currentToken}}).then(response => {
             dispatch({type: 'SET_PERSONAL_RUNS', payload: {runs: response.data}});
         }).catch(error => {
             console.log(error);
@@ -270,7 +267,6 @@ const RunState = props => {
             predictionFunction: state.predictionFunction,
             followingRunsVisibility: state.followingRunsVisibility,
             submitFormVisibility: state.submitFormVisibility,
-            submitFormData: state.submitFormData,
             editFormVisibility: state.editFormVisibility,
             editFormData: state.editFormData,
             addRun,

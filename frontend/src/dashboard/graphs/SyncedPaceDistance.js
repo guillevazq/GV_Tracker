@@ -10,9 +10,15 @@ const SyncedPaceDistance = ({runs}) => {
     let minutes_per_unit;
     runs.map((run, index) => {
         minutes_per_unit = (run.seconds / 60 / run.distance).toFixed(2);
+        let cap;
+        if (runs.length <= 10) {
+            cap = 10;
+        } else {
+            cap = runs.length;
+        };
         if (index <= 10) {
-            seriesArea[0].data.push([index, minutes_per_unit]);
-            seriesArea2[0].data.push([index, run.distance]);
+            seriesArea[0].data.push([cap - index, minutes_per_unit]);
+            seriesArea2[0].data.push([cap - index, run.distance]);
         };
     });
 

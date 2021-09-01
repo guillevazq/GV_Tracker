@@ -1,7 +1,7 @@
 from time import time
 import math
 
-from rest_framework import generics, serializers
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -9,7 +9,6 @@ from rest_framework.views import APIView
 
 from .serializers import RunSerializer
 from users.serializers import FollowsSerializer
-from .permissions import IsAuthor
 from .models import Run
 from users.models import Follows
 
@@ -43,8 +42,9 @@ class RunList(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
 class RunDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated, IsAuthor]
-    queryset = Run.objects.all()
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        return Run.objects.filter(runner=self.request.user)
     serializer_class = RunSerializer
     lookup_field = "pk"
 

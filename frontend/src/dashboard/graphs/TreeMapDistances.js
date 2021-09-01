@@ -17,7 +17,6 @@ const TreeMapDistances = ({personalRuns, followingRuns, followingRunsVisibility}
     };
 
     total_runs.map(run => {
-        console.log(run);
         if (runs_dict[run.username]) {
             runs_dict[run.username] += run.distance;
         } else {
@@ -29,8 +28,6 @@ const TreeMapDistances = ({personalRuns, followingRuns, followingRunsVisibility}
     for (const [username, distance_ran] of Object.entries(runs_dict)) {
         series[0].data.push({x: username, y: distance_ran});
     };
-
-    console.log(series);
 
     return (
         <div>

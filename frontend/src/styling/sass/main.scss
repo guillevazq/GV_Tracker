@@ -874,8 +874,12 @@ div.notification-container--top-center {
 
 .mid_charts {
   .recent-runs-box {
+    .title-runs {
+      grid-template-columns: repeat(5, 1fr);
+    }
     .actual-recent-runs {
       .single-run {
+        grid-template-columns: repeat(5, 1fr);
         .icons {
           grid-template-columns: repeat(1, 1fr);
           .delete-icon {

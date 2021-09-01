@@ -1,12 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {RunsContext} from "../../context/RunsContext";
+import {AuthenticationContext} from '../../context/AuthenticationContext';
 
-const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, editCapability, toggleEditForm}) => {
+const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, editCapability, toggleEditForm, authorUsername, cap=false}) => {
     const [cursorIcons, setCursorIcons] = useState("pointer");
     const [iconStyleHover, setIconStyleHover] = useState("");
     const [backgroundRun, setBackgroundRun] = useState("");
 
     let runsContext = useContext(RunsContext);
+    let authenticationContext = useContext(AuthenticationContext);
+
+    const {username} = authenticationContext;
 
     const {
         deleteRun,
@@ -73,11 +77,20 @@ const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, edi
                     )}
                     <div className="delete-icon">
                         <i className="far fa-trash-alt"></i>
-                    </div>
+                    </div> 
                 </div>
             </div>
-        ): (
+        ) : (
             <div style={{backgroundColor: backgroundRun}} data-key={dataKey} className="single-run">
+                {cap && (
+                    <div className="important-stat">
+                        {authorUsername === username ? (
+                            <p>You</p>
+                        ) : (
+                            <p>{authorUsername}</p>
+                        )}
+                    </div>
+                )}
                 <div className="important-stat days-ago">
                     <p>{timeAgo}</p>
                 </div>
@@ -96,9 +109,11 @@ const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, edi
                             <i style={{cursor: cursorIcons}} onClick={setRunInEditMode} className="far fa-edit"></i>
                         </div>
                     )}
-                    <div className="delete-icon">
-                        <i style={{cursor: cursorIcons}} onClick={deleteItem} className="far fa-trash-alt"></i>
-                    </div>
+                    {authorUsername === username && !cap && (
+                        <div className="delete-icon">
+                            <i style={{cursor: cursorIcons}} onClick={deleteItem} className="far fa-trash-alt"></i>
+                        </div>
+                    )}
                 </div>
             </div>
         )}

@@ -5,23 +5,37 @@ import {donutRunDistanceOptions} from "../../graph_settings/GraphSettings";
 
 import {RunsContext} from "../../context/RunsContext";
 
-const DonutRunDistance = ({runs}) => {
+const DonutRunDistance = ({personalRuns, followingRuns, followingRunsVisibility}) => {
     const {labelRun} = useContext(RunsContext);
 
     let allRanges = {}, runRangeNames = [], series = [];
 
+    let runs;
+    if (followingRunsVisibility) {
+        runs = followingRuns;
+    } else {
+        runs = personalRuns;
+    };
+
     runs.forEach(run => {
         let currentLabel = labelRun(run.distance);
-        if (allRanges[currentLabel]) {
-            allRanges[currentLabel] += 1;
+        if (allRanges[run.username]) {
+            if (allRanges[run.username][currentLabel]) {
+                allRanges[run.username][currentLabel] += 1;
+            } else {
+                allRanges[run.username][currentLabel] = 1;
+            };
         } else {
-            allRanges[currentLabel] = 1;
-        }
+            allRanges[run.username] = {};
+            allRanges[run.username][currentLabel] = 1;
+        };
     });
 
-    for (let [runRangeName, runCount] of Object.entries(allRanges)) {
-        series.push(runCount);
-        runRangeNames.push(runRangeName);
+    for (let [username, data] of Object.entries(allRanges)) {
+        for (let [runRangeName, runCount] of Object.entries(data)) {
+            series.push(runCount);
+            runRangeNames.push(`${runRangeName} - ${username}`);
+        };
     };
 
     donutRunDistanceOptions.labels = runRangeNames;

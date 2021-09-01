@@ -44,7 +44,7 @@ const RunningHistory = props => {
         {(personalRuns && isLogged) ? (
             <div className="run-info-page">
                 <div className='recent-runs-div'>
-                    <RecentRuns editCapability={true} runs={personalRuns} title={"All Runs"} toggleEditForm={toggleEditForm}/>
+                    <RecentRuns followingRunsVisibility={false} editCapability={true} personalRuns={personalRuns} title={"All Runs"} toggleEditForm={toggleEditForm}/>
                 </div>
                 <Backdrop className={classes.backdrop} open={editFormVisibility}>
                     {editFormData && (

@@ -28,6 +28,9 @@ const DaysRanMonth = ({runs}) => {
         if (position >= 0 && position <= 99) {
             currentSet = Math.floor(position / 10);
             currentSetPosition = (position - (currentSet * 10));
+            if (series[currentSet]["data"][currentSetPosition]["y"] === solidity) {
+                series[currentSet]["data"][currentSetPosition]["y"] = 0;
+            };
             series[currentSet]["data"][currentSetPosition]["y"] += run.distance;
         };
     });
