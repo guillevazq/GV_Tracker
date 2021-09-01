@@ -16,7 +16,7 @@ const SetAccumulativeStatsGadget = ({runs}) => {
         secondsToHoursMinutes
     } = runsContext;
 
-    let speedArr = [], totalDistance = 0, totalTime = 0, totalSpeed = 0, speed;
+    let speedArr = [], totalDistance = 0, totalTime = 0, totalSpeed = 0, speed = 0;
 
     runs.forEach(run => {
         // Speed in seconds/unit
@@ -30,8 +30,12 @@ const SetAccumulativeStatsGadget = ({runs}) => {
         speedArr.push(speed);
     });
 
-
     let [totalHoursRan, totalMinutesRan] = secondsToHoursMinutes(totalTime);
+
+    if (runs.length === 0) {
+        speedArr = [0];
+    };
+
     let [averageSpeedMinutes, averageSpeedSeconds] = secondsToMinutesSeconds(totalSpeed / speedArr.length);
     let [maxSpeedMinutes, maxSpeedSeconds] = secondsToMinutesSeconds(Math.min(...speedArr));
 

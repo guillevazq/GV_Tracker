@@ -6,8 +6,10 @@ export const RunsContext = createContext();
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case "SET_RUNS":
-            return {...state, runs: action.payload.runs};
+        case "SET_PERSONAL_RUNS":
+            return {...state, personalRuns: action.payload.runs};
+        case "SET_FOLLOWING_RUNS":
+            return {...state, followingRuns: action.payload.runs};
         case "SET_FUNCTION":
             return {...state, predictionFunction: action.payload.predictionFunction};
         case "TOGGLE_SUBMISSION_FORM":
@@ -18,6 +20,10 @@ const reducer = (state, action) => {
             return {...state, editFormData: {...action.payload}};
         case "CLEAN_EDIT_FORM_DATA":
             return {...state, editFormData: null};
+        case "SEE_FOLLOWING_RUNS":
+            return {...state, followingRunsVisibility: true};
+        case "UNSEE_FOLLOWING_RUNS":
+            return {...state, followingRunsVisibility: false};
         default:
             return {...state};
     };
@@ -28,7 +34,8 @@ const RunState = props => {
 
     const initialState = {
         recentlyAdded: false,
-        runs: null,
+        personalRuns: null,
+        followingRuns: null,
         predictionFunction: null,
         submitFormVisibility: false,
         submitFormData: {
@@ -36,6 +43,7 @@ const RunState = props => {
         },
         editFormVisibility: false,
         editFormData: null,
+        followingRunsVisibility: true,
     };
 
     const toggleSubmitForm = () => {
@@ -75,11 +83,26 @@ const RunState = props => {
     };
 
     const getRuns = () => {
+        getPersonalRuns();
+        getFollowingRuns();
+    };
+
+    const getFollowingRuns = () => {
+        let currentToken = localStorage.getItem("authentication-token");
+        currentToken = "Token " + currentToken;
+        axios.get("http://localhost:8000/runs/true/", {headers: {Authorization: currentToken}}).then(response => {
+            dispatch({type: 'SET_FOLLOWING_RUNS', payload: {runs: response.data}});
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+    const getPersonalRuns = () => {
         let currentToken = localStorage.getItem("authentication-token");
         currentToken = "Token " + currentToken;
 
-        axios.get("http://localhost:8000/runs/", {headers: {Authorization: currentToken}}).then(response => {
-            dispatch({type: 'SET_RUNS', payload: {runs: response.data}});
+        axios.get("http://localhost:8000/runs/false/", {headers: {Authorization: currentToken}}).then(response => {
+            dispatch({type: 'SET_PERSONAL_RUNS', payload: {runs: response.data}});
         }).catch(error => {
             console.log(error);
         });
@@ -231,11 +254,21 @@ const RunState = props => {
         dispatch({type: "CLEAN_EDIT_FORM_DATA"});
     };
 
+    const seeFollowingRuns = () => {
+        dispatch({type: 'SEE_FOLLOWING_RUNS'});
+    };
+
+    const unseeFollowingRuns = () => {
+        dispatch({type: 'UNSEE_FOLLOWING_RUNS'});
+    };
+
     return (
         <RunsContext.Provider value={{
             recentlyAdded: state.recentlyAdded,
-            runs: state.runs,
+            personalRuns: state.personalRuns,
+            followingRuns: state.followingRuns,
             predictionFunction: state.predictionFunction,
+            followingRunsVisibility: state.followingRunsVisibility,
             submitFormVisibility: state.submitFormVisibility,
             submitFormData: state.submitFormData,
             editFormVisibility: state.editFormVisibility,
@@ -257,6 +290,8 @@ const RunState = props => {
             toggleEditForm,
             populateEditFormData,
             cleanEditFormData,
+            seeFollowingRuns,
+            unseeFollowingRuns
         }}>
             {props.children}
         </RunsContext.Provider>

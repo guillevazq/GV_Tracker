@@ -21,3 +21,6 @@ class Run(models.Model):
 
     def __str__(self):
         return f"{self.runner.username} - {self.distance} - {self.unix_date}"
+    
+    def get_username(self):
+        return self.runner.username

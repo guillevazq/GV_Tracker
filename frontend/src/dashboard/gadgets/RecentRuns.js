@@ -19,13 +19,13 @@ const RecentRuns = ({runs, title, cap, editCapability=false, toggleEditForm=fals
             {runs.length === 0 ? (
                 <div className="actual-recent-runs dummy-recent">
                     <hr />
-                    {[...Array(4).keys()].map((index) => {
+                    {[...Array(4).keys()].map((index) => (
                         <SingleRun
                         dataKey={index}
                         key={index}
                         dummy={true}
                         editCapability={editCapability} />
-                    })}
+                    ))}
                 </div>
             ) : ( <>
                 <div className="actual-recent-runs">

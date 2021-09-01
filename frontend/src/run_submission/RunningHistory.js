@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RunningHistory = props => {
     const {isLogged} = useContext(AuthenticationContext);
-    const {getRuns, runs, submitFormVisibility, toggleSubmitForm, editFormVisibility, toggleEditForm, editFormData} = useContext(RunsContext);
+    const {getRuns, personalRuns, submitFormVisibility, toggleSubmitForm, editFormVisibility, toggleEditForm, editFormData} = useContext(RunsContext);
     const classes = useStyles();
 
     useEffect(() => {
@@ -41,10 +41,10 @@ const RunningHistory = props => {
 
     return (
         <>
-        {(runs && isLogged) ? (
+        {(personalRuns && isLogged) ? (
             <div className="run-info-page">
                 <div className='recent-runs-div'>
-                    <RecentRuns editCapability={true} runs={runs} title={"All Runs"} toggleEditForm={toggleEditForm}/>
+                    <RecentRuns editCapability={true} runs={personalRuns} title={"All Runs"} toggleEditForm={toggleEditForm}/>
                 </div>
                 <Backdrop className={classes.backdrop} open={editFormVisibility}>
                     {editFormData && (

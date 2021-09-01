@@ -96,11 +96,21 @@ div.notification-container--top-center {
   .bottom_charts {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    .heatmap-runs {
+    :first-child {
+      grid-column: span 4;
+    }
+    :last-child {
       grid-column: span 2;
     }
-    .speed-distance-scatter {
-      grid-column: span 4;
+  }
+  .last_charts {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    :first-child {
+      grid-column: span 3;
+    }
+    :last-child {
+      grid-column: span 7;
     }
   }
 }

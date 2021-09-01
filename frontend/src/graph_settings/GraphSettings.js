@@ -442,3 +442,27 @@ export let weeklyGoalOptions2 = {
         labels: ['Cricket'],
     }
 };
+
+export let treeMapDistancesOptions = {
+    legend: {
+        show: false
+    },
+    chart: {
+        height: 350,
+        type: 'treemap',
+        toolbar: {
+            show: false,
+        },
+    },
+    title: {
+        text: 'Distances',
+        align: 'center'
+    },
+    colors: colors,
+    plotOptions: {
+        treemap: {
+            distributed: true,
+            enableShades: false,
+        },
+    },
+};

@@ -8,6 +8,7 @@ import SpeedDistanceScatter from "./graphs/SpeedDistanceScatter";
 import RecentRuns from './gadgets/RecentRuns';
 import DaysRanMonth from './gadgets/DaysRanMonth';
 import SyncedPaceDistance from './graphs/SyncedPaceDistance';
+import TreeMapDistances from './graphs/TreeMapDistances';
 
 // UI
 import Loader from '../ui/Loader';
@@ -24,7 +25,7 @@ const EmpiricalDataDashboard = props => {
     const {isLogged} = authenticationContext;
 
     const runsContext = useContext(RunsContext);
-    const {recentlyAdded, removeRecentlyAdded, getRuns, runs} = runsContext;
+    const {recentlyAdded, removeRecentlyAdded, getRuns, personalRuns, followingRuns, followingRunsVisibility, seeFollowingRuns, unseeFollowingRuns} = runsContext;
 
     useEffect(() => {
         getRuns();
@@ -43,34 +44,35 @@ const EmpiricalDataDashboard = props => {
         };
     }, [recentlyAdded]);
 
-
     return (
         <>
-        {(isLogged && runs) ? (
+        {(isLogged && personalRuns && followingRuns) ? (
             <div className="empirical_data_dashboard">
                 <div className="top_gadgets">
-                    <SetAccumulativeStatsGadget runs={runs} />
+                    <SetAccumulativeStatsGadget runs={personalRuns} />
                 </div>
                 <div className="top_charts">
                     <div className="line_track_history">
-                        <LineTrackHistory runs={runs} />
+                        <LineTrackHistory runs={personalRuns} />
                     </div>
                     <div className="donut_run_distance">
-                        <DonutRunDistance runs={runs} />
+                        <DonutRunDistance runs={personalRuns} />
                     </div>
                 </div>
                 <div className="mid_charts">
                     <div className="distance_time_bar">
-                        <DistanceTimeBar runs={runs} />
+                        <DistanceTimeBar runs={personalRuns} />
                     </div>
-                    <RecentRuns cap={4} title="Latest runs" runs={runs} />
+                    <RecentRuns cap={4} title="Latest runs" runs={personalRuns} editCapability={false} />
                 </div>
                 <div className="bottom_charts">
-                    <SpeedDistanceScatter runs={runs} />
-                    <DaysRanMonth runs={runs} />
+                    <SpeedDistanceScatter runs={personalRuns} />
+                    <TreeMapDistances personalRuns={personalRuns} followingRuns={followingRuns} followingRunsVisibility={followingRunsVisibility} />
                 </div>
+                <h3>Personal</h3>
                 <div className="last_charts">
-                    <SyncedPaceDistance runs={runs} />
+                    <DaysRanMonth runs={personalRuns} />
+                    <SyncedPaceDistance runs={personalRuns} />
                 </div>
             </div>
         ) : (

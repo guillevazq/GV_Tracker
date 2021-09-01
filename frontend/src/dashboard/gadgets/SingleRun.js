@@ -66,9 +66,11 @@ const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, edi
                     <p>Empty</p>
                 </div>
                 <div className="icons" >
-                    <div className="edit-icon">
-                        <i className="far fa-edit"></i>
-                    </div>
+                    {editCapability && (
+                        <div className="edit-icon">
+                            <i className="far fa-edit"></i>
+                        </div>
+                    )}
                     <div className="delete-icon">
                         <i className="far fa-trash-alt"></i>
                     </div>

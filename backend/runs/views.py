@@ -1,22 +1,35 @@
 from time import time
 import math
 
-from rest_framework import generics
+from rest_framework import generics, serializers
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from .serializers import RunSerializer
+from users.serializers import FollowsSerializer
 from .permissions import IsAuthor
 from .models import Run
-from dj_rest_auth.models import TokenModel
+from users.models import Follows
 
 from predictions.PolynomialRegression import get_polynomial_function, predict_specific_value
 
 class RunList(generics.ListCreateAPIView):
     def get_queryset(self):
-        return Run.objects.filter(runner=self.request.user)
+        follows_obj_user = Follows.objects.get(user=self.request.user)
+
+        # Followers' runs (including the user which requests)
+        users_followed = FollowsSerializer(follows_obj_user).data["following"]
+        users_followed.append(self.request.user.pk)
+
+        personal_runs = Run.objects.filter(runner=self.request.user)
+        following_runs = Run.objects.filter(runner__pk__in=users_followed)
+        
+        if self.kwargs['following'] == "true":
+            return following_runs
+
+        return personal_runs
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

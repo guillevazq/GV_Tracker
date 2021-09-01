@@ -17,7 +17,7 @@ const PredictionsDashboard = props => {
     const {isLogged} = authenticationContext;
 
     const runsContext = useContext(RunsContext);
-    const {runs, getRuns} = runsContext;
+    const {personalRuns, getRuns} = runsContext;
 
     useEffect(() => {
         getRuns();
@@ -33,11 +33,11 @@ const PredictionsDashboard = props => {
 
     return (
         <>
-            {(isLogged && runs) ? (
+            {(isLogged && personalRuns) ? (
                 <div className="predictions-dashboard">
-                    <PaceTimePredictions runs={runs} />
+                    <PaceTimePredictions runs={personalRuns} />
                     <div className="goals">
-                        <WeeklyGoal runs={runs} />
+                        <WeeklyGoal runs={personalRuns} />
                     </div>
                 </div>
             ): (

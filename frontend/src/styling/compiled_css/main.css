@@ -108,12 +108,27 @@ div.notification-container--top-center .notification .notification__item .notifi
       grid-template-columns: repeat(6, 1fr);
 }
 
-.empirical_data_dashboard .bottom_charts .heatmap-runs {
+.empirical_data_dashboard .bottom_charts :first-child {
+  grid-column: span 4;
+}
+
+.empirical_data_dashboard .bottom_charts :last-child {
   grid-column: span 2;
 }
 
-.empirical_data_dashboard .bottom_charts .speed-distance-scatter {
-  grid-column: span 4;
+.empirical_data_dashboard .last_charts {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[10];
+      grid-template-columns: repeat(10, 1fr);
+}
+
+.empirical_data_dashboard .last_charts :first-child {
+  grid-column: span 3;
+}
+
+.empirical_data_dashboard .last_charts :last-child {
+  grid-column: span 7;
 }
 
 .icon_stat_gadget {
