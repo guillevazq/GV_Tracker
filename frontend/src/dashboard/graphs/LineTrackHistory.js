@@ -1,28 +1,26 @@
 import React, {useContext} from 'react';
 
 import {RunsContext} from '../../context/RunsContext';
+import {AuthenticationContext} from '../../context/AuthenticationContext';
 
 import ReactApexChart from 'react-apexcharts';
 import {lineTrackHistoryOptions} from '../../graph_settings/GraphSettings';
 
-const LineTrackHistory = ({personalRuns, followingRuns, followingRunsVisibility}) => {
-    
-    const {secondsToPace, labelRun} = useContext(RunsContext);
+const LineTrackHistory = ({abreviatedUnit, personalRuns, followingRuns, followingRunsVisibility}) => {
+    const {secondsToPace, labelRun, getTimeRangeLine} = useContext(RunsContext);
+    const {username} = useContext(AuthenticationContext);
+
     let daysSpeedDict = {};
+    let days = getTimeRangeLine() * 30;
 
-    let runs;
-    if (followingRunsVisibility) {
-        runs = followingRuns;
-    } else {
-        runs = personalRuns;
-    };
+    let runs = followingRunsVisibility ? followingRuns : personalRuns;
 
-    runs.map(run => {
+    runs.forEach(run => {
         let {seconds, distance} = run;
         let daysPassed = Math.floor((new Date().getTime() - new Date(run.unix_date * 1000).getTime()) / 1000 / 3600 / 24);
         let currentSpeed = secondsToPace(seconds, distance, true);
-        let label = labelRun(distance);
-        let dayPosition = 60 - daysPassed;
+        let label = labelRun(distance, abreviatedUnit);
+        let dayPosition = days - daysPassed;
         if (dayPosition >= 0) {
             if (daysSpeedDict[run.username]) {
                 if (daysSpeedDict[run.username][label]) {
@@ -44,16 +42,29 @@ const LineTrackHistory = ({personalRuns, followingRuns, followingRunsVisibility}
     });
 
     let series = [];
-    for (const [username, data] of Object.entries(daysSpeedDict)) {
+    for (let [currentUsername, data] of Object.entries(daysSpeedDict)) {
         for (const [distancesRange, dayPositions] of Object.entries(data)) {
             let currentSeries = [];
             for (const [currentDay, times] of Object.entries(dayPositions)) {
-                times.map(time => {
+                times.forEach(time => {
                     currentSeries.push({x:parseInt(currentDay), y:parseFloat(time.toFixed(2))});
                 });
             };
-            series.push({name: `${distancesRange} - ${username}`, type: "line", data: currentSeries});
+            let nameOfCategory;
+            if (!followingRunsVisibility) {
+                nameOfCategory = `${distancesRange}`;
+            } else {
+                if (currentUsername === username) {
+                    currentUsername = "You";
+                };
+                nameOfCategory = `${distancesRange} - ${currentUsername}`;
+            };
+            series.push({name: nameOfCategory, type: "line", data: currentSeries});
         };
+    };
+
+    lineTrackHistoryOptions.yaxis.labels.formatter = value => {
+        return value + abreviatedUnit + " / Minute";
     };
 
     return <ReactApexChart options={lineTrackHistoryOptions} series={series} type="line" height={400} />;

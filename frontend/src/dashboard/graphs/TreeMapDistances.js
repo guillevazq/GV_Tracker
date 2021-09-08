@@ -5,7 +5,7 @@ import ReactApexChart from "react-apexcharts";
 // Graph settings
 import {treeMapDistancesOptions} from '../../graph_settings/GraphSettings';
 
-const TreeMapDistances = ({personalRuns, followingRuns, followingRunsVisibility}) => {
+const TreeMapDistances = ({abreviatedUnit, personalRuns, followingRuns, followingRunsVisibility}) => {
     let runs_dict = {};
     let total_runs;
     let series = [{data: []}];
@@ -16,7 +16,7 @@ const TreeMapDistances = ({personalRuns, followingRuns, followingRunsVisibility}
         total_runs = personalRuns;
     };
 
-    total_runs.map(run => {
+    total_runs.forEach(run => {
         if (runs_dict[run.username]) {
             runs_dict[run.username] += run.distance;
         } else {
@@ -29,9 +29,13 @@ const TreeMapDistances = ({personalRuns, followingRuns, followingRunsVisibility}
         series[0].data.push({x: username, y: distance_ran});
     };
 
+    treeMapDistancesOptions.yaxis.labels.formatter = value => {
+        return (parseFloat(value).toFixed(2) + abreviatedUnit);
+    };
+
     return (
-        <div>
-            <ReactApexChart options={treeMapDistancesOptions} series={series} type="treemap" height={350} />
+        <div className="treemap-distances">
+            <ReactApexChart options={treeMapDistancesOptions} series={series} type="treemap" height={438} />
         </div>
     );
 };

@@ -1,13 +1,22 @@
 import React, {useContext, useEffect} from "react";
+
 import {AuthenticationContext} from "../context/AuthenticationContext";
+import {SocialContext} from '../context/SocialContext';
 
 const Navbar = () => {
   const authenticationContext = useContext(AuthenticationContext);
   const {isLogged, setTokenFromLS, logout, username} = authenticationContext;
+  const {getSettings} = useContext(SocialContext);
 
   useEffect(() => {
     setTokenFromLS();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogged, username]);
+
+  useEffect(() => {
+    getSettings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   let currentPath = window.location.href;
   let anchorTags = document.getElementsByTagName("a");
@@ -32,8 +41,8 @@ const Navbar = () => {
           {isLogged && (
             <>
               <a href="/">HOME</a>
-              <a href="/predictions">PREDICTIONS</a>
-              <a href="/add">ADD RUN</a>
+              <a href="/predictions">PREVISION</a>
+              <a href="/add">RUNS</a>
             </>
           )}
         </div>
@@ -41,9 +50,8 @@ const Navbar = () => {
       <div className="user-flag">
         {isLogged ? (
             <>
-                {/* <a href="/account">{username}</a> */}
                 <a href="/account">Account</a>
-                <a onClick={logOutUser} href="#">Logout</a>
+                <a onClick={logOutUser} href="/logout">Logout</a>
             </>
         ) : (
             <>

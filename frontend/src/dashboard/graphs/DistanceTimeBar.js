@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import ReactApexChart from "react-apexcharts";
-import {distanceTimeBarOptions, distanceTimeBarSeries} from '../../graph_settings/GraphSettings';
 
-const DistanceTimeBar = ({personalRuns, followingRuns, followingRunsVisibility}) => {
+import {distanceTimeBarOptions} from '../../graph_settings/GraphSettings';
+
+const DistanceTimeBar = ({abreviatedUnit, personalRuns, followingRuns, followingRunsVisibility, timeRangeDistanceMonths}) => {
+    let distanceTimeBarSeries = []
     let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let monthNumber, monthString, months = {}, full_months={};
+    const [chartOptions, setChartOptions] = useState(distanceTimeBarOptions);
 
     let runs;
     if (followingRunsVisibility) {
@@ -14,7 +17,7 @@ const DistanceTimeBar = ({personalRuns, followingRuns, followingRunsVisibility})
         runs = personalRuns; 
     };
 
-    for (let i = 6; i > 0; i -= 1) {
+    for (let i = timeRangeDistanceMonths; i > 0; i -= 1) {
         monthNumber = new Date(new Date().getFullYear(), new Date().getMonth() - i + 1, 1).getMonth();
         monthString = monthNames[monthNumber];
         months[monthString] = 0;
@@ -38,8 +41,10 @@ const DistanceTimeBar = ({personalRuns, followingRuns, followingRunsVisibility})
     });
 
     let i = 0;
+    let last_months = [];
     for (const [username, data] of Object.entries(full_months)) {
-        let last_months = [], last_months_distances = [];
+        let last_months_distances = [];
+        last_months = [];
         for (const [monthName, monthDistance] of Object.entries(data)) {
             last_months.push(monthName);
             last_months_distances.push(monthDistance.toFixed(3));
@@ -47,11 +52,20 @@ const DistanceTimeBar = ({personalRuns, followingRuns, followingRunsVisibility})
         distanceTimeBarSeries[i] = {};
         distanceTimeBarSeries[i].name = username;
         distanceTimeBarSeries[i].data = last_months_distances;
-        distanceTimeBarOptions.xaxis.categories = last_months;
+        // // distanceTimeBarOptions.xaxis.categories = last_months;
         i++;
     };
 
-    return <ReactApexChart type="bar" series={distanceTimeBarSeries} options={distanceTimeBarOptions} />;
+    useEffect(() => {
+        setChartOptions({...chartOptions, xaxis: {categories: last_months}});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [timeRangeDistanceMonths]);
+
+    distanceTimeBarOptions.yaxis.labels.formatter = value => {
+        return value + abreviatedUnit;
+    };
+
+    return <ReactApexChart xaxis={{categories: []}} type="bar" series={distanceTimeBarSeries} options={chartOptions} height={450} />;
 };
 
 export default DistanceTimeBar;

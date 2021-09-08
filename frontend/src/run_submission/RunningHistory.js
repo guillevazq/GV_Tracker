@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 
 // Context
 import {AuthenticationContext} from '../context/AuthenticationContext';
@@ -30,6 +30,7 @@ const RunningHistory = props => {
 
     useEffect(() => {
         getRuns();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

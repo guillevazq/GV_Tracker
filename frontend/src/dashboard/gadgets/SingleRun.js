@@ -1,16 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {RunsContext} from "../../context/RunsContext";
 import {AuthenticationContext} from '../../context/AuthenticationContext';
 
-const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, editCapability, toggleEditForm, authorUsername, cap=false}) => {
-    const [cursorIcons, setCursorIcons] = useState("pointer");
-    const [iconStyleHover, setIconStyleHover] = useState("");
+const SingleRun = ({runFunctions, abreviatedUnit, dateRun, distance, seconds, color, dataKey, dummy=false, editCapability, toggleEditForm, authorUsername, cap=false}) => {
     const [backgroundRun, setBackgroundRun] = useState("");
-
-    let runsContext = useContext(RunsContext);
-    let authenticationContext = useContext(AuthenticationContext);
-
-    const {username} = authenticationContext;
+    let {username} = useContext(AuthenticationContext);
 
     const {
         deleteRun,
@@ -20,7 +13,7 @@ const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, edi
         secondsToMinutesSeconds,
         populateEditFormData,
         editFormData,
-    } = runsContext;
+    } = runFunctions;
 
     let timeAgo = representTimedeltaInPrettyString(dateRun);
     let [minutes_per_km, seconds_per_km] = secondsToPace(seconds, distance);
@@ -51,6 +44,7 @@ const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, edi
         } else {
             setBackgroundRun("");
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editFormData]);
 
     return (
@@ -95,23 +89,23 @@ const SingleRun = ({dateRun, distance, seconds, color, dataKey, dummy=false, edi
                     <p>{timeAgo}</p>
                 </div>
                 <div className="important-stat pace-single-run">
-                    <p style={{backgroundColor: color}}>{minutes_per_km}:{seconds_per_km} Min / KM</p>
+                    <p style={{backgroundColor: color}}>{minutes_per_km}:{seconds_per_km} Min /{abreviatedUnit}</p>
                 </div>
                 <div className="important-stat total_distance">
-                    <p>{distance.toFixed(2)} KM</p>
+                    <p>{distance.toFixed(2)} {abreviatedUnit}</p>
                 </div>
                 <div className="important-stat total_time-bold">
                     <p>{hoursFormatted}:{minutesFormatted}:{secondsFormatted}</p>
                 </div>
-                <div className={"icons " + iconStyleHover} >
+                <div className="icons" >
                     {editCapability && (
                         <div className="edit-icon">
-                            <i style={{cursor: cursorIcons}} onClick={setRunInEditMode} className="far fa-edit"></i>
+                            <i style={{cursor: "pointer"}} onClick={setRunInEditMode} className="far fa-edit"></i>
                         </div>
                     )}
                     {authorUsername === username && !cap && (
                         <div className="delete-icon">
-                            <i style={{cursor: cursorIcons}} onClick={deleteItem} className="far fa-trash-alt"></i>
+                            <i style={{cursor: "pointer"}} onClick={deleteItem} className="far fa-trash-alt"></i>
                         </div>
                     )}
                 </div>

@@ -9,7 +9,7 @@ import AnimatedNumber from "animated-number-react";
 // Colors
 import {getColor} from "../ColorPalette";
 
-const SetAccumulativeStatsGadget = ({runs}) => {
+const SetAccumulativeStatsGadget = ({abreviatedUnit, runs}) => {
     const runsContext = useContext(RunsContext);
     const {
         secondsToMinutesSeconds,
@@ -41,7 +41,7 @@ const SetAccumulativeStatsGadget = ({runs}) => {
 
     let titles = ["Best Speed", "Total Distance", "Average Speed", "Total Time", "Percentile"];
     let icons = ["fighter-jet", "running", "flag-checkered", "clock", "medal"];
-    let units = ["MIN/KM", "KM", "MIN/KM", "HRS", "%"];
+    let units = [`MIN /${abreviatedUnit}`, `${abreviatedUnit}`, `MIN /${abreviatedUnit}`, "HRS", "%"];
     let stats = [null, totalDistance, null, null, 100.0];
     let minutes = [maxSpeedMinutes, null, averageSpeedMinutes, totalHoursRan, null];
     let seconds = [maxSpeedSeconds, null, averageSpeedSeconds, totalMinutesRan, null];

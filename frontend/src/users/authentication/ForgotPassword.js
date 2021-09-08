@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {useState, useContext} from 'react';
 
 // Context
-import { AuthenticationContext } from '../../context/AuthenticationContext';
+import {AuthenticationContext} from '../../context/AuthenticationContext';
 
 const ForgotPassword = () => {
 

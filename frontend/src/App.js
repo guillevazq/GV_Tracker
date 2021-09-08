@@ -27,6 +27,7 @@ import 'animate.css';
 import AuthenticationState from './context/AuthenticationContext';
 import NotificationState from './context/NotificationContext';
 import RunState from "./context/RunsContext";
+import SocialState from './context/SocialContext';
 
 // Custom Styling
 import './styling/compiled_css/main.css';
@@ -36,25 +37,27 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <NotificationState>
         <AuthenticationState>
-          <RunState>
-            <Router>
-              <div className="App">
-                <ReactNotifications />
-                <Navbar />
-                <Switch>
-                  <Route component={Login} exact path='/login' />
-                  <Route component={Register} exact path='/register' />
-                  <Route component={ForgotPassword} exact path='/forgotpassword' />
+          <SocialState>
+            <RunState>
+              <Router>
+                <div className="App">
+                  <ReactNotifications />
+                  <Navbar />
+                  <Switch>
+                    <Route component={Login} exact path='/login' />
+                    <Route component={Register} exact path='/register' />
+                    <Route component={ForgotPassword} exact path='/forgotpassword' />
 
-                  <Route component={EmpiricalDataDashboard} exact path='/' />
-                  <Route component={PredictionsDashboard} exact path='/predictions' />
-                  <Route component={RunningHistory} exact path='/add' />
+                    <Route component={EmpiricalDataDashboard} exact path='/' />
+                    <Route component={PredictionsDashboard} exact path='/predictions' />
+                    <Route component={RunningHistory} exact path='/add' />
 
-                  <Route component={AccountSettings} exact path='/account' />
-                </Switch>
-              </div>
-            </Router>
-          </RunState>
+                    <Route component={AccountSettings} exact path='/account' />
+                  </Switch>
+                </div>
+              </Router>
+            </RunState>
+          </SocialState>
       </AuthenticationState>
     </NotificationState>
   </ThemeProvider>

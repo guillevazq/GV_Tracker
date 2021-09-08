@@ -1,22 +1,29 @@
-import React, {useState, useEffect} from 'react';
+import React, {useContext} from 'react';
 
 import ReactApexChart from 'react-apexcharts';
-import {weeklyGoalOptions1, weeklyGoalOptions2} from '../graph_settings/GraphSettings';
 
-const WeeklyGoal = () => {
-    const [weeklyGoal, setWeeklyGoal] = useState();
-    const [monthlyGoal, setMonthlyGoal] = useState();
+import {SocialContext} from "../context/SocialContext";
+import {RunsContext} from "../context/RunsContext";
 
-    let series1 = [70], series2 = [70];
+import {weeklyGoalOptions, monthlyGoalOptions} from '../graph_settings/GraphSettings';
 
-    useEffect(() => {
-        setMonthlyGoal(Math.floor(weeklyGoal / 7 * 30.5));
-    }, [weeklyGoal]);
+const WeeklyGoal = ({abreviatedUnit}) => {
+    const {weekly_goal} = useContext(SocialContext);
+    const {getDistanceRanThisWeek, getDistanceRanThisMonth} = useContext(RunsContext);
+
+    let weeklyGoal = weekly_goal;
+    let monthlyGoal = weekly_goal / 7 * 30;
+
+    let weeklyGoalProgress = [(100 / weeklyGoal * getDistanceRanThisWeek()).toFixed(2)];
+    let monthlyGoalProgress = [(100 / monthlyGoal * getDistanceRanThisMonth()).toFixed(2)];
+
+    weeklyGoalOptions.labels = [`${getDistanceRanThisWeek()} / ${weeklyGoal.toFixed(2)} ${abreviatedUnit}`];
+    monthlyGoalOptions.labels = [`${getDistanceRanThisMonth()} / ${monthlyGoal.toFixed(2)} ${abreviatedUnit}`];
 
     return (
         <div className="goals-predictions">
-            <ReactApexChart options={weeklyGoalOptions1} series={series1} type="radialBar" height={350} />
-            <ReactApexChart options={weeklyGoalOptions2} series={series2} type="radialBar" height={350} />
+            <ReactApexChart options={weeklyGoalOptions} series={weeklyGoalProgress} type="radialBar" height={350} />
+            <ReactApexChart options={monthlyGoalOptions} series={monthlyGoalProgress} type="radialBar" height={350} />
             <div className="input-goal"></div>
         </div>
     );

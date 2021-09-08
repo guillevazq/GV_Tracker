@@ -1,35 +1,49 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import ReactApexChart from 'react-apexcharts';
 import {syncedOptionsArea, syncedOptionsArea2} from '../../graph_settings/GraphSettings';
 
-const SyncedPaceDistance = ({runs}) => {
+import {RunsContext} from "../../context/RunsContext";
+
+const SyncedPaceDistance = ({abreviatedUnit, runs}) => {
     let seriesArea = [{name: "Pace", data: []}];
     let seriesArea2 = [{name: "Distance", data: []}];
+    const {getNumberRunsChart} = useContext(RunsContext);
+
+    let numberOfRuns = getNumberRunsChart();
 
     let minutes_per_unit;
-    runs.map((run, index) => {
+    runs.forEach((run, index) => {
         minutes_per_unit = (run.seconds / 60 / run.distance).toFixed(2);
-        let cap;
-        if (runs.length <= 10) {
-            cap = 10;
-        } else {
-            cap = runs.length;
-        };
-        if (index <= 10) {
+        let cap = numberOfRuns;
+        if (index < cap) {
             seriesArea[0].data.push([cap - index, minutes_per_unit]);
             seriesArea2[0].data.push([cap - index, run.distance]);
         };
     });
 
+    syncedOptionsArea.yaxis.labels.formatter = value => {
+        return value.toFixed(2) + " Min / " + abreviatedUnit;
+    };
+    syncedOptionsArea.dataLabels.formatter = value => {
+        return value.toFixed(2);
+    };
+
+    syncedOptionsArea2.yaxis.labels.formatter = value => {
+        return value.toFixed(2) + " Total " + abreviatedUnit;
+    };
+    syncedOptionsArea2.dataLabels.formatter = value => {
+        return value.toFixed(2);
+    };
+
     return (
-        <div>
+        <div className="synced-charts">
             <div id="synced-charts">
                 <div id="chart-area">
-                    <ReactApexChart options={syncedOptionsArea} series={seriesArea} type="area" height={160} />
+                    <ReactApexChart options={syncedOptionsArea} series={seriesArea} type="area" height={250} className="synced-charts-width"/>
                 </div>
                 <div id="chart-area">
-                    <ReactApexChart options={syncedOptionsArea2} series={seriesArea2} type="area" height={160} />
+                    <ReactApexChart options={syncedOptionsArea2} series={seriesArea2} type="area" height={250} className="synced-charts-width"/>
                 </div>
             </div>
         </div>

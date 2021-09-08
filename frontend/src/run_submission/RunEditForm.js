@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 
 // Context
 import {RunsContext} from '../context/RunsContext';
@@ -27,13 +27,11 @@ const RunEditForm = ({toggleEditForm}) => {
         initialHours += 1;
     };
 
-
     const [hours, setHours] = useState(initialHours);
     const [minutes, setMinutes] = useState(initialMinutes);
     const [seconds, setSeconds] = useState(initialSeconds);
     const [distance, setDistance] = useState(initialDistance);
     const [dateRun, setDateRun] = useState(initialDate);
-
 
     const handleDistance = e => {
         setDistance(e.target.value);

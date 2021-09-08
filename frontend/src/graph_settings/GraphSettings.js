@@ -1,41 +1,60 @@
 import {colors} from "../dashboard/ColorPalette";
 
-export let distanceTimeBarSeries = [];
-
-export let distanceTimeBarOptions = {
-    chart: {
-        type: 'bar',
-        height: 430
-    },
-    plotOptions: {
-        bar: {
-            horizontal: true,
-            dataLabels: {
-                position: 'top',
+export let distanceTimeBarOptions = (
+    {
+        chart: {
+            type: 'bar',
+            height: 430,
+            zoom: {
+                enabled: false
             },
-        }
-    },
-    dataLabels: {
-        enabled: true,
-        offsetX: -6,
-        style: {
-            fontSize: '12px',
+            toolbar: {
+                show: false,
+            },
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                dataLabels: {
+                    enabled: false,
+                },
+            }
+        },
+        dataLabels: {
+            enabled: false,
+            offsetX: -6,
+            style: {
+                fontSize: '12px',
+                colors: ['#fff']
+            },
+        },
+        stroke: {
+            show: true,
+            width: 1,
             colors: ['#fff']
         },
-    },
-    stroke: {
-        show: true,
-        width: 1,
-        colors: ['#fff']
-    },
-    tooltip: {
-        shared: true,
-        intersect: false
-    },
-    xaxis: {
-        categories: [],
-    },
-};
+        tooltip: {
+            shared: true,
+            intersect: false
+        },
+        xaxis: {
+            type: "category",
+            categories: [],
+            labels: {
+                style: {
+                    fontSize: "1.1rem"
+                }
+            }
+        },
+        yaxis: {
+            labels: {
+                style: {
+                    fontSize: "1.0rem"
+                }
+            },
+        },
+    }
+);
 
 export let lineTrackHistoryLegend = {
     show: true,
@@ -45,7 +64,7 @@ export let lineTrackHistoryLegend = {
     position: 'bottom',
     horizontalAlign: 'center',
     floating: false,
-    fontSize: '14px',
+    fontSize: '17px',
     fontFamily: 'Helvetica, Arial',
     fontWeight: 400,
     formatter: undefined,
@@ -55,7 +74,7 @@ export let lineTrackHistoryLegend = {
     tooltipHoverFormatter: undefined,
     customLegendItems: [],
     offsetX: 0,
-    offsetY: 0,
+    offsetY: 8,
     labels: {
         colors: undefined,
         useSeriesColors: false
@@ -84,7 +103,7 @@ export let lineTrackHistoryLegend = {
     },
     tooltip: {
         intersect: false,
-    }
+    },
 };
 
 export let lineTrackHistoryOptions = {
@@ -92,24 +111,29 @@ export let lineTrackHistoryOptions = {
     xaxis: {
         type: 'numeric',
         decimalsInFloat: 0,
-        title: {
-            text: "Last 60 days",
-            offsetY: -10,
-            offsetX: 0,
-        }
+        labels: {
+            formatter: value => {
+                return "Day " + Math.round(value);
+            },
+            style: {
+                fontSize: "1rem"
+            }
+        },
     },
     yaxis: {
         title: {
             rotate: 0,
             offsetX: -20,
-            text: 'MIN / KM',
             style : {
                 fontSize: '0.9rem',
             }
         },
         labels: {
             rotate: 0,
-        }
+            style: {
+                fontSize: "1rem"
+            }
+        },
     },
     chart: {
         zoom: {
@@ -139,7 +163,6 @@ export let lineTrackHistoryOptions = {
     legend: lineTrackHistoryLegend,
 };
 
-
 export let donutRunDistanceOptions = {
     colors: colors,
     chart: {
@@ -165,6 +188,9 @@ export let donutRunDistanceOptions = {
                 }
             }
         }
+    },
+    legend: {
+        fontSize: "16px",
     }
 }
 
@@ -183,22 +209,34 @@ export let SpeedDistanceScatterOptions = {
     },
     yaxis: {
         labels: {
-            formatter: function (val) {
-                return parseFloat(val).toFixed(2)
-            }
-        }
+            offsetX: -10,
+            formatter: value => {
+                return value + " Minutes";
+            },
+            style: {
+                fontSize: "1.0rem",
+            },
+        },
     },
     xaxis: {
+        tickAmount: 3,
         labels: {
-            formatter: function (val) {
-                return parseFloat(val).toFixed(2)
-            }
+            style: {
+                fontSize: "1.0rem",
+            },
         }
     },
 };
 
 
 export let daysRanMonthOptions = {
+    plotOptions: {
+        heatmap: {
+            useFillColorAsStroke: false,
+            distributed: false,
+            // reverseNegativeShade: true,
+        },
+    },
     xaxis: {
         position: "top",
         labels: {
@@ -207,6 +245,16 @@ export let daysRanMonthOptions = {
     },
     yaxis: {
         show: true,
+        labels: {
+            formatter: value => {
+                if (value) {
+                    return "Days " + value;
+                }
+            },
+            style: {
+                fontSize: "0.9rem",
+            },
+        }
     },
     chart: {
         zoom: {
@@ -222,19 +270,37 @@ export let daysRanMonthOptions = {
     },
     colors: ["#008FFB"],
     title: {
-        text: 'Last 100 Days'
+        text: 'Last 100 Days',
+        offsetY: 10,
+        style: {
+            fontSize: "1.2rem",
+        },
     },
     tooltip: {
         enabled: true,
+        followCursor: true,
+        shared: false,
+        onDatasetHover: {
+          highlightDataSeries: true,
+        },
         style: {
             fontFamily: 'Roboto'
         },
         x: {
             show: false,
         },
-        y: {},
+        y: {
+            formatter: (value, { series, seriesIndex, dataPointIndex, w }) => {
+                console.log(series);
+                console.log(seriesIndex);
+                console.log(dataPointIndex);
+                console.log(w);
+                console.log("aqui");
+                return value
+            }
+        },
         marker: {
-            show: false,
+            show: true,
         },
     },
 };
@@ -251,16 +317,41 @@ export let syncedOptionsArea = {
         id: 'yt',
         group: 'social',
         type: 'area',
-        height: 160
+        // height: 160
     },
-    yaxis: {
-        title: {
-            text: "Pace (Min/KM)",
-            rotate: 0,
-            offsetX: -30,
-        }
+    title: {
+        text: "Pace",
+        rotate: 0,
+        offsetY: 20,
+        style: {
+            fontSize: "1.2rem",
+        },
+        align: 'center'
     },
     colors: [colors[0]],
+    yaxis: {
+        labels: {
+            offsetX: -17,
+            style: {
+                fontSize: "1.0rem",
+            },
+        },
+    },
+    xaxis: {
+        labels: {
+            formatter: value => {
+                return "Run " + value;
+            },
+            style: {
+                fontSize: "1.0rem",
+            },
+        },
+    },
+    dataLabels: {
+        style: {
+            fontSize: "1.2rem",
+        },
+    },
 };
 
 export let syncedOptionsArea2 = {
@@ -277,12 +368,35 @@ export let syncedOptionsArea2 = {
         height: 160
     },
     colors: [colors[2]],
+    title: {
+        offsetY: 20,
+        text: "Distance",
+        rotate: 0,
+        offsetX: -15,
+        align: 'center',
+        style: {
+            fontSize: "1.2rem",
+        },
+    },
     yaxis: {
-        title: {
-            text: "Distance",
-            rotate: 0,
-            offsetX: -15,
-        }
+        labels: {
+            offsetX: -17,
+            style: {
+                fontSize: "1.0rem",
+            },
+        },
+    },
+    xaxis: {
+        labels: {
+            formatter: value => {
+                return "Run " + value;
+            },
+        },
+    },
+    dataLabels: {
+        style: {
+            fontSize: "1.2rem",
+        },
     },
 };
 
@@ -307,7 +421,7 @@ let paceTimePredictionsLegend = {
     offsetX: 0,
     offsetY: 0,
     labels: {
-        colors: undefined,
+        colors: colors,
         useSeriesColors: false
     },
     markers: {
@@ -343,19 +457,30 @@ export let paceTimePredictionsOptions = {
             text: "Future 60 days",
             offsetY: -10,
             offsetX: 0,
-        }
+            style: {
+                fontSize: "1.0rem"
+            }
+        },
+        labels: {
+            style: {
+                fontSize: "1.0rem",
+            },
+            formatter: value => {
+                return "Day " + value;
+            },
+        },
     },
     yaxis: {
         decimalsInFloat: 2,
         title: {
             rotate: 0,
             offsetX: -20,
-            text: 'MIN / KM',
-            style : {
-                fontSize: '0.9rem',
-            }
         },
         labels: {
+            style : {
+                fontSize: '0.9rem',
+            },
+            offsetX: -10,
             rotate: 0,
         }
     },
@@ -400,7 +525,7 @@ export let paceTimePredictionsOptions = {
 };
 
 
-export let weeklyGoalOptions1 = {
+export let weeklyGoalOptions = {
     options: {
         chart: {
             zoom: {
@@ -416,17 +541,13 @@ export let weeklyGoalOptions1 = {
                 }
             },
         },
-        labels: ['Cricket'],
     }
 };
 
 
-export let weeklyGoalOptions2 = {
+export let monthlyGoalOptions = {
     options: {
         chart: {
-            zoom: {
-                enabled: false
-            },
             height: 350,
             type: 'radialBar',
         },
@@ -437,7 +558,6 @@ export let weeklyGoalOptions2 = {
                 }
             },
         },
-        labels: ['Cricket'],
     }
 };
 
@@ -453,14 +573,10 @@ export let treeMapDistancesOptions = {
         },
     },
     title: {
-        text: 'Distances',
-        align: 'center'
+        // text: 'Total Distance',
+        align: 'left'
     },
-    yaxis: {
-        labels: {
-            formatter: value => parseFloat(value).toFixed(2)
-        },
-    },
+    yaxis: {labels: {}},
     colors: colors,
     plotOptions: {
         treemap: {
@@ -469,3 +585,25 @@ export let treeMapDistancesOptions = {
         },
     },
 };
+
+export const MeasurementUnits = [
+  {
+    value: 'Kilometers',
+    label: 'Kilometers',
+  },
+  {
+    value: 'Miles',
+    label: 'Miles',
+  },
+];
+
+export const Languages = [
+  {
+    value: 'English',
+    label: 'English',
+  },
+  {
+    value: 'Spanish',
+    label: 'Spanish',
+  },
+];

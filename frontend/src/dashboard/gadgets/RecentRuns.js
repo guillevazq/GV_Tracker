@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 // Components
 import SingleRun from './SingleRun';
@@ -6,7 +6,15 @@ import SingleRun from './SingleRun';
 // UI
 import {getColor} from "../ColorPalette";
 
+// Context
+import {SocialContext} from '../../context/SocialContext';
+import {RunsContext} from '../../context/RunsContext';
+
 const RecentRuns = ({personalRuns, followingRuns, followingRunsVisibility, title, cap, editCapability=false, toggleEditForm=false}) => {
+
+    const runFunctions = useContext(RunsContext);
+
+    const {abreviatedUnit} = useContext(SocialContext);
     let runs;
     if (followingRunsVisibility) {
         runs = followingRuns;
@@ -31,6 +39,8 @@ const RecentRuns = ({personalRuns, followingRuns, followingRunsVisibility, title
                         dataKey={index}
                         key={index}
                         dummy={true}
+                        abreviatedUnit={abreviatedUnit}
+                        runFunctions={runFunctions}
                         editCapability={editCapability} />
                     ))}
                 </div>
@@ -38,21 +48,21 @@ const RecentRuns = ({personalRuns, followingRuns, followingRunsVisibility, title
                 <div className="actual-recent-runs">
                     <hr />
                     {runs.slice(0, cap).map((run, index) => (
-                        <>
-                            <SingleRun 
-                                key={run.id} 
-                                dataKey={run.id} 
-                                color={getColor(index)} 
-                                dateRun={run.unix_date} 
-                                distance={run.distance} 
-                                seconds={run.seconds}
-                                currentDate={new Date().getTime()}
-                                editCapability={editCapability}
-                                toggleEditForm={toggleEditForm}
-                                authorUsername={run.username}
-                                cap={cap}
-                            />
-                        </>
+                        <SingleRun 
+                            runFunctions={runFunctions}
+                            key={run.id} 
+                            dataKey={run.id} 
+                            color={getColor(index)} 
+                            dateRun={run.unix_date} 
+                            distance={run.distance} 
+                            seconds={run.seconds}
+                            currentDate={new Date().getTime()}
+                            editCapability={editCapability}
+                            toggleEditForm={toggleEditForm}
+                            authorUsername={run.username}
+                            cap={cap}
+                            abreviatedUnit={abreviatedUnit}
+                        />
                     ))}
                 </div>
             </> )}

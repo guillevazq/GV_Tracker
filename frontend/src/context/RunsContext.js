@@ -1,5 +1,7 @@
 import React, {createContext, useReducer, useContext} from "react"; 
+
 import axios from "axios";
+
 import {NotificationContext} from "./NotificationContext";
 
 export const RunsContext = createContext(); 
@@ -33,7 +35,6 @@ const RunState = props => {
     const {handleError, addAlert} = useContext(NotificationContext);
 
     const initialState = {
-        recentlyAdded: false,
         personalRuns: null,
         followingRuns: null,
         predictionFunction: null,
@@ -53,16 +54,11 @@ const RunState = props => {
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const removeRecentlyAdded = () => {
-        dispatch({type: "REMOVE_RECENTLY_ADDED_RUN"});
-    };
-
-    const addRun = (minutes, seconds, distance, dateRun) => {
+    const addRun = (hours, minutes, seconds, distance, dateRun) => {
         let currentToken = localStorage.getItem("authentication-token");
         currentToken = "Token " + currentToken;
 
-        minutes = parseInt(minutes);
-        seconds = minutes * 60 + parseInt(seconds);
+        seconds = parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds);
         distance = parseFloat(distance);
 
         axios.post("http://localhost:8000/runs/get/true/", {seconds, distance, unix_date: dateRun}, {
@@ -126,10 +122,11 @@ const RunState = props => {
         return [full_minutes_pace, full_seconds_pace];
     };
 
-    const labelRun = (distance, step=3) => {
-        for (let i = 1; i < 1000; i = i + step) {
+    const labelRun = (distance, abreviatedUnit) => {
+        let step = parseInt(getRunRange());
+        for (let i = 1; i < 1000; i += step) {
             if (distance < i) {
-                return `${i - step}-${i} KM`;
+                return `${i - step}-${i} ${abreviatedUnit}`;
             };
         };
     };
@@ -171,13 +168,18 @@ const RunState = props => {
     const secondsToStringHMS = seconds => {
         let hms = secondsToHoursMinutesSeconds(seconds);
         let formattedHMS = [];
-        hms.map(measure => {
+        hms.forEach(measure => {
             if (measure < 10) {
                 measure = "0" + measure;
             };
             formattedHMS.push(measure);
         });
         return formattedHMS;
+    };
+
+    const secondsToStringHMSNoArray = seconds => {
+        let arrHMS = secondsToStringHMS(seconds);
+        return `${arrHMS[0]}:${arrHMS[1]}:${arrHMS[2]}`;
     };
 
     const secondsToHoursMinutesSeconds = secondsHMS => {
@@ -210,6 +212,13 @@ const RunState = props => {
         };
 
         return [hours, minutes];
+    };
+
+    const secondsToHours = seconds => {
+        let hoursMinutes = secondsToHoursMinutes(seconds);
+        let fullHours = hoursMinutes[0];
+        let decimalHours = hoursMinutes[1] / 60;
+        return (fullHours + decimalHours).toFixed(2);
     };
 
     const editRun = (seconds, distance, date, id) => {
@@ -259,9 +268,78 @@ const RunState = props => {
         dispatch({type: 'UNSEE_FOLLOWING_RUNS'});
     };
 
+    const getRunRange = () => {
+        let runRange = localStorage.getItem("d-r");
+        if (!runRange) {
+            runRange = 3;
+        } 
+        return runRange;
+    };
+
+    const getTimeRangeLine = () => {
+        let timeRangeLine = localStorage.getItem("t-r");
+        if (!timeRangeLine) {
+            timeRangeLine = 2;
+        } 
+        return timeRangeLine;
+    };
+
+    const getTimeRangeLineDistanceMonths = () => {
+        let timeRangeLine = localStorage.getItem("t-r-m");
+        if (!timeRangeLine) {
+            timeRangeLine = 6;
+        } 
+        return timeRangeLine;
+    };
+
+    const getNumberRunsChart = () => {
+        let timeRangeLine = localStorage.getItem("n-r-s");
+        if (!timeRangeLine) {
+            timeRangeLine = 5;
+        } 
+        return timeRangeLine;
+    };
+
+
+    const getDistanceRanThisWeek = () => {
+        let today = new Date();
+        let day = today.getDay() || 7;
+        if (day !== 1) {
+            today.setHours(-24 * (day - 1));
+        };
+        let firstDayOfTheWeek = today.getTime() / 1000;
+        let totalDistance = 0;
+        state.personalRuns.forEach(run => {
+            if (run.unix_date - firstDayOfTheWeek >= 0) {
+                totalDistance += run.distance;
+            };
+        });
+        return totalDistance;
+    };
+
+    const getDistanceRanThisMonth = () => {
+        let today = new Date();
+        let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getTime() / 1000;
+        let totalDistance = 0;
+        state.personalRuns.forEach(run => {
+            if (run.unix_date - firstDayOfMonth >= 0) {
+                totalDistance += run.distance;
+            };
+        });
+        return totalDistance;
+    };
+
+    const convertRunsToMiles = (runs, unit) => {
+        console.log(unit);
+        if (unit === "Miles") {
+            runs.forEach(run => {
+                run.distance = run.distance * 0.62137;
+            });
+        };
+    };
+
     return (
         <RunsContext.Provider value={{
-            recentlyAdded: state.recentlyAdded,
             personalRuns: state.personalRuns,
             followingRuns: state.followingRuns,
             predictionFunction: state.predictionFunction,
@@ -270,7 +348,6 @@ const RunState = props => {
             editFormVisibility: state.editFormVisibility,
             editFormData: state.editFormData,
             addRun,
-            removeRecentlyAdded,
             getRuns,
             deleteRun,
             secondsToPace,
@@ -287,7 +364,16 @@ const RunState = props => {
             populateEditFormData,
             cleanEditFormData,
             seeFollowingRuns,
-            unseeFollowingRuns
+            unseeFollowingRuns,
+            secondsToHours,
+            secondsToStringHMSNoArray,
+            getRunRange,
+            getTimeRangeLine,
+            getTimeRangeLineDistanceMonths,
+            getNumberRunsChart,
+            getDistanceRanThisWeek,
+            getDistanceRanThisMonth,
+            convertRunsToMiles,
         }}>
             {props.children}
         </RunsContext.Provider>

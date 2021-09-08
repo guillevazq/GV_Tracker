@@ -29,17 +29,19 @@ const RunSubmissionForm = () => {
 
     useEffect(() => {
         setDateRun(today);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if (!submitFormVisibility) {
             setTimeout(() => {resetAllFields()}, 200);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [submitFormVisibility]);
 
     const submitRun = e => {
         e.preventDefault();
-        addRun(minutes, seconds, distance, parseInt(new Date(dateRun).getTime() / 1000));
+        addRun(hours, minutes, seconds, distance, parseInt(new Date(dateRun).getTime() / 1000));
     };
 
     const handleNumericInput = (e, max, min, changeFunction) => {

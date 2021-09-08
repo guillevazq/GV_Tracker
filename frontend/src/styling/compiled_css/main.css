@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;600;700;800;900&display=swap");
 *,
 *:before,
 *:after {
@@ -38,7 +38,7 @@ a:link {
 }
 
 div.notification-container--top-center .notification {
-  width: 1000px !important;
+  width: 100% !important;
 }
 
 div.notification-container--top-center .notification .notification__item {
@@ -56,9 +56,27 @@ div.notification-container--top-center .notification .notification__item .notifi
 .empirical_data_dashboard {
   width: 100%;
   padding: 20px;
+  padding-top: 0px;
 }
 
-.empirical_data_dashboard > div {
+.empirical_data_dashboard .general-settings {
+  padding: 5px 0px;
+  color: #3069c0;
+}
+
+.empirical_data_dashboard .general-settings .see-friends-activity {
+  text-align: right;
+}
+
+.empirical_data_dashboard .time-range-selector .MuiSelect-root {
+  padding: 5px;
+  padding-right: 20px;
+  width: 130px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.empirical_data_dashboard .top_gadgets, .empirical_data_dashboard .top_charts, .empirical_data_dashboard .mid_charts, .empirical_data_dashboard .bottom_charts, .empirical_data_dashboard .last_charts {
   margin-bottom: 50px;
 }
 
@@ -90,6 +108,12 @@ div.notification-container--top-center .notification .notification__item .notifi
   width: 80%;
 }
 
+.empirical_data_dashboard .top_charts .treemap-distances {
+  grid-column: span 4;
+  margin: auto;
+  width: 80%;
+}
+
 .empirical_data_dashboard .mid_charts {
   display: -ms-grid;
   display: grid;
@@ -97,23 +121,21 @@ div.notification-container--top-center .notification .notification__item .notifi
       grid-template-columns: repeat(10, 1fr);
 }
 
-.empirical_data_dashboard .mid_charts .distance_time_bar {
+.empirical_data_dashboard .mid_charts .speed-distance-scatter {
   grid-column: span 4;
 }
 
 .empirical_data_dashboard .bottom_charts {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[6];
-      grid-template-columns: repeat(6, 1fr);
+  -ms-grid-columns: (1fr)[10];
+      grid-template-columns: repeat(10, 1fr);
 }
 
-.empirical_data_dashboard .bottom_charts :first-child {
-  grid-column: span 4;
-}
-
-.empirical_data_dashboard .bottom_charts :last-child {
-  grid-column: span 2;
+.empirical_data_dashboard .bottom_charts .distance_time_bar {
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+  grid-column-end: 10;
 }
 
 .empirical_data_dashboard .last_charts {
@@ -123,11 +145,11 @@ div.notification-container--top-center .notification .notification__item .notifi
       grid-template-columns: repeat(10, 1fr);
 }
 
-.empirical_data_dashboard .last_charts :first-child {
+.empirical_data_dashboard .last_charts .heatmap-runs {
   grid-column: span 3;
 }
 
-.empirical_data_dashboard .last_charts :last-child {
+.empirical_data_dashboard .last_charts .synced-charts {
   grid-column: span 7;
 }
 
@@ -168,6 +190,7 @@ div.notification-container--top-center .notification .notification__item .notifi
   grid-column: span 6;
   margin: auto;
   width: 80%;
+  font-size: 1.1rem;
 }
 
 .recent-runs-box > h4 {
@@ -724,8 +747,19 @@ div.notification-container--top-center .notification .notification__item .notifi
   cursor: pointer;
 }
 
+.account-settings .side-menu-bar li:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
 .account-settings .side-menu-bar li:last-child {
   border: none;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .account-settings .side-menu-bar li:hover {
@@ -738,16 +772,6 @@ div.notification-container--top-center .notification .notification__item .notifi
 
 .account-settings .side-menu-bar li:hover i {
   color: white;
-}
-
-.account-settings .side-menu-bar li:hover:first-child {
-  border-top-left-radius: 9px;
-  border-top-right-radius: 9px;
-}
-
-.account-settings .side-menu-bar li:hover:last-child {
-  border-bottom-left-radius: 9px;
-  border-bottom-right-radius: 9px;
 }
 
 .account-settings .side-menu-bar li p {
@@ -779,108 +803,159 @@ div.notification-container--top-center .notification .notification__item .notifi
   border-bottom: 1px solid #3069c0;
 }
 
-.account-settings .actual-account-settings .space-settings {
+.account-settings .actual-account-settings .fields-available {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (1fr)[10];
       grid-template-columns: repeat(10, 1fr);
+  -ms-grid-rows: (1fr)[3];
+      grid-template-rows: repeat(3, 1fr);
+  grid-row-gap: 1.0rem;
+  margin-top: 20px;
 }
 
-.account-settings .actual-account-settings .gender-age {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (1fr)[2];
-      grid-template-columns: repeat(2, 1fr);
+.account-settings .actual-account-settings .fields-available .username-change-field {
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+  grid-column-end: 5;
+  -ms-grid-row: 2;
+  grid-row: 2;
 }
 
-.account-settings .actual-account-settings .language-select {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (1fr)[2];
-      grid-template-columns: repeat(2, 1fr);
+.account-settings .actual-account-settings .fields-available .username-change-field .MuiInputBase-input {
+  text-align: left;
+  width: 350px;
 }
 
-.account-settings .actual-account-settings .fields-available {
-  grid-column: span 6;
+.account-settings .actual-account-settings .fields-available .username-change-field .length-username-red {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.account-settings .actual-account-settings .fields-available .username-change-field .length-username-green {
+  color: green;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.account-settings .actual-account-settings .fields-available .unit-change-field {
+  -ms-grid-column: 5;
+      grid-column-start: 5;
+  grid-column-end: 7;
+  -ms-grid-row: 1;
+  grid-row: 1;
+  text-align: left;
+}
+
+.account-settings .actual-account-settings .fields-available .unit-change-field .MuiSelect-root {
+  text-align: left;
+  width: 100px;
+}
+
+.account-settings .actual-account-settings .fields-available .change-language-field {
+  -ms-grid-column: 7;
+      grid-column-start: 7;
+  grid-column-end: 9;
+  -ms-grid-row: 1;
+  grid-row: 1;
+  text-align: left;
+}
+
+.account-settings .actual-account-settings .fields-available .change-language-field .MuiSelect-root {
+  text-align: left;
+  width: 130px;
+}
+
+.account-settings .actual-account-settings .fields-available .preferred-distance-range {
+  -ms-grid-column: 9;
+      grid-column-start: 9;
+  grid-column-end: 11;
+  -ms-grid-row: 1;
+  grid-row: 1;
+}
+
+.account-settings .actual-account-settings .fields-available .weekly-goal-change-field {
+  -ms-grid-row: 2;
+  grid-row: 2;
+  -ms-grid-column: 5;
+      grid-column-start: 5;
+  grid-column-end: 8;
+}
+
+.account-settings .actual-account-settings .fields-available .monthly-goal-change-field {
+  -ms-grid-row: 2;
+  grid-row: 2;
+  -ms-grid-column: 8;
+      grid-column-start: 8;
+  grid-column-end: 11;
+}
+
+.account-settings .actual-account-settings .fields-available .monthly-goal-change-field .MuiFormControl-root {
+  text-align: left;
+}
+
+.account-settings .actual-account-settings .fields-available .email-change-field {
+  -ms-grid-row: 1;
+  grid-row: 1;
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+  grid-column-end: 5;
+}
+
+.account-settings .actual-account-settings .fields-available .email-change-field .MuiInputBase-input {
+  cursor: not-allowed;
+  text-align: left;
+  width: 330px;
+}
+
+.account-settings .actual-account-settings .fields-available .save-btn-div {
+  text-align: center;
+  -ms-grid-row: 3;
+  grid-row: 3;
+  margin-top: 30px;
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+  grid-column-end: 11;
+}
+
+.account-settings .actual-account-settings .fields-available .save-btn-div button {
+  font-weight: 400;
+  font-size: 1.1rem;
+  width: 200px;
 }
 
 .account-settings .actual-account-settings .fields-available > div {
-  padding: 20px;
-  padding-left: 0px;
-}
-
-.account-settings .actual-account-settings .fields-available > div p {
-  margin-bottom: 10px;
-  font-size: 1.3rem;
-  color: #3069c0;
-  font-weight: 800;
-}
-
-.account-settings .actual-account-settings .fields-available > div select {
-  font-size: 1.15rem;
-  padding: 3px;
-}
-
-.account-settings .actual-account-settings .fields-available > div input {
-  border-radius: 5px;
-  border: 1px solid #3069c0;
-  width: 100%;
-  padding: 5px;
-  font-size: 1.2rem;
-}
-
-.account-settings .actual-account-settings .fields-available > div input:focus {
-  background-color: #D9D9D9;
+  padding-top: 20px;
 }
 
 .account-settings .actual-account-settings .title-settings {
   font-size: 2rem;
   color: #3069c0;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 
-.account-settings .save-btn-div {
-  text-align: center;
+.password-settings .password-fields {
+  margin-top: 20px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[4];
+      grid-template-rows: repeat(4, 1fr);
+  grid-row-gap: 1.5rem;
 }
 
-.account-settings .save-btn {
-  font-size: 1.3rem;
-  margin-top: 30px;
-  cursor: pointer;
-  padding: 5px 53px;
-  background-color: #3069c0;
-  color: white;
-  outline: none;
-  border: none;
-  border-radius: 5px;
+.password-settings .password-fields .password-change-field input {
+  width: 300px;
 }
 
-.account-settings .save-btn:hover {
-  background-color: #93A7D2;
-}
-
-.password-visibility {
-  margin-top: 5px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  width: auto;
-  background-color: white;
-  color: #3069c0;
-  border: none;
-  padding: 0px;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-}
-
-.password-visibility:focus {
-  outline: none;
+.password-settings .password-fields .save-btn-div {
+  -ms-grid-row: 4;
+  grid-row: 4;
 }
 
 .selected {
   background-color: #3069c0;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
 }
 
 .selected p {
@@ -889,13 +964,6 @@ div.notification-container--top-center .notification .notification__item .notifi
 
 .selected i {
   color: white !important;
-}
-
-.selected-bottom {
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 
 .selected-middle {
@@ -1060,8 +1128,8 @@ div.notification-container--top-center .notification .notification__item .notifi
 .goals-predictions {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[3];
-      grid-template-columns: repeat(3, 1fr);
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
 }
 
 .outer {
@@ -1090,19 +1158,252 @@ div.notification-container--top-center .notification .notification__item .notifi
   right: 5%;
 }
 
-.my-node-enter {
-  opacity: 0;
+.follows .menu-followers-following {
+  color: white;
+  font-size: 1.05rem;
+  display: inline-block;
+  text-align: center;
+  margin-top: 20px;
 }
 
-.my-node-enter-active {
-  opacity: 1;
+.follows .menu-followers-following .pages {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[4];
+      grid-template-columns: repeat(4, 1fr);
 }
 
-.my-node-exit {
-  opacity: 1;
+.follows .menu-followers-following .pages > div {
+  font-weight: 800;
+  padding: 15px 15px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  border: 2px solid #5685CB;
+  color: #3069c0;
+  text-align: center;
 }
 
-.my-node-exit-active {
-  opacity: 0;
+.follows .menu-followers-following .pages > div:hover {
+  background-color: #3069c0;
+  color: white;
+}
+
+.follows .menu-followers-following .pages .selected:hover {
+  background-color: #3069c0;
+}
+
+.follows .menu-followers-following .pages > div {
+  border-left: 1px solid #5685CB;
+  border-right: 1px solid #5685CB;
+}
+
+.follows .menu-followers-following .pages > :first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-left: 2px solid #5685CB;
+}
+
+.follows .menu-followers-following .pages > :last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-right: 2px solid #5685CB;
+}
+
+.followers {
+  margin-top: 20px;
+}
+
+.followers .single-follower {
+  border: 2px solid #3069c0;
+  margin-bottom: 8px;
+  padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.followers .single-follower .follow-btn {
+  margin-left: auto;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.followers .single-follower .follow-btn button {
+  font-size: 0.88rem;
+  padding: 5px 15px;
+}
+
+.followers .single-follower .fav-star {
+  padding: 7px;
+  margin-right: 35px;
+  cursor: pointer;
+  color: #3069c0;
+  font-size: 1.0rem;
+}
+
+.followers .single-follower .followed {
+  background: #51ad48;
+  color: white;
+}
+
+.followers .single-follower .not-followed {
+  background: #3069c0;
+  color: white;
+}
+
+.followers .single-follower .accept-request {
+  background-color: #51ad48;
+  color: white;
+}
+
+.followers .single-follower .remove-request {
+  background-color: #D04351;
+  margin-left: 10px;
+  color: white;
+}
+
+.followers .single-follower .cancel-request {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.followers .single-follower .disabled-request {
+  cursor: not-allowed;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.followers .single-follower .disabled-request:hover {
+  -webkit-box-shadow: inherit;
+          box-shadow: inherit;
+}
+
+.followers .single-follower .remove-follower {
+  margin-left: 10px;
+}
+
+.followers .single-follower .info-user {
+  color: black;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.followers .single-follower .info-user .profile-pic {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.followers .single-follower .info-user .profile-pic img {
+  margin-top: 5px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.followers .single-follower .info-user .general-info {
+  margin-left: 30px;
+  display: inline-block;
+}
+
+.followers .single-follower .info-user .general-info > div {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.followers .single-follower .info-user .general-info .username-profile {
+  font-size: 1.2rem;
+}
+
+.followers .single-follower .info-user .general-info .short-stats {
+  color: gray;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.followers .single-follower .info-user .general-info .short-stats > span {
+  padding-right: 5px;
+}
+
+.search-username-div {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[2];
+      grid-template-rows: repeat(2, 1fr);
+}
+
+.search-username-div .title-send-request {
+  font-size: 1.3rem;
+  color: #3069c0;
+}
+
+.search-username-div .search-username {
+  font-size: 1.3rem;
+  padding: 5px 10px;
+  border-color: #3069c0;
+  border-width: 2px;
+}
+
+.search-username-div .search-username:focus {
+  background-color: #F1F1F1;
+}
+
+.search-username-div .send-request-emoji {
+  padding: 7px;
+  padding-left: 5px;
+  padding-right: 9px;
+  font-size: 1.3rem;
+  border: 2px solid #3069c0;
+  border-left: none;
+  color: #3069c0;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.search-username-div .send-request-emoji:hover {
+  color: white;
+  background-color: #3069c0;
+}
+
+.outlined-distance-range {
+  width: 90px;
+}
+
+.options-runs {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[10];
+      grid-template-columns: repeat(10, 1fr);
+}
+
+.options-runs .runs-number-view {
+  text-align: center;
+  -ms-grid-column: 4;
+      grid-column-start: 4;
+}
+
+.options-runs .MuiSelect-root {
+  font-size: 0.9rem;
+  padding: 5px 20px;
+}
+
+.personal-runs-title {
+  font-size: 1.8rem;
+  color: #3069c0;
+}
+
+.synced-charts-width {
+  width: 100%;
 }
 /*# sourceMappingURL=main.css.map */

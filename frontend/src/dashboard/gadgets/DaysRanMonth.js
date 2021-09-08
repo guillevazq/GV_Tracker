@@ -38,14 +38,14 @@ const DaysRanMonth = ({runs}) => {
     series.reverse();
     daysRanMonthOptions.tooltip.y.formatter = value => {
         if (value === solidity) {
-            return "0KM";
+            return 0;
         };
-        return `${value.toFixed(2)} KM`;
+        return value.toFixed(2);
     };
 
     return (
         <div className="heatmap-runs">
-            <ReactApexChart options={daysRanMonthOptions} series={series} type="heatmap" height={350} />
+            <ReactApexChart options={daysRanMonthOptions} series={series} type="heatmap" height={505} />
         </div>
     );
 };

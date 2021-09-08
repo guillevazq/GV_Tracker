@@ -1,77 +1,65 @@
-import React, {useState, useContext, useEffect, useRef} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
+
+// Context
 import {AuthenticationContext} from '../../context/AuthenticationContext';
-import {RunsContext} from '../../context/RunsContext';
-import UserSpecificSettings from './UserSpecificSettings';
-import PasswordSettings from './PasswordSettings';
-import FriendSettings from "./FriendsSettings";
+
+// Pages
+import Details from './Details';
+import ChangePassword from "./ChangePassword";
+import Social from "./Social";
 
 const AccountSettings = props => {
-    const authenticationContext = useContext(AuthenticationContext);
-    const {setTokenFromLS, email, isLogged} = authenticationContext;
-    const runsContext = useContext(RunsContext);
-    const {getRuns} = runsContext;
+    const {setTokenFromLS, email, isLogged} = useContext(AuthenticationContext);
+    const [currentPage, setCurrentPage] = useState(<Details />);
 
-    const [currentPage, setCurrentPage] = useState(<PasswordSettings />);
-
-    const [classFriends, setClassFriends] = useState("friends");
-    const [classAccounts, setClassAccounts] = useState("account-details-email-lang");
-    const [classPassword, setClassPassword] = useState("password-reset selected");
+    const setPage = (e, component) => {
+        let clickedLi = e.target;
+        if (clickedLi.tagName !== "LI") {
+            clickedLi = clickedLi.parentElement;
+        };
+        let lis = clickedLi.parentElement.childNodes;
+        lis.forEach(li => {
+            if (li === clickedLi) {
+                li.className = " selected";
+            } else {
+                li.className = "";
+            }
+        });
+        setCurrentPage(component);
+    };
 
     useEffect(() => {
-        getRuns();
+        // Get user info and set in state
         setTokenFromLS();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Make route protected
     useEffect(() => {
         if (isLogged === false) {
             props.history.push("/login");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLogged, props.history]);
 
-
-    const changePage = componentName => {
-        if (componentName === "friends") {
-            setCurrentPage(<FriendSettings />);
-            setClassFriends(currClass => currClass + " selected");
-            setClassAccounts("account-details-email-lang");
-            setClassPassword("password-reset");
-        } else if (componentName === "account") {
-            setCurrentPage(<UserSpecificSettings />);
-            setClassAccounts(currClass => currClass + " selected selected-bottom");
-            setClassFriends("friends");
-            setClassPassword("password-reset");
-        } else if (componentName === "passwords") {
-            setCurrentPage(<PasswordSettings />);
-            setClassPassword(currClass => currClass + " selected");
-            setClassAccounts("account-details-email-lang");
-            setClassFriends("friends");
-        };
-    };
+    const menus = [
+        {title: "Account Details", icon: "envelope", component: <Details />, initialClassName: "selected"},
+        {title: "Social", icon: "users", component: <Social />},
+        {title: "Password Reset", icon: "key", component: <ChangePassword />},
+    ];
 
     return (
         <div className="account-settings">
             {email && (
                 <>
                     <ul className="side-menu-bar">
-                        {/* <li onClick={e => changePage("friends")} className={classFriends}>
-                            <i className="fas fa-users"></i>
-                            <p>Friends</p>
-                            <div className="friends-list">
-                            </div>
-                            <div className="friend-requests">
-                            </div>
-                            <div className="add-friend">
-                            </div>
-                        </li> */}
-                        <li onClick={e => changePage("passwords")} className={classPassword}>
-                            <i className="fas fa-key"></i>
-                            <p>Password Reset</p>
-                        </li>
-                        <li onClick={e => changePage("account")} className={classAccounts}>
-                            <i className="far fa-envelope"></i>
-                            <p>Account Details</p>
-                        </li>
-                        </ul>
+                        {menus.map((menu, index) => (
+                            <li className={menu.initialClassName} key={index} onClick={e => setPage(e, menu.component)}>
+                                <i className={`fas fa-${menu.icon}`}></i>
+                                <p>{menu.title}</p>
+                            </li>
+                        ))}
+                    </ul>
                     <div className="actual-account-settings">
                         {currentPage}
                     </div>

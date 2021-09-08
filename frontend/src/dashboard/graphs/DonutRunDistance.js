@@ -5,7 +5,7 @@ import {donutRunDistanceOptions} from "../../graph_settings/GraphSettings";
 
 import {RunsContext} from "../../context/RunsContext";
 
-const DonutRunDistance = ({personalRuns, followingRuns, followingRunsVisibility}) => {
+const DonutRunDistance = ({abreviatedUnit, personalRuns, followingRuns, followingRunsVisibility}) => {
     const {labelRun} = useContext(RunsContext);
 
     let allRanges = {}, runRangeNames = [], series = [];
@@ -18,24 +18,22 @@ const DonutRunDistance = ({personalRuns, followingRuns, followingRunsVisibility}
     };
 
     runs.forEach(run => {
-        let currentLabel = labelRun(run.distance);
-        if (allRanges[run.username]) {
-            if (allRanges[run.username][currentLabel]) {
-                allRanges[run.username][currentLabel] += 1;
+        let currentLabel = labelRun(run.distance, abreviatedUnit);
+        if (allRanges) {
+            if (allRanges[currentLabel]) {
+                allRanges[currentLabel] += 1;
             } else {
-                allRanges[run.username][currentLabel] = 1;
+                allRanges[currentLabel] = 1;
             };
         } else {
-            allRanges[run.username] = {};
-            allRanges[run.username][currentLabel] = 1;
+            allRanges = {};
+            allRanges[currentLabel] = 1;
         };
     });
 
-    for (let [username, data] of Object.entries(allRanges)) {
-        for (let [runRangeName, runCount] of Object.entries(data)) {
-            series.push(runCount);
-            runRangeNames.push(`${runRangeName} - ${username}`);
-        };
+    for (let [runRangeName, runCount] of Object.entries(allRanges)) {
+        series.push(runCount);
+        runRangeNames.push(`${runRangeName}`);
     };
 
     donutRunDistanceOptions.labels = runRangeNames;
@@ -52,9 +50,9 @@ const DonutRunDistance = ({personalRuns, followingRuns, followingRunsVisibility}
 
     return (
         runs.length !== 0 ? (
-            <ReactApexChart type="donut" series={series} options={donutRunDistanceOptions} />
+            <ReactApexChart type="donut" series={series} options={donutRunDistanceOptions} height={450} />
         ) : (
-            <ReactApexChart type="donut" series={dummySeries} options={dummyOptions} />
+            <ReactApexChart type="donut" series={dummySeries} options={dummyOptions} height={450} />
         )
     );
 };
