@@ -2,6 +2,7 @@ import React, {useState, useContext, useEffect} from 'react';
 
 // Context
 import {AuthenticationContext} from '../../context/AuthenticationContext';
+import {SocialContext} from '../../context/SocialContext';
 
 // Pages
 import Details from './Details';
@@ -10,6 +11,7 @@ import Social from "./Social";
 
 const AccountSettings = props => {
     const {setTokenFromLS, email, isLogged} = useContext(AuthenticationContext);
+    const {language, unit, weekly_goal} = useContext(SocialContext);
     const [currentPage, setCurrentPage] = useState(<Details />);
 
     const setPage = (e, component) => {
@@ -50,7 +52,7 @@ const AccountSettings = props => {
 
     return (
         <div className="account-settings">
-            {email && (
+            {email && language && weekly_goal && unit && (
                 <>
                     <ul className="side-menu-bar">
                         {menus.map((menu, index) => (

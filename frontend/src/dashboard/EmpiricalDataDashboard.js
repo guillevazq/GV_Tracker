@@ -43,16 +43,24 @@ const EmpiricalDataDashboard = props => {
     } = useContext(RunsContext);
 
     const [seeFriends, setSeeFriends] = useState(false);
-    const [transformToUnit, setTransformToUnit] = useState(false);
     const [timeRange, setTimeRange] = useState(getTimeRangeLine());
     const [timeRangeDistanceMonths, setTimeRangeDistanceMonths] = useState(getTimeRangeLineDistanceMonths());
     const [numberOfRuns, setNumberOfRuns] = useState(getNumberRunsChart());
 
+    const [transformToUnit, setTransformToUnit] = useState(false);
     useEffect(() => {
         getSettings();
         getRuns()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (personalRuns && followingRuns && unit && !transformToUnit) {
+            convertRunsToMiles(personalRuns, unit);
+            setTransformToUnit(true);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [unit, personalRuns, followingRuns]);
 
     useEffect(() => {
         if (localStorage.getItem("s-f") !== null) {
@@ -65,13 +73,6 @@ const EmpiricalDataDashboard = props => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    useEffect(() => {
-        if (personalRuns && followingRuns && unit && !transformToUnit) {
-            convertRunsToMiles(personalRuns, unit);
-            setTransformToUnit(true);
-        };
-    }, [unit, personalRuns, followingRuns]);
 
     useEffect(() => {
         if (isLogged === false) {

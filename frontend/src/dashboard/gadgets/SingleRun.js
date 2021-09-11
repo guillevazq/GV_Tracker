@@ -30,7 +30,7 @@ const SingleRun = ({runFunctions, abreviatedUnit, dateRun, distance, seconds, co
 
     const setRunInEditMode = e => {
         let [minutesState, secondsState] = secondsToMinutesSeconds(seconds);
-        populateEditFormData(minutesState, secondsState, distance, dateRun, dataKey);
+        populateEditFormData(minutesState, secondsState, distance.toFixed(2), dateRun, dataKey);
         toggleEditForm();
     };
 

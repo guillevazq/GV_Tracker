@@ -6,7 +6,7 @@ import {RunsContext} from '../context/RunsContext';
 // UI
 import Button from '@material-ui/core/Button';
 
-const RunSubmissionForm = () => {
+const RunSubmissionForm = ({setTransformToUnit, unit}) => {
     const {addRun, toggleSubmitForm, submitFormVisibility} = useContext(RunsContext);
 
     let now = new Date();
@@ -41,7 +41,12 @@ const RunSubmissionForm = () => {
 
     const submitRun = e => {
         e.preventDefault();
-        addRun(hours, minutes, seconds, distance, parseInt(new Date(dateRun).getTime() / 1000));
+        let convertedDistance = distance;
+        if (unit === "Miles") {
+            convertedDistance = parseFloat(convertedDistance) * 1.609344;
+        };
+        addRun(hours, minutes, seconds, convertedDistance, parseInt(new Date(dateRun).getTime() / 1000));
+        setTransformToUnit(false);
     };
 
     const handleNumericInput = (e, max, min, changeFunction) => {
@@ -86,7 +91,7 @@ const RunSubmissionForm = () => {
                         </div>
                     </div>
                     <div className="password-field distance-input-div">
-                        <small>Distance (KM)</small>
+                        <small>Distance ({unit})</small>
                         <input required step={"0.000000000000001"} min={0} type="number" name="distance" id="distance" value={distance}
                         onChange={e => setDistance(e.target.value)}/>
                     </div>

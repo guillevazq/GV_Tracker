@@ -40,6 +40,7 @@ const Details = () => {
     useEffect(() => {
         if (distanceUnit === "Miles") {
             setWeeklyDistanceGoal(currentDistanceGoal => (currentDistanceGoal / 1.609344).toFixed(3));
+            setMonthlyDistanceGoal(currentDistanceGoal => (currentDistanceGoal / 1.609344).toFixed(3));
         };
         if (localStorage.getItem("d-r")) {
             setDistanceRange(localStorage.getItem("d-r"));
@@ -116,7 +117,7 @@ const Details = () => {
 
     return (
         <div>
-            {email && username && language && weekly_goal && unit && (
+            {email && username && language && weekly_goal && unit && distanceUnit && (
                 <>
                 <h4 className="title-settings">Details</h4>
                 <hr />

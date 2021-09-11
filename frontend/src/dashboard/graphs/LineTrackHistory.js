@@ -64,7 +64,7 @@ const LineTrackHistory = ({abreviatedUnit, personalRuns, followingRuns, followin
     };
 
     lineTrackHistoryOptions.yaxis.labels.formatter = value => {
-        return value + abreviatedUnit + " / Minute";
+        return value + " Minutes / " + abreviatedUnit;
     };
 
     return <ReactApexChart options={lineTrackHistoryOptions} series={series} type="line" height={400} />;

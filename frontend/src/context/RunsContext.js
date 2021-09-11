@@ -301,7 +301,7 @@ const RunState = props => {
     };
 
 
-    const getDistanceRanThisWeek = () => {
+    const getDistanceRanThisWeek = currentUnit => {
         let today = new Date();
         let day = today.getDay() || 7;
         if (day !== 1) {
@@ -314,10 +314,13 @@ const RunState = props => {
                 totalDistance += run.distance;
             };
         });
-        return totalDistance;
+        if (currentUnit === " Mi") {
+            totalDistance *= 0.6213712;
+        };
+        return totalDistance.toFixed(2);
     };
 
-    const getDistanceRanThisMonth = () => {
+    const getDistanceRanThisMonth = currentUnit => {
         let today = new Date();
         let firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).getTime() / 1000;
         let totalDistance = 0;
@@ -326,11 +329,13 @@ const RunState = props => {
                 totalDistance += run.distance;
             };
         });
-        return totalDistance;
+        if (currentUnit === " Mi") {
+            totalDistance *= 0.6213712;
+        };
+        return totalDistance.toFixed(2);
     };
 
     const convertRunsToMiles = (runs, unit) => {
-        console.log(unit);
         if (unit === "Miles") {
             runs.forEach(run => {
                 run.distance = run.distance * 0.62137;

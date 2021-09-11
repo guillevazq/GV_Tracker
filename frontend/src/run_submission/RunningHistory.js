@@ -1,8 +1,9 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 // Context
 import {AuthenticationContext} from '../context/AuthenticationContext';
 import {RunsContext} from '../context/RunsContext';
+import {SocialContext} from '../context/SocialContext';
 
 // Components
 import RecentRuns from '../dashboard/gadgets/RecentRuns';
@@ -25,13 +26,33 @@ const useStyles = makeStyles((theme) => ({
 
 const RunningHistory = props => {
     const {isLogged} = useContext(AuthenticationContext);
-    const {getRuns, personalRuns, submitFormVisibility, toggleSubmitForm, editFormVisibility, toggleEditForm, editFormData} = useContext(RunsContext);
+    const {unit, getSettings} = useContext(SocialContext);
+    const {
+        getRuns,
+        personalRuns,
+        submitFormVisibility,
+        toggleSubmitForm,
+        editFormVisibility,
+        toggleEditForm,
+        editFormData,
+        convertRunsToMiles,
+    } = useContext(RunsContext);
     const classes = useStyles();
+    const [transformToUnit, setTransformToUnit] = useState(false);
 
     useEffect(() => {
-        getRuns();
+        getSettings();
+        getRuns()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (personalRuns && unit && !transformToUnit) {
+            convertRunsToMiles(personalRuns, unit);
+            setTransformToUnit(true);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [unit, personalRuns]);
 
     useEffect(() => {
         if (isLogged === false) {
@@ -42,18 +63,18 @@ const RunningHistory = props => {
 
     return (
         <>
-        {(personalRuns && isLogged) ? (
+        {(personalRuns && isLogged && transformToUnit) ? (
             <div className="run-info-page">
                 <div className='recent-runs-div'>
                     <RecentRuns followingRunsVisibility={false} editCapability={true} personalRuns={personalRuns} title={"All Runs"} toggleEditForm={toggleEditForm}/>
                 </div>
                 <Backdrop className={classes.backdrop} open={editFormVisibility}>
                     {editFormData && (
-                        <RunEditForm toggleEditForm={toggleEditForm} />
+                        <RunEditForm setTransformToUnit={setTransformToUnit} unit={unit} toggleEditForm={toggleEditForm} />
                     )}
                 </Backdrop>
                 <Backdrop className={classes.backdrop} open={submitFormVisibility}>
-                    <RunSubmissionForm />
+                    <RunSubmissionForm setTransformToUnit={setTransformToUnit} unit={unit} />
                 </Backdrop>
                 <Fab className="add-new-run-btn" onClick={() => toggleSubmitForm()} color="primary" aria-label="add">
                     <AddIcon />

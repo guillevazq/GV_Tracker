@@ -6,7 +6,7 @@ import {RunsContext} from '../context/RunsContext';
 // UI
 import Button from '@material-ui/core/Button';
 
-const RunEditForm = ({toggleEditForm}) => {
+const RunEditForm = ({toggleEditForm, unit, setTransformToUnit}) => {
 
     const {editRun, editFormData, cleanEditFormData} = useContext(RunsContext);
     let initialMinutes = editFormData["minutes"];
@@ -50,12 +50,12 @@ const RunEditForm = ({toggleEditForm}) => {
 
     const submitEditedRun = e => {
         e.preventDefault();
-        editRun(
-            hours * 3600 + minutes * 60 + parseInt(seconds),
-            parseFloat(distance),
-            new Date(dateRun).getTime() / 1000,
-            editFormData.id
-        );
+        let convertedDistance = distance;
+        if (unit === "Miles") {
+            convertedDistance = parseFloat(convertedDistance) * 1.609344;
+        };
+        editRun(hours * 3600 + minutes * 60 + parseInt(seconds), convertedDistance, new Date(dateRun).getTime() / 1000, editFormData.id);
+        setTransformToUnit(false);
     };
 
     return (
@@ -84,7 +84,7 @@ const RunEditForm = ({toggleEditForm}) => {
                         </div>
                     </div>
                     <div className="password-field distance-input-div">
-                        <small>Distance (KM)</small>
+                        <small>Distance ({unit})</small>
                         <input required step={"0.000000000000001"} min={0} type="number" name="distance" id="distance" value={distance} onChange={handleDistance}/>
                     </div>
                     <input max={today} value={dateRun} onChange={e => setDateRun(e.target.value)} type="datetime-local" name="date" id="date" />

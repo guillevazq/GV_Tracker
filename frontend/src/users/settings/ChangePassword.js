@@ -23,7 +23,7 @@ const ChangePassword = () => {
 
     return (
         <div>
-            <h4 className="title-settings">Details</h4>
+            <h4 className="title-settings">Change Password</h4>
             <hr />
             <form onSubmit={resetPassword} className="password-settings">
                 <div className="password-fields">
