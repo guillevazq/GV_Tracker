@@ -61,7 +61,7 @@ const RunSubmissionForm = ({setTransformToUnit, unit}) => {
     };
 
     return (
-        <div className="login-div add-run-div">
+        <div className="submission-div add-run-div">
             <form className="form-login" action="POST" onSubmit={submitRun}>
                 <h3>Submit Run</h3>
                 <div className="form-fields form-fields-add-run">

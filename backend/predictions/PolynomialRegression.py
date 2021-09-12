@@ -6,8 +6,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
 
 # Create usable function
-def get_polynomial_function(pace_each_day, specific_days, degree=1, model_to_use="ridge", alpha=0):
-
+def get_polynomial_function(pace_each_day, specific_days, degree=2, model_to_use="ridge", alpha=13_000_000):
   # Transform data
   x = pd.DataFrame(specific_days)
   y = pd.DataFrame(pace_each_day)
@@ -24,7 +23,7 @@ def get_polynomial_function(pace_each_day, specific_days, degree=1, model_to_use
   elif model_to_use == "elastic_net":
     model = ElasticNet(alpha=alpha, l1_ratio=0.5) # Elastic net regression with polynomial features (mix of ridge and lasso)
   else:
-    model = LinearRegression() # Using regular polynomial regression
+    model = LinearRegression(n_jobs=-1) # Using regular polynomial regression
 
   model.fit(x_poly, y)
   if model_to_use == "lasso" or model_to_use == "elastic_net":

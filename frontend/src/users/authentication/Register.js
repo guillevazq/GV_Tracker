@@ -1,5 +1,16 @@
 import React, {useState, useContext, useEffect} from 'react';
 
+// UI
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Button from '@material-ui/core/Button';
+
 // Context
 import {AuthenticationContext} from '../../context/AuthenticationContext';
 
@@ -18,14 +29,14 @@ const Register = props => {
     const [email, setEmail] = useState("");
     const [password1, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
-    const [passwordVisibility, setPasswordVisibility] = useState("password");
+    const [passwordVisibility, setPasswordVisibility] = useState(false);
 
-    const togglePasswordVisibility = () => {
-        if (passwordVisibility === "password") {
-            setPasswordVisibility("text");
-        } else {
-            setPasswordVisibility("password");
-        };
+    const handleMouseDownPassword = e => {
+        e.preventDefault();
+    };
+
+    const handleClickShowPassword = () => {
+        setPasswordVisibility(!passwordVisibility);
     };
 
     useEffect(() => {
@@ -43,27 +54,47 @@ const Register = props => {
                         <h3>Register</h3>
                         <div className="form-fields form-fields-register">
                             <div className="username-field">
-                                <small>Username</small>
-                                <input required type="text" name="username" id="username" value={username} onChange={e => setUsername(e.target.value)} />
+                                <TextField variant="outlined" id="username" label="Username" value={username} onChange={e => setUsername(e.target.value)} />
                             </div>
                             <div className="email-field">
-                                <small>Email</small>
-                                <input required type="email" name="email" id="email" value={email} onChange={e => setEmail(e.target.value)} />
+                                <TextField variant="outlined" id="email" label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
                             </div>
                             <div className="password-field">
-                                <small>Password</small>
-                                <input required type={passwordVisibility} name="password" id="password1" value={password1} onChange={e => setPassword(e.target.value)} />
-                                <button type="button" className="password-visibility" onClick={togglePasswordVisibility}>See password</button>
+                                <FormControl variant="outlined">
+                                    <InputLabel htmlFor="password">Password</InputLabel>
+                                    <OutlinedInput type={passwordVisibility ? "text" : "password"} id="password" value={password1}
+                                        labelWidth={83}
+                                        onChange={e => setPassword(e.target.value)}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton edge="end" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}> 
+                                                    {passwordVisibility ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        } 
+                                    />
+                                </FormControl>
                             </div>
                             <div className="password-field">
-                                <small>Password Confirmation</small>
-                                <input required type={passwordVisibility} name="password" id="password2" value={password2} onChange={e => setPassword2(e.target.value)} />
-                                <button type="button" className="password-visibility" onClick={togglePasswordVisibility}>See password</button>
+                                <FormControl variant="outlined">
+                                    <InputLabel htmlFor="password">Password</InputLabel>
+                                    <OutlinedInput type={passwordVisibility ? "text" : "password"} id="password" value={password2}
+                                        labelWidth={83}
+                                        onChange={e => setPassword2(e.target.value)}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton edge="end" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword}> 
+                                                    {passwordVisibility ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        } 
+                                    />
+                                </FormControl>
                             </div>
-                            <button className="submit-btn-form" type="submit">Register</button>
+                            <Button className="register-btn" type="submit" variant="contained" color="primary">Register</Button>
                         </div>
                         <div className="help-anchortags">
-                            <a href="/login">Already have an Account? Log in</a>
+                            <p>Already have an Account? <a href="/login">Log in</a></p>
                         </div>
                     </form>
                 </div>

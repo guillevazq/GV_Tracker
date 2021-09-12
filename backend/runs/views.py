@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from .serializers import RunSerializer
 from users.serializers import FollowsSerializer
 from .models import Run
-from users.models import Follows
+from users.models import Follows, UserSettings
 
 from predictions.PolynomialRegression import get_polynomial_function, predict_specific_value
 
@@ -51,22 +51,24 @@ class RunDetail(generics.RetrieveUpdateDestroyAPIView):
 class RunPrediction(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, *args, **kwargs):
-
-        step = 3
+    def get(self, request, step, *args, **kwargs):
         days_range = 60
         days_prediction = 60
         minimum_runs_per_range = 2
 
         runs = Run.objects.filter(runner=request.user)
+        user_settings_unit = UserSettings.objects.get(user=request.user).unit
 
         distances_speed_days = {}
         for run in runs:
             days_ago = math.floor((time() - run.unix_date) / 3600 / 24)
             if days_ago <= days_range:
-                minutes_per_km = run.seconds / 60 / run.distance
+                distance = run.distance
+                if user_settings_unit == "Miles":
+                    distance *= 0.6213712
+                minutes_per_km = run.seconds / 60 / distance
                 for range_ in [i for i in range(step + 1, 1000, step)]:
-                    if run.distance <= range_:
+                    if distance <= range_:
                         current_range = range_
                         stringified_range = f"{current_range - step}-{current_range}"
                         try:

@@ -14,6 +14,8 @@ const reducer = (state, action) => {
             return {...state, followingRuns: action.payload.runs};
         case "SET_FUNCTION":
             return {...state, predictionFunction: action.payload.predictionFunction};
+        case "SET_FAVORITE_RUNNERS":
+            return {...state, favoriteRunners: action.payload.favoriteRunners};
         case "TOGGLE_SUBMISSION_FORM":
             return {...state, submitFormVisibility: !state.submitFormVisibility};
         case "TOGGLE_EDIT_FORM":
@@ -42,6 +44,7 @@ const RunState = props => {
         editFormVisibility: false,
         editFormData: null,
         followingRunsVisibility: true,
+        favoriteRunners: null,
     };
 
     const toggleSubmitForm = () => {
@@ -239,8 +242,9 @@ const RunState = props => {
     };
 
     const getPredictionFunction = () => {
+        let step = getRunRange();
         let currentToken = localStorage.getItem("authentication-token");
-        axios.get("http://localhost:8000/runs/prediction_function/", {
+        axios.get(`http://localhost:8000/runs/prediction_function/${step}`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Token " + currentToken,
@@ -343,6 +347,20 @@ const RunState = props => {
         };
     };
 
+    const getFavoriteRunners = () => {
+        let currentToken = "Token " + localStorage.getItem("authentication-token");
+        axios.get("http://localhost:8000/users/follows/me/follows/", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: currentToken,
+            },
+        }).then(response => {
+            dispatch({type: "SET_FAVORITE_RUNNERS", payload: {favoriteRunners: response.data.favorites_data}})
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
     return (
         <RunsContext.Provider value={{
             personalRuns: state.personalRuns,
@@ -352,6 +370,7 @@ const RunState = props => {
             submitFormVisibility: state.submitFormVisibility,
             editFormVisibility: state.editFormVisibility,
             editFormData: state.editFormData,
+            favoriteRunners: state.favoriteRunners,
             addRun,
             getRuns,
             deleteRun,
@@ -379,6 +398,7 @@ const RunState = props => {
             getDistanceRanThisWeek,
             getDistanceRanThisMonth,
             convertRunsToMiles,
+            getFavoriteRunners,
         }}>
             {props.children}
         </RunsContext.Provider>

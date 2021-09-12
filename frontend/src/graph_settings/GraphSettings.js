@@ -126,13 +126,13 @@ export let lineTrackHistoryOptions = {
             offsetX: -20,
             style : {
                 fontSize: '0.9rem',
-            }
+            },
         },
         labels: {
             rotate: 0,
             style: {
                 fontSize: "1rem"
-            }
+            },
         },
     },
     chart: {
@@ -478,18 +478,18 @@ export let paceTimePredictionsOptions = {
         },
         labels: {
             style : {
-                fontSize: '0.9rem',
+                fontSize: '1rem',
             },
             offsetX: -10,
             rotate: 0,
         }
     },
     chart: {
+        type: "line",
+        height: 350,
         zoom: {
             enabled: false
         },
-        height: 350,
-        type: 'line',
         toolbar: {
             show: false,
         },
@@ -497,17 +497,15 @@ export let paceTimePredictionsOptions = {
             enabled: true,
             easing: 'easeinout',
             speed: 800,
-        }
+        },
     },
     fill: {
         type: 'solid',
     },
-    markers: {
-        size: [6, 0]
-    },
+    markers: {},
     tooltip: {
         shared: false,
-        intersect: false,
+        intersect: true,
     },
     legend: paceTimePredictionsLegend,
     annotations: {
@@ -602,8 +600,8 @@ export const Languages = [
     value: 'English',
     label: 'English',
   },
-  {
-    value: 'Spanish',
-    label: 'Spanish',
-  },
+//   {
+//     value: 'Spanish',
+//     label: 'Spanish',
+//   },
 ];

@@ -16,7 +16,7 @@ const PredictionsDashboard = props => {
 
     const {isLogged} = useContext(AuthenticationContext);
     const {personalRuns, getRuns} = useContext(RunsContext);
-    const {abreviatedUnit, weekly_goal} = useContext(SocialContext);
+    const {abreviatedUnit, weekly_goal, unit} = useContext(SocialContext);
 
     const [weeklyGoal, setWeeklyGoal] = useState(null);
     const [monthlyGoal, setMonthlyGoal] = useState(null);
@@ -45,7 +45,7 @@ const PredictionsDashboard = props => {
         <>
             {(isLogged && personalRuns && weeklyGoal && monthlyGoal) ? (
                 <div className="predictions-dashboard">
-                    <PaceTimePredictions abreviatedUnit={abreviatedUnit} runs={personalRuns} />
+                    <PaceTimePredictions unit={unit} abreviatedUnit={abreviatedUnit} runs={personalRuns} />
                     <div className="goals">
                         <WeeklyGoal
                             weeklyGoal={weeklyGoal}

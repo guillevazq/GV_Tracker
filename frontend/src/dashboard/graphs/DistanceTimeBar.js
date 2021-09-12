@@ -4,7 +4,7 @@ import ReactApexChart from "react-apexcharts";
 
 import {distanceTimeBarOptions} from '../../graph_settings/GraphSettings';
 
-const DistanceTimeBar = ({abreviatedUnit, personalRuns, followingRuns, followingRunsVisibility, timeRangeDistanceMonths}) => {
+const DistanceTimeBar = ({abreviatedUnit, personalRuns, followingRuns, followingRunsVisibility, timeRangeDistanceMonths, favoriteRunners}) => {
     let distanceTimeBarSeries = []
     let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let monthNumber, monthString, months = {}, full_months={};
@@ -52,8 +52,17 @@ const DistanceTimeBar = ({abreviatedUnit, personalRuns, followingRuns, following
         distanceTimeBarSeries[i] = {};
         distanceTimeBarSeries[i].name = username;
         distanceTimeBarSeries[i].data = last_months_distances;
-        // // distanceTimeBarOptions.xaxis.categories = last_months;
         i++;
+    };
+
+    for (let i = 0; distanceTimeBarSeries.length >= 4; i++) {
+        let current_user_data = distanceTimeBarSeries[i];
+        if (!favoriteRunners.includes(current_user_data.name)) {
+            let index = distanceTimeBarSeries.indexOf(current_user_data);
+            if (index > -1) {
+                distanceTimeBarSeries.splice(index, 1);
+            };
+        };
     };
 
     useEffect(() => {

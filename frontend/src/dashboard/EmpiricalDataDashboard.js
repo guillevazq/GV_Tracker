@@ -30,6 +30,7 @@ const EmpiricalDataDashboard = props => {
     const {abreviatedUnit, getSettings, unit} = useContext(SocialContext);
 
     const {
+        favoriteRunners,
         getRuns,
         personalRuns,
         followingRuns,
@@ -40,6 +41,7 @@ const EmpiricalDataDashboard = props => {
         getTimeRangeLineDistanceMonths,
         getNumberRunsChart,
         convertRunsToMiles,
+        getFavoriteRunners,
     } = useContext(RunsContext);
 
     const [seeFriends, setSeeFriends] = useState(false);
@@ -50,7 +52,8 @@ const EmpiricalDataDashboard = props => {
     const [transformToUnit, setTransformToUnit] = useState(false);
     useEffect(() => {
         getSettings();
-        getRuns()
+        getRuns();
+        getFavoriteRunners();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -108,7 +111,7 @@ const EmpiricalDataDashboard = props => {
 
     return (
         <>
-        {(isLogged && personalRuns && followingRuns && unit && transformToUnit) ? (
+        {(isLogged && personalRuns && followingRuns && unit && transformToUnit && favoriteRunners) ? (
             <div className="empirical_data_dashboard">
                 <div className="general-settings">
                     <div className="see-friends-activity">
@@ -178,6 +181,7 @@ const EmpiricalDataDashboard = props => {
                     </div>
                     <div className="distance_time_bar">
                         <DistanceTimeBar
+                            favoriteRunners={favoriteRunners}
                             abreviatedUnit={abreviatedUnit}
                             personalRuns={personalRuns}
                             followingRuns={followingRuns}

@@ -5,7 +5,7 @@ import {paceTimePredictionsOptions} from '../graph_settings/GraphSettings';
 
 import {RunsContext} from "../context/RunsContext";
 
-const PaceTimePredictions = ({abreviatedUnit, runs}) => {
+const PaceTimePredictions = ({abreviatedUnit, runs, unit}) => {
     const {getPredictionFunction, predictionFunction, secondsToPace, labelRun} = useContext(RunsContext);
 
     useEffect(() => {
@@ -17,7 +17,11 @@ const PaceTimePredictions = ({abreviatedUnit, runs}) => {
     let daysSpeedDict = {};
 
     runs.forEach(run => {
-        let {seconds, distance} = run;
+        let distance = run.distance;
+        if (unit === "Miles") {
+            distance *= 0.6213712;
+        };
+        let {seconds} = run;
         let daysPassed = Math.floor((new Date().getTime() - new Date(run.unix_date * 1000).getTime()) / 1000 / 3600 / 24);
         let currentSpeed = secondsToPace(seconds, distance, true);
         let label = labelRun(distance, abreviatedUnit);
@@ -57,11 +61,31 @@ const PaceTimePredictions = ({abreviatedUnit, runs}) => {
         };
     };
 
+    paceTimePredictionsOptions.yaxis.labels.formatter = value => {
+        return value.toFixed(2) + " Min / " + abreviatedUnit;
+    };
+
+    if (predictionFunction) {
+        let markerSizes = [];
+        for (let i = 0; i < series.length; i++) {
+            if (series[i].type === "scatter") {
+                markerSizes.push(9);
+            } else if (series[i].type === "line") {
+                markerSizes.push(0);
+            };
+        };
+        paceTimePredictionsOptions.markers.size = markerSizes;
+    };
+
     return (
-        <div className="main-graph-predictions">
-            <h1>Predictions for the next 60 Days</h1>
-            <ReactApexChart options={paceTimePredictionsOptions} series={series} height={450} />
-        </div>
+        <>
+            {predictionFunction && (
+                <div className="main-graph-predictions">
+                    <h1>Predictions for the next 60 Days</h1>
+                    <ReactApexChart options={paceTimePredictionsOptions} series={series} type="line" height={450} />
+                </div>
+            )}
+        </>
     );
 };
 

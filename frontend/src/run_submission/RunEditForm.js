@@ -59,7 +59,7 @@ const RunEditForm = ({toggleEditForm, unit, setTransformToUnit}) => {
     };
 
     return (
-        <div className="login-div add-run-div">
+        <div className="submission-div add-run-div">
             <form className="form-login edit-form" action="POST" onSubmit={submitEditedRun}>
                 <h3>Edit Run</h3>
                 <div className="form-fields form-fields-add-run">

@@ -317,13 +317,12 @@ div.notification-container--top-center .notification .notification__item .notifi
 }
 
 .login-div .form-login, .register-div .form-login, .reset-password .form-login, .register-div .form-register, .reset-password .form-reset {
-  background-color: #3069c0;
+  background-color: white;
+  border: 2px solid #3069c0;
   width: 500px;
   margin: auto;
   border-radius: 15px;
-  padding: 40px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 30px 30px;
 }
 
 .login-div .form-login h3, .register-div .form-login h3, .reset-password .form-login h3, .register-div .form-register h3, .reset-password .form-reset h3 {
@@ -341,14 +340,69 @@ div.notification-container--top-center .notification .notification__item .notifi
   -ms-grid-rows: (1fr)[2];
       grid-template-rows: repeat(2, 1fr);
   padding-top: 20px;
+  color: #3069c0;
 }
 
 .login-div .form-login .help-anchortags a, .register-div .form-login .help-anchortags a, .reset-password .form-login .help-anchortags a, .register-div .form-register .help-anchortags a, .reset-password .form-reset .help-anchortags a {
+  font-weight: 700;
+  color: #3069c0;
+  font-size: 1rem;
+}
+
+.login-div .form-login .help-anchortags a:hover, .register-div .form-login .help-anchortags a:hover, .reset-password .form-login .help-anchortags a:hover, .register-div .form-register .help-anchortags a:hover, .reset-password .form-reset .help-anchortags a:hover {
+  color: #1C3F73;
+}
+
+.login-div .form-login .form-fields, .register-div .form-login .form-fields, .reset-password .form-login .form-fields, .register-div .form-register .form-fields, .reset-password .form-reset .form-fields {
+  text-align: center;
+}
+
+.login-div .form-login .form-fields input, .register-div .form-login .form-fields input, .reset-password .form-login .form-fields input, .register-div .form-register .form-fields input, .reset-password .form-reset .form-fields input {
+  color: black;
+}
+
+.login-div .form-login .form-fields-add-run, .register-div .form-login .form-fields-add-run, .reset-password .form-login .form-fields-add-run, .register-div .form-register .form-fields-add-run, .reset-password .form-reset .form-fields-add-run {
+  -ms-grid-rows: (1fr)[2];
+      grid-template-rows: repeat(2, 1fr);
+}
+
+.submission-div {
+  margin-top: 50px;
+}
+
+.submission-div .form-login, .submission-div .register-div .form-register, .register-div .submission-div .form-register, .submission-div .reset-password .form-reset, .reset-password .submission-div .form-reset {
+  background-color: #3069c0;
+  width: 500px;
+  margin: auto;
+  border-radius: 15px;
+  padding: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.submission-div .form-login h3, .submission-div .register-div .form-register h3, .register-div .submission-div .form-register h3, .submission-div .reset-password .form-reset h3, .reset-password .submission-div .form-reset h3 {
+  padding-bottom: 40px;
+  text-align: center;
+  font-size: 1.8rem;
+  color: white;
+}
+
+.submission-div .form-login .help-anchortags, .submission-div .register-div .form-register .help-anchortags, .register-div .submission-div .form-register .help-anchortags, .submission-div .reset-password .form-reset .help-anchortags, .reset-password .submission-div .form-reset .help-anchortags {
+  text-align: center;
+  grid-gap: 0.5rem;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[2];
+      grid-template-rows: repeat(2, 1fr);
+  padding-top: 20px;
+}
+
+.submission-div .form-login .help-anchortags a, .submission-div .register-div .form-register .help-anchortags a, .register-div .submission-div .form-register .help-anchortags a, .submission-div .reset-password .form-reset .help-anchortags a, .reset-password .submission-div .form-reset .help-anchortags a {
   font-size: 1rem;
   color: white;
 }
 
-.login-div .form-login .form-fields, .register-div .form-login .form-fields, .reset-password .form-login .form-fields, .register-div .form-register .form-fields, .reset-password .form-reset .form-fields {
+.submission-div .form-login .form-fields, .submission-div .register-div .form-register .form-fields, .register-div .submission-div .form-register .form-fields, .submission-div .reset-password .form-reset .form-fields, .reset-password .submission-div .form-reset .form-fields {
   display: -ms-grid;
   display: grid;
   -ms-grid-rows: (1fr)[3];
@@ -357,49 +411,49 @@ div.notification-container--top-center .notification .notification__item .notifi
   color: white;
 }
 
-.login-div .form-login .form-fields .username-field, .register-div .form-login .form-fields .username-field, .reset-password .form-login .form-fields .username-field, .register-div .form-register .form-fields .username-field, .reset-password .form-reset .form-fields .username-field,
-.login-div .form-login .form-fields .password-field,
-.register-div .form-login .form-fields .password-field,
-.reset-password .form-login .form-fields .password-field,
-.register-div .form-register .form-fields .password-field,
-.reset-password .form-reset .form-fields .password-field,
-.login-div .form-login .form-fields .email-field,
-.register-div .form-login .form-fields .email-field,
-.reset-password .form-login .form-fields .email-field,
-.register-div .form-register .form-fields .email-field,
-.reset-password .form-reset .form-fields .email-field {
+.submission-div .form-login .form-fields .username-field, .submission-div .register-div .form-register .form-fields .username-field, .register-div .submission-div .form-register .form-fields .username-field, .submission-div .reset-password .form-reset .form-fields .username-field, .reset-password .submission-div .form-reset .form-fields .username-field,
+.submission-div .form-login .form-fields .password-field,
+.submission-div .register-div .form-register .form-fields .password-field,
+.register-div .submission-div .form-register .form-fields .password-field,
+.submission-div .reset-password .form-reset .form-fields .password-field,
+.reset-password .submission-div .form-reset .form-fields .password-field,
+.submission-div .form-login .form-fields .email-field,
+.submission-div .register-div .form-register .form-fields .email-field,
+.register-div .submission-div .form-register .form-fields .email-field,
+.submission-div .reset-password .form-reset .form-fields .email-field,
+.reset-password .submission-div .form-reset .form-fields .email-field {
   display: -ms-grid;
   display: grid;
   -ms-grid-rows: (1fr)[5];
       grid-template-rows: repeat(5, 1fr);
 }
 
-.login-div .form-login .form-fields .username-field small, .register-div .form-login .form-fields .username-field small, .reset-password .form-login .form-fields .username-field small, .register-div .form-register .form-fields .username-field small, .reset-password .form-reset .form-fields .username-field small,
-.login-div .form-login .form-fields .password-field small,
-.register-div .form-login .form-fields .password-field small,
-.reset-password .form-login .form-fields .password-field small,
-.register-div .form-register .form-fields .password-field small,
-.reset-password .form-reset .form-fields .password-field small,
-.login-div .form-login .form-fields .email-field small,
-.register-div .form-login .form-fields .email-field small,
-.reset-password .form-login .form-fields .email-field small,
-.register-div .form-register .form-fields .email-field small,
-.reset-password .form-reset .form-fields .email-field small {
+.submission-div .form-login .form-fields .username-field small, .submission-div .register-div .form-register .form-fields .username-field small, .register-div .submission-div .form-register .form-fields .username-field small, .submission-div .reset-password .form-reset .form-fields .username-field small, .reset-password .submission-div .form-reset .form-fields .username-field small,
+.submission-div .form-login .form-fields .password-field small,
+.submission-div .register-div .form-register .form-fields .password-field small,
+.register-div .submission-div .form-register .form-fields .password-field small,
+.submission-div .reset-password .form-reset .form-fields .password-field small,
+.reset-password .submission-div .form-reset .form-fields .password-field small,
+.submission-div .form-login .form-fields .email-field small,
+.submission-div .register-div .form-register .form-fields .email-field small,
+.register-div .submission-div .form-register .form-fields .email-field small,
+.submission-div .reset-password .form-reset .form-fields .email-field small,
+.reset-password .submission-div .form-reset .form-fields .email-field small {
   font-size: 1rem;
   grid-row: span 2;
 }
 
-.login-div .form-login .form-fields .username-field .password-visibility, .register-div .form-login .form-fields .username-field .password-visibility, .reset-password .form-login .form-fields .username-field .password-visibility, .register-div .form-register .form-fields .username-field .password-visibility, .reset-password .form-reset .form-fields .username-field .password-visibility,
-.login-div .form-login .form-fields .password-field .password-visibility,
-.register-div .form-login .form-fields .password-field .password-visibility,
-.reset-password .form-login .form-fields .password-field .password-visibility,
-.register-div .form-register .form-fields .password-field .password-visibility,
-.reset-password .form-reset .form-fields .password-field .password-visibility,
-.login-div .form-login .form-fields .email-field .password-visibility,
-.register-div .form-login .form-fields .email-field .password-visibility,
-.reset-password .form-login .form-fields .email-field .password-visibility,
-.register-div .form-register .form-fields .email-field .password-visibility,
-.reset-password .form-reset .form-fields .email-field .password-visibility {
+.submission-div .form-login .form-fields .username-field .password-visibility, .submission-div .register-div .form-register .form-fields .username-field .password-visibility, .register-div .submission-div .form-register .form-fields .username-field .password-visibility, .submission-div .reset-password .form-reset .form-fields .username-field .password-visibility, .reset-password .submission-div .form-reset .form-fields .username-field .password-visibility,
+.submission-div .form-login .form-fields .password-field .password-visibility,
+.submission-div .register-div .form-register .form-fields .password-field .password-visibility,
+.register-div .submission-div .form-register .form-fields .password-field .password-visibility,
+.submission-div .reset-password .form-reset .form-fields .password-field .password-visibility,
+.reset-password .submission-div .form-reset .form-fields .password-field .password-visibility,
+.submission-div .form-login .form-fields .email-field .password-visibility,
+.submission-div .register-div .form-register .form-fields .email-field .password-visibility,
+.register-div .submission-div .form-register .form-fields .email-field .password-visibility,
+.submission-div .reset-password .form-reset .form-fields .email-field .password-visibility,
+.reset-password .submission-div .form-reset .form-fields .email-field .password-visibility {
   margin-top: 5px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -413,21 +467,21 @@ div.notification-container--top-center .notification .notification__item .notifi
   width: fit-content;
 }
 
-.login-div .form-login .form-fields .username-field .password-visibility:focus, .register-div .form-login .form-fields .username-field .password-visibility:focus, .reset-password .form-login .form-fields .username-field .password-visibility:focus, .register-div .form-register .form-fields .username-field .password-visibility:focus, .reset-password .form-reset .form-fields .username-field .password-visibility:focus,
-.login-div .form-login .form-fields .password-field .password-visibility:focus,
-.register-div .form-login .form-fields .password-field .password-visibility:focus,
-.reset-password .form-login .form-fields .password-field .password-visibility:focus,
-.register-div .form-register .form-fields .password-field .password-visibility:focus,
-.reset-password .form-reset .form-fields .password-field .password-visibility:focus,
-.login-div .form-login .form-fields .email-field .password-visibility:focus,
-.register-div .form-login .form-fields .email-field .password-visibility:focus,
-.reset-password .form-login .form-fields .email-field .password-visibility:focus,
-.register-div .form-register .form-fields .email-field .password-visibility:focus,
-.reset-password .form-reset .form-fields .email-field .password-visibility:focus {
+.submission-div .form-login .form-fields .username-field .password-visibility:focus, .submission-div .register-div .form-register .form-fields .username-field .password-visibility:focus, .register-div .submission-div .form-register .form-fields .username-field .password-visibility:focus, .submission-div .reset-password .form-reset .form-fields .username-field .password-visibility:focus, .reset-password .submission-div .form-reset .form-fields .username-field .password-visibility:focus,
+.submission-div .form-login .form-fields .password-field .password-visibility:focus,
+.submission-div .register-div .form-register .form-fields .password-field .password-visibility:focus,
+.register-div .submission-div .form-register .form-fields .password-field .password-visibility:focus,
+.submission-div .reset-password .form-reset .form-fields .password-field .password-visibility:focus,
+.reset-password .submission-div .form-reset .form-fields .password-field .password-visibility:focus,
+.submission-div .form-login .form-fields .email-field .password-visibility:focus,
+.submission-div .register-div .form-register .form-fields .email-field .password-visibility:focus,
+.register-div .submission-div .form-register .form-fields .email-field .password-visibility:focus,
+.submission-div .reset-password .form-reset .form-fields .email-field .password-visibility:focus,
+.reset-password .submission-div .form-reset .form-fields .email-field .password-visibility:focus {
   outline: none;
 }
 
-.login-div .form-login .form-fields input, .register-div .form-login .form-fields input, .reset-password .form-login .form-fields input, .register-div .form-register .form-fields input, .reset-password .form-reset .form-fields input {
+.submission-div .form-login .form-fields input, .submission-div .register-div .form-register .form-fields input, .register-div .submission-div .form-register .form-fields input, .submission-div .reset-password .form-reset .form-fields input, .reset-password .submission-div .form-reset .form-fields input {
   background-color: #3069c0;
   grid-row: span 3;
   height: 50px;
@@ -442,40 +496,40 @@ div.notification-container--top-center .notification .notification__item .notifi
   font-size: 1.3rem;
 }
 
-.login-div .form-login .form-fields input:focus, .register-div .form-login .form-fields input:focus, .reset-password .form-login .form-fields input:focus, .register-div .form-register .form-fields input:focus, .reset-password .form-reset .form-fields input:focus {
+.submission-div .form-login .form-fields input:focus, .submission-div .register-div .form-register .form-fields input:focus, .register-div .submission-div .form-register .form-fields input:focus, .submission-div .reset-password .form-reset .form-fields input:focus, .reset-password .submission-div .form-reset .form-fields input:focus {
   outline: none;
   border: 1px solid lightgray;
 }
 
 
-.login-div .form-login .form-fields .email-field,
-.register-div .form-login .form-fields .email-field,
-.reset-password .form-login .form-fields .email-field,
-.register-div .form-register .form-fields .email-field,
-.reset-password .form-reset .form-fields .email-field, .login-div .form-login .form-fields .username-field, .register-div .form-login .form-fields .username-field, .reset-password .form-login .form-fields .username-field, .register-div .form-register .form-fields .username-field, .reset-password .form-reset .form-fields .username-field {
+.submission-div .form-login .form-fields .email-field,
+.submission-div .register-div .form-register .form-fields .email-field,
+.register-div .submission-div .form-register .form-fields .email-field,
+.submission-div .reset-password .form-reset .form-fields .email-field,
+.reset-password .submission-div .form-reset .form-fields .email-field, .submission-div .form-login .form-fields .username-field, .submission-div .register-div .form-register .form-fields .username-field, .register-div .submission-div .form-register .form-fields .username-field, .submission-div .reset-password .form-reset .form-fields .username-field, .reset-password .submission-div .form-reset .form-fields .username-field {
   -ms-grid-rows: (1fr)[4];
       grid-template-rows: repeat(4, 1fr);
 }
 
-.login-div .form-login .form-fields .email-field input, .register-div .form-login .form-fields .email-field input, .reset-password .form-login .form-fields .email-field input, .register-div .form-register .form-fields .email-field input, .reset-password .form-reset .form-fields .email-field input,
-.login-div .form-login .form-fields .username-field input,
-.register-div .form-login .form-fields .username-field input,
-.reset-password .form-login .form-fields .username-field input,
-.register-div .form-register .form-fields .username-field input,
-.reset-password .form-reset .form-fields .username-field input {
+.submission-div .form-login .form-fields .email-field input, .submission-div .register-div .form-register .form-fields .email-field input, .register-div .submission-div .form-register .form-fields .email-field input, .submission-div .reset-password .form-reset .form-fields .email-field input, .reset-password .submission-div .form-reset .form-fields .email-field input,
+.submission-div .form-login .form-fields .username-field input,
+.submission-div .register-div .form-register .form-fields .username-field input,
+.register-div .submission-div .form-register .form-fields .username-field input,
+.submission-div .reset-password .form-reset .form-fields .username-field input,
+.reset-password .submission-div .form-reset .form-fields .username-field input {
   grid-row: span 3;
 }
 
 
-.login-div .form-login .form-fields .email-field small,
-.register-div .form-login .form-fields .email-field small,
-.reset-password .form-login .form-fields .email-field small,
-.register-div .form-register .form-fields .email-field small,
-.reset-password .form-reset .form-fields .email-field small, .login-div .form-login .form-fields .username-field small, .register-div .form-login .form-fields .username-field small, .reset-password .form-login .form-fields .username-field small, .register-div .form-register .form-fields .username-field small, .reset-password .form-reset .form-fields .username-field small {
+.submission-div .form-login .form-fields .email-field small,
+.submission-div .register-div .form-register .form-fields .email-field small,
+.register-div .submission-div .form-register .form-fields .email-field small,
+.submission-div .reset-password .form-reset .form-fields .email-field small,
+.reset-password .submission-div .form-reset .form-fields .email-field small, .submission-div .form-login .form-fields .username-field small, .submission-div .register-div .form-register .form-fields .username-field small, .register-div .submission-div .form-register .form-fields .username-field small, .submission-div .reset-password .form-reset .form-fields .username-field small, .reset-password .submission-div .form-reset .form-fields .username-field small {
   grid-row: span 1;
 }
 
-.login-div .form-login .form-fields .submit-btn-form, .register-div .form-login .form-fields .submit-btn-form, .reset-password .form-login .form-fields .submit-btn-form, .register-div .form-register .form-fields .submit-btn-form, .reset-password .form-reset .form-fields .submit-btn-form {
+.submission-div .form-login .form-fields .submit-btn-form, .submission-div .register-div .form-register .form-fields .submit-btn-form, .register-div .submission-div .form-register .form-fields .submit-btn-form, .submission-div .reset-password .form-reset .form-fields .submit-btn-form, .reset-password .submission-div .form-reset .form-fields .submit-btn-form {
   font-size: 1.2rem;
   width: 100%;
   height: 40px;
@@ -489,12 +543,12 @@ div.notification-container--top-center .notification .notification__item .notifi
   background-color: #3069c0;
 }
 
-.login-div .form-login .form-fields .submit-btn-form:hover, .register-div .form-login .form-fields .submit-btn-form:hover, .reset-password .form-login .form-fields .submit-btn-form:hover, .register-div .form-register .form-fields .submit-btn-form:hover, .reset-password .form-reset .form-fields .submit-btn-form:hover {
+.submission-div .form-login .form-fields .submit-btn-form:hover, .submission-div .register-div .form-register .form-fields .submit-btn-form:hover, .register-div .submission-div .form-register .form-fields .submit-btn-form:hover, .submission-div .reset-password .form-reset .form-fields .submit-btn-form:hover, .reset-password .submission-div .form-reset .form-fields .submit-btn-form:hover {
   background-color: white;
   color: #3069c0;
 }
 
-.login-div .form-login .form-fields-add-run, .register-div .form-login .form-fields-add-run, .reset-password .form-login .form-fields-add-run, .register-div .form-register .form-fields-add-run, .reset-password .form-reset .form-fields-add-run {
+.submission-div .form-login .form-fields-add-run, .submission-div .register-div .form-register .form-fields-add-run, .register-div .submission-div .form-register .form-fields-add-run, .submission-div .reset-password .form-reset .form-fields-add-run, .reset-password .submission-div .form-reset .form-fields-add-run {
   -ms-grid-rows: (1fr)[2];
       grid-template-rows: repeat(2, 1fr);
 }
@@ -734,7 +788,7 @@ div.notification-container--top-center .notification .notification__item .notifi
 }
 
 .account-settings .side-menu-bar li {
-  font-weight: 800;
+  font-weight: 500;
   font-size: 1.0rem;
   display: -ms-grid;
   display: grid;
@@ -937,7 +991,7 @@ div.notification-container--top-center .notification .notification__item .notifi
 }
 
 .password-settings {
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 .password-settings .password-fields {
@@ -1183,7 +1237,7 @@ div.notification-container--top-center .notification .notification__item .notifi
 }
 
 .follows .menu-followers-following .pages > div {
-  font-weight: 800;
+  font-weight: 500;
   padding: 15px 15px;
   cursor: pointer;
   -webkit-transition: all 0.2s;
@@ -1414,5 +1468,27 @@ div.notification-container--top-center .notification .notification__item .notifi
 
 .synced-charts-width {
   width: 100%;
+}
+
+.login-div .form-login h3, .register-div .form-login h3, .reset-password .form-login h3, .register-div .form-register h3, .reset-password .form-reset h3 {
+  color: #3069c0;
+  font-weight: 500;
+}
+
+.login-div .form-login .form-fields, .register-div .form-login .form-fields, .reset-password .form-login .form-fields, .register-div .form-register .form-fields, .reset-password .form-reset .form-fields {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[3];
+      grid-template-rows: repeat(3, 1fr);
+  grid-gap: 2rem;
+}
+
+.register-div .username-field > div, .register-div .email-field > div, .register-div .password-field > div {
+  width: 100%;
+}
+
+.register-div .register-btn {
+  width: 100%;
+  height: 59px;
 }
 /*# sourceMappingURL=main.css.map */
