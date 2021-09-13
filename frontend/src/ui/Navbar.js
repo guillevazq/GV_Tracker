@@ -3,7 +3,7 @@ import React, {useContext, useEffect} from "react";
 import {AuthenticationContext} from "../context/AuthenticationContext";
 import {SocialContext} from '../context/SocialContext';
 
-const Navbar = () => {
+const Navbar = ({darkmode, setDarkmode}) => {
   const authenticationContext = useContext(AuthenticationContext);
   const {isLogged, setTokenFromLS, logout, username} = authenticationContext;
   const {getSettings} = useContext(SocialContext);
@@ -17,6 +17,18 @@ const Navbar = () => {
     getSettings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleDarkModeSwitcher = e => {
+    if (e.target.checked) {
+      localStorage.setItem("DM", "y");
+      window.location.reload(false);
+      setDarkmode(true);
+    } else {
+      localStorage.setItem("DM", "n");
+      window.location.reload(false);
+      setDarkmode(false);
+    };
+  };
 
   let currentPath = window.location.href;
   let anchorTags = document.getElementsByTagName("a");
@@ -61,7 +73,7 @@ const Navbar = () => {
         )}
         <div className="nightmode-switcher">
             <label className="switch">
-                <input type="checkbox" />
+                <input checked={darkmode} onChange={handleDarkModeSwitcher} type="checkbox" />
                 <span className="slider round"></span>
             </label>
         </div>

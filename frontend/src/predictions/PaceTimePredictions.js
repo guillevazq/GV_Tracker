@@ -1,17 +1,13 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useState} from 'react';
 
 import ReactApexChart from 'react-apexcharts';
 import {paceTimePredictionsOptions} from '../graph_settings/GraphSettings';
 
 import {RunsContext} from "../context/RunsContext";
 
-const PaceTimePredictions = ({abreviatedUnit, runs, unit}) => {
-    const {getPredictionFunction, predictionFunction, secondsToPace, labelRun} = useContext(RunsContext);
-
-    useEffect(() => {
-        getPredictionFunction();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+const PaceTimePredictions = ({abreviatedUnit, runs, unit, predictionFunction}) => {
+    const {secondsToPace, labelRun} = useContext(RunsContext);
+    const [enoughRuns, setEnoughRuns] = useState(false);
 
     let series = [];
     let daysSpeedDict = {};
@@ -77,11 +73,24 @@ const PaceTimePredictions = ({abreviatedUnit, runs, unit}) => {
         paceTimePredictionsOptions.markers.size = markerSizes;
     };
 
+    if (enoughRuns) {
+        paceTimePredictionsOptions.xaxis.title.text = "Future 60 Days";
+    };
+
+    if (!enoughRuns) {
+        series.forEach(singleSeries => {
+            if (singleSeries.data.length >= 5) {
+                setEnoughRuns(true);
+            };
+        });
+    };
+
     return (
         <>
             {predictionFunction && (
                 <div className="main-graph-predictions">
                     <h1>Predictions for the next 60 Days</h1>
+                    {!enoughRuns && <h3 className="warning-txt-pred">To see some predictions you must have at least 5 different runs of the same distance range</h3>}
                     <ReactApexChart options={paceTimePredictionsOptions} series={series} type="line" height={450} />
                 </div>
             )}

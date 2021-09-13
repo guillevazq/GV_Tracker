@@ -9,6 +9,9 @@ import Details from './Details';
 import ChangePassword from "./ChangePassword";
 import Social from "./Social";
 
+// UI
+import Loader from '../../ui/Loader';
+
 const AccountSettings = props => {
     const {setTokenFromLS, email, isLogged} = useContext(AuthenticationContext);
     const {language, unit, weekly_goal} = useContext(SocialContext);
@@ -52,7 +55,7 @@ const AccountSettings = props => {
 
     return (
         <div className="account-settings">
-            {email && language && weekly_goal && unit && (
+            {(email && language && weekly_goal && unit) ? (
                 <>
                     <ul className="side-menu-bar">
                         {menus.map((menu, index) => (
@@ -66,6 +69,8 @@ const AccountSettings = props => {
                         {currentPage}
                     </div>
                 </>
+            ) : (
+                <Loader />
             )}
         </div>
     );

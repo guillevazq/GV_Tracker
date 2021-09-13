@@ -267,7 +267,7 @@ div.notification-container--top-center {
 
 // Log in page
 .login-div {
-  margin-top: 50px;
+  padding-top: 50px;
   .form-login {
     background-color: white;
     border: 2px solid #3069c0;
@@ -566,6 +566,7 @@ div.notification-container--top-center {
 }
 
 .run-info-page {
+  min-height: 93vh;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   width: 100%;
@@ -681,6 +682,7 @@ div.notification-container--top-center {
     }
   }
   .actual-account-settings {
+    min-height: 90vh;
     grid-column: span 6;
     margin-top: 50px;
 
@@ -970,6 +972,7 @@ div.notification-container--top-center {
 
 // Predictions
 .predictions-dashboard {
+  min-height: 93vh;
   .main-graph-predictions {
     width: 80%;
     margin: auto;
@@ -1257,5 +1260,176 @@ div.notification-container--top-center {
   .register-btn {
     width: 100%;
     height: 59px;
+  }
+}
+
+.selected-editing {
+  background-color: #ddbb80;
+}
+
+.warning-txt-pred {
+    color: orange;
+}
+
+.dark {
+  .warning-txt-pred {
+    color: #ddbb80;
+  }
+  .personal-runs-title {
+    color: #3399ff;
+  }
+  .empirical_data_dashboard {
+    color: white;
+    background-color: #1F1F1F;
+    // color: white;
+  }
+  .predictions-dashboard {
+    .main-graph-predictions {
+      color: white;
+      h1 {
+        color: white;
+      }
+    }
+    background-color: #1F1F1F;
+  }
+  .run-info-page {
+    background-color: #1F1F1F;
+    color: white;
+  }
+
+  .recent-runs-box {
+    .actual-recent-runs {
+      .single-run {
+        &:hover {
+          background: #262626;
+        }
+        .icons {
+          .delete-icon {
+            i {
+              // background-color:blue;
+              background-color: #343128;
+              color: red;
+              &:hover {
+                background-color: #FC4B6C;
+                color: black;
+              }
+            }
+          }
+
+          .edit-icon {
+            i {
+              color: #2196F3;
+              background-color: #343128;
+              &:hover {
+                color: black;
+                background-color: #2196F3;
+              }
+            }
+          }
+        }
+        .pace-single-run {
+          p {
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+  .add-run-div {
+    .form-login {
+      border: 0px solid #3069c0;
+      background-color: #1f1f1f;
+      h3 {
+        color: #3069c0;
+      }
+      .form-fields {
+        #date {
+          margin: 0px;
+          background-color: white;
+          color: #3069c0;
+          border: 2px solid #3069c0;
+        }
+        .submit-btn-form {
+          &:hover {
+            background-color: #3399ff;
+            color: white;
+          }
+        }
+        color: white;
+        .username-field, .password-field, .email-field {
+          input {
+            border: 2px solid #3069c0;
+            text-align: center;
+            background-color: white;
+            color: black;
+            width: 50px;
+            height: 40px;
+          }
+        }
+        .distance-input-div {
+          input {
+            width: 100px;
+            height: 40px;
+          }
+        }
+      }
+    }
+    .edit-form {
+      background-color: #ae7f2f;
+      h3 {
+        color: black;
+      }
+      .form-fields {
+        #date {
+          // color: black;
+          border: 2px solid #FFB84B;
+        }
+        .username-field, .password-field, .email-field {
+          input {
+            border: 2px solid #FFB84B;
+            // background-color: #bababa;
+          }
+        }
+        color: black;
+        .submit-btn-form {
+          transition: all 0s;
+          background-color: #FFB84B;
+          color: black;
+          border: 2px solid orange;
+          // border: 1px solid black;
+          &:hover {
+            background-color: orange;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+  .selected-editing {
+    background-color: #674b1c;
+  }
+  .outer {
+    background-color: #1F1F1F;
+  }
+  .account-settings {
+    background-color: #1F1F1F;
+  }
+  .username-profile {
+    color: white;
+  }
+  .general-settings {
+    color: #2196F3;
+  }
+  .login-div {
+    background-color: #1F1F1F;
+    height: 94vh;
+    .form-login {
+      background-color: #1F1F1F;
+      .form-fields {
+        input {
+          color: white;
+        }
+      }
+    }
   }
 }

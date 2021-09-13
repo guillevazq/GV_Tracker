@@ -1,3 +1,5 @@
+import {useState, useEffect} from 'react';
+
 // Routing
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
@@ -15,7 +17,8 @@ import AccountSettings from './users/settings/AccountSettings';
 import ForgotPassword from './users/authentication/ForgotPassword';
 
 // Color Theme
-import {theme} from './dashboard/ColorPalette';
+import {createTheme} from "@material-ui/core";
+import {lightModeGraph, darkModeGraph} from './dashboard/ColorPalette';
 
 // Third-Party libraries
 import ReactNotifications from 'react-notifications-component';
@@ -33,6 +36,47 @@ import SocialState from './context/SocialContext';
 import './styling/compiled_css/main.css';
 
 const App = () => {
+
+  const [darkmode, setDarkmode] = useState(false);
+  const [darkmodeClass, setDarkmodeClass] = useState("light");
+
+  useEffect(() => {
+    if (localStorage.getItem("DM") === "y") {
+      setDarkmode(true);
+      window.Apex = darkModeGraph;
+    } else {
+      setDarkmode(false);
+      window.Apex = lightModeGraph;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (darkmode) {
+      setDarkmodeClass("dark");
+      window.Apex = darkModeGraph;
+    } else {
+      setDarkmodeClass("light");
+      window.Apex = lightModeGraph;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [darkmode]);
+
+  const theme = createTheme({
+    typography: {
+      fontSize: 16,
+    },
+    palette: {
+      type: darkmode ? "dark" : "light",
+      primary: {
+        main: "#3069c0",
+      },
+      secondary: {
+        main: "#FFB84B",
+      },
+    },
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <NotificationState>
@@ -40,9 +84,9 @@ const App = () => {
           <SocialState>
             <RunState>
               <Router>
-                <div className="App">
+                <div className={`App ${darkmodeClass}`}>
                   <ReactNotifications />
-                  <Navbar />
+                  <Navbar darkmode={darkmode} setDarkmode={setDarkmode} />
                   <Switch>
                     <Route component={Login} exact path='/login' />
                     <Route component={Register} exact path='/register' />

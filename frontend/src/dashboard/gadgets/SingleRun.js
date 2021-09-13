@@ -37,7 +37,7 @@ const SingleRun = ({runFunctions, abreviatedUnit, dateRun, distance, seconds, co
     useEffect(() => {
         if (editFormData) {
             if (editFormData.id === dataKey) {
-                setBackgroundRun("#FFD697")
+                setBackgroundRun("selected-editing")
             } else {
                 setBackgroundRun("");
             };
@@ -75,7 +75,7 @@ const SingleRun = ({runFunctions, abreviatedUnit, dateRun, distance, seconds, co
                 </div>
             </div>
         ) : (
-            <div style={{backgroundColor: backgroundRun}} data-key={dataKey} className="single-run">
+            <div data-key={dataKey} className={"single-run " + backgroundRun}>
                 {cap && (
                     <div className="important-stat">
                         {authorUsername === username ? (

@@ -35,6 +35,7 @@ const AuthenticationState = props => {
         token: null,
         isLogged: null,
         username: null,
+        darkmode: false,
     };
 
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -163,6 +164,7 @@ const AuthenticationState = props => {
             isLogged: state.isLogged,
             username: state.username,
             email: state.email,
+            darkmode: state.darkmode,
             logIn,
             register,
             setTokenFromLS,

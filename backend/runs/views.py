@@ -54,7 +54,7 @@ class RunPrediction(APIView):
     def get(self, request, step, *args, **kwargs):
         days_range = 60
         days_prediction = 60
-        minimum_runs_per_range = 2
+        minimum_runs_per_range = 5
 
         runs = Run.objects.filter(runner=request.user)
         user_settings_unit = UserSettings.objects.get(user=request.user).unit

@@ -76,7 +76,6 @@ export let lineTrackHistoryLegend = {
     offsetX: 0,
     offsetY: 8,
     labels: {
-        colors: undefined,
         useSeriesColors: false
     },
     markers: {
@@ -224,7 +223,7 @@ export let SpeedDistanceScatterOptions = {
             style: {
                 fontSize: "1.0rem",
             },
-        }
+        },
     },
 };
 
@@ -270,7 +269,7 @@ export let daysRanMonthOptions = {
     },
     colors: ["#008FFB"],
     title: {
-        text: 'Last 100 Days',
+        text: 'Distance on the last 100 Days',
         offsetY: 10,
         style: {
             fontSize: "1.2rem",
@@ -419,7 +418,7 @@ let paceTimePredictionsLegend = {
     tooltipHoverFormatter: undefined,
     customLegendItems: [],
     offsetX: 0,
-    offsetY: 0,
+    offsetY: 5,
     labels: {
         colors: colors,
         useSeriesColors: false
@@ -454,7 +453,6 @@ export let paceTimePredictionsOptions = {
         type: 'numeric',
         decimalsInFloat: 0,
         title: {
-            text: "Future 60 days",
             offsetY: -10,
             offsetX: 0,
             style: {
@@ -466,7 +464,7 @@ export let paceTimePredictionsOptions = {
                 fontSize: "1.0rem",
             },
             formatter: value => {
-                return "Day " + value;
+                return "Day " + value.toFixed(0);
             },
         },
     },

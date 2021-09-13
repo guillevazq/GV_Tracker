@@ -15,8 +15,15 @@ import Loader from "../ui/Loader";
 const PredictionsDashboard = props => {
 
     const {isLogged} = useContext(AuthenticationContext);
-    const {personalRuns, getRuns} = useContext(RunsContext);
+    const {personalRuns, getRuns, getPredictionFunction, predictionFunction} = useContext(RunsContext);
     const {abreviatedUnit, weekly_goal, unit} = useContext(SocialContext);
+
+    useEffect(() => {
+        if (personalRuns) {
+            getPredictionFunction();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [personalRuns]);
 
     const [weeklyGoal, setWeeklyGoal] = useState(null);
     const [monthlyGoal, setMonthlyGoal] = useState(null);
@@ -43,9 +50,13 @@ const PredictionsDashboard = props => {
 
     return (
         <>
-            {(isLogged && personalRuns && weeklyGoal && monthlyGoal) ? (
+            {(isLogged && personalRuns && weeklyGoal && monthlyGoal && abreviatedUnit && predictionFunction) ? (
                 <div className="predictions-dashboard">
-                    <PaceTimePredictions unit={unit} abreviatedUnit={abreviatedUnit} runs={personalRuns} />
+                    <PaceTimePredictions
+                        predictionFunction={predictionFunction}
+                        unit={unit}
+                        abreviatedUnit={abreviatedUnit}
+                        runs={personalRuns} />
                     <div className="goals">
                         <WeeklyGoal
                             weeklyGoal={weeklyGoal}

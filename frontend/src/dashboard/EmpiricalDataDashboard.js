@@ -60,6 +60,7 @@ const EmpiricalDataDashboard = props => {
     useEffect(() => {
         if (personalRuns && followingRuns && unit && !transformToUnit) {
             convertRunsToMiles(personalRuns, unit);
+            convertRunsToMiles(followingRuns, unit);
             setTransformToUnit(true);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -33,7 +33,12 @@ const ChangePassword = () => {
         e.preventDefault();
         if (password1 !== "" && password2 !== "") {
             resetPasswordInAccount(password1, password2);
-        }
+            setShowPassword(false);
+            setTimeout(() => {
+                setPassword1("");
+                setPassword2("");
+            }, 400);
+        };
     };
 
     return (

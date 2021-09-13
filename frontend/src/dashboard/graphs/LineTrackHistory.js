@@ -1,8 +1,10 @@
 import React, {useContext} from 'react';
 
+// Context
 import {RunsContext} from '../../context/RunsContext';
 import {AuthenticationContext} from '../../context/AuthenticationContext';
 
+// UI
 import ReactApexChart from 'react-apexcharts';
 import {lineTrackHistoryOptions} from '../../graph_settings/GraphSettings';
 
