@@ -26,8 +26,8 @@ const Social = () => {
 
     const subMenus = [
         {title: "Sent Requests", component: <SentRequests />, initialClass:"title-menu selected"},
-        {title: "Followers", component: <Followers />, initialClass:"title-menu"},
-        {title: "Following", component: <Following />, initialClass:"title-menu"},
+        {title: "See Followers", component: <Followers />, initialClass:"title-menu"},
+        {title: "See Following", component: <Following />, initialClass:"title-menu"},
         {title: "Recieved Requests", component: <RecievedRequests />, initialClass:"title-menu"},
     ];
 

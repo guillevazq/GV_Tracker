@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import {AuthenticationContext} from "../context/AuthenticationContext";
 import {SocialContext} from '../context/SocialContext';
@@ -7,6 +7,7 @@ const Navbar = ({darkmode, setDarkmode}) => {
   const authenticationContext = useContext(AuthenticationContext);
   const {isLogged, setTokenFromLS, logout, username} = authenticationContext;
   const {getSettings} = useContext(SocialContext);
+  const [classBurger, setClassBurger] = useState(false);
 
   useEffect(() => {
     setTokenFromLS();
@@ -44,41 +45,79 @@ const Navbar = ({darkmode, setDarkmode}) => {
   };
 
   return (
-    <div className="navbar-gv">
-      <div className="important-pages">
-        <h1>
-          GV <span>Tracker</span>
-        </h1>
-        <div className="main-pages">
-          {isLogged && (
-            <>
-              <a href="/">HOME</a>
-              <a href="/predictions">PREVISION</a>
-              <a href="/add">RUNS</a>
-            </>
+    <>
+      <div className="navbar-gv">
+        <div className="important-pages">
+          <h1>
+            GV <span>Tracker</span>
+          </h1>
+          <div className="main-pages">
+            {isLogged && (
+              <>
+                <a href="/">HOME</a>
+                <a href="/predictions">PREVISION</a>
+                <a href="/add">RUNS</a>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="user-flag">
+          {isLogged ? (
+              <>
+                  <a href="/account">Account</a>
+                  <a onClick={logOutUser} href="/logout">Logout</a>
+              </>
+          ) : (
+              <>
+                  <a href="/login">Login</a>
+                  <a href="/register">Register</a>
+              </>
           )}
+          <div className="nightmode-switcher">
+              <label className="switch">
+                  <input checked={darkmode} onChange={handleDarkModeSwitcher} type="checkbox" />
+                  <span className="slider round"></span>
+              </label>
+          </div>
         </div>
       </div>
-      <div className="user-flag">
+      <div id={!isLogged && "not-logged-links"} className={!classBurger ? "links-mobile" : "links-mobile links-active"}>
         {isLogged ? (
             <>
-                <a href="/account">Account</a>
-                <a onClick={logOutUser} href="/logout">Logout</a>
+              <a href="/">Home</a>
+              <a href="/predictions">Prevision</a>
+              <a href="/add">Runs</a>
+              <a href="/account">Account</a>
+              <a onClick={logOutUser} href="/logout">Logout</a>
             </>
         ) : (
             <>
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
+              <a href="/login">Login</a>
+              <a href="/register">Register</a>
             </>
         )}
-        <div className="nightmode-switcher">
-            <label className="switch">
-                <input checked={darkmode} onChange={handleDarkModeSwitcher} type="checkbox" />
-                <span className="slider round"></span>
-            </label>
+      </div>
+      <div className="navbar-mobile">
+        <div className="left-side">
+          <div onClick={() => setClassBurger(currClass => !currClass)} className={!classBurger ? "burger" : "burger burger-close"}>
+            <div className="line1"></div>
+            <div className="line2"></div>
+            <div className="line3"></div>
+          </div>
+          <div className="title-site-mobile">
+            <h1>GV Tracker</h1>
+          </div>
+        </div>
+        <div className="darkmode-mobile">
+            <div className="nightmode-switcher">
+                <label className="switch">
+                    <input checked={darkmode} onChange={handleDarkModeSwitcher} type="checkbox" />
+                    <span className="slider round"></span>
+                </label>
+            </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

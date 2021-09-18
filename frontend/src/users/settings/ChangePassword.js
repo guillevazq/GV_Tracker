@@ -64,7 +64,7 @@ const ChangePassword = () => {
                     </div>
                     <div className="password-change-field">
                         <FormControl variant="outlined">
-                            <InputLabel htmlFor="password2">New Password Confirmation</InputLabel>
+                            <InputLabel htmlFor="password2">Password Confirmation</InputLabel>
                             <OutlinedInput type={showPassword ? "text" : "password"} id="password2" value={password2}
                                 onChange={e => setPassword2(e.target.value)} labelWidth={235}
                                 endAdornment={

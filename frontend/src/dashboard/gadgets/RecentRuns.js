@@ -27,7 +27,7 @@ const RecentRuns = ({personalRuns, followingRuns, followingRunsVisibility, title
             <div className="title-runs">
                 {cap && <p>Runner</p>}
                 <p>Ran</p>
-                <p>Pace</p>
+                <p className="pace-single-run-title">Pace</p>
                 <p>Distance</p>
                 <p>Time</p>
             </div>

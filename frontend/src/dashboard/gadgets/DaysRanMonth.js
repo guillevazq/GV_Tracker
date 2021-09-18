@@ -45,7 +45,7 @@ const DaysRanMonth = ({runs}) => {
 
     return (
         <div className="heatmap-runs">
-            <ReactApexChart options={daysRanMonthOptions} series={series} type="heatmap" height={505} />
+            <ReactApexChart options={daysRanMonthOptions} series={series} type="heatmap" />
         </div>
     );
 };

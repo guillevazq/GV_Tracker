@@ -5,7 +5,7 @@ import {syncedOptionsArea, syncedOptionsArea2} from '../../graph_settings/GraphS
 
 import {RunsContext} from "../../context/RunsContext";
 
-const SyncedPaceDistance = ({abreviatedUnit, runs}) => {
+const SyncedPaceDistance = ({abreviatedUnit, runs, unit}) => {
     let seriesArea = [{name: "Pace", data: []}];
     let seriesArea2 = [{name: "Distance", data: []}];
     const {getNumberRunsChart} = useContext(RunsContext);
@@ -22,15 +22,17 @@ const SyncedPaceDistance = ({abreviatedUnit, runs}) => {
         };
     });
 
+    syncedOptionsArea.title.text = "Minutes / " + abreviatedUnit;
+    syncedOptionsArea2.title.text = " Total " + unit;
     syncedOptionsArea.yaxis.labels.formatter = value => {
-        return value.toFixed(2) + " Min / " + abreviatedUnit;
+        return value.toFixed(2);
     };
     syncedOptionsArea.dataLabels.formatter = value => {
         return value.toFixed(2);
     };
 
     syncedOptionsArea2.yaxis.labels.formatter = value => {
-        return value.toFixed(2) + " Total " + abreviatedUnit;
+        return value.toFixed(2);
     };
     syncedOptionsArea2.dataLabels.formatter = value => {
         return value.toFixed(2);

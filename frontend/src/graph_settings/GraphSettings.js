@@ -1,60 +1,80 @@
 import {colors} from "../dashboard/ColorPalette";
 
-export let distanceTimeBarOptions = (
-    {
-        chart: {
-            type: 'bar',
-            height: 430,
-            zoom: {
-                enabled: false
-            },
-            toolbar: {
-                show: false,
-            },
+export let distanceTimeBarOptions = {
+    title: {
+        text: "",
+    },
+    chart: {
+        type: 'bar',
+        height: 430,
+        zoom: {
+            enabled: false
         },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                dataLabels: {
-                    enabled: false,
-                },
-            }
+        toolbar: {
+            show: false,
         },
-        dataLabels: {
-            enabled: false,
-            offsetX: -6,
-            style: {
-                fontSize: '12px',
-                colors: ['#fff']
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            dataLabels: {
+                enabled: false,
             },
-        },
-        stroke: {
-            show: true,
-            width: 1,
+        }
+    },
+    dataLabels: {
+        enabled: false,
+        offsetX: -6,
+        style: {
+            fontSize: '12px',
             colors: ['#fff']
         },
-        tooltip: {
-            shared: true,
-            intersect: false
-        },
-        xaxis: {
-            type: "category",
-            categories: [],
-            labels: {
-                style: {
-                    fontSize: "1.1rem"
-                }
+    },
+    stroke: {
+        show: true,
+        width: 1,
+        colors: ['#fff']
+    },
+    tooltip: {
+        shared: true,
+        intersect: false
+    },
+    xaxis: {
+        type: "category",
+        categories: [],
+        labels: {
+            style: {
+                fontSize: "1.1rem"
+            }
+        }
+    },
+    yaxis: {
+        labels: {
+            style: {
+                fontSize: "1.0rem"
             }
         },
-        yaxis: {
-            labels: {
-                style: {
-                    fontSize: "1.0rem"
+    },
+    responsive: [{
+        breakpoint: 500,
+        options: {
+            xaxis: {
+                labels: {
+                    style: {
+                        fontSize: "0.8rem"
+                    }
                 }
             },
-        },
-    }
-);
+            yaxis: {
+                labels: {
+                    style: {
+                        fontSize: "0.8rem"
+                    }
+                }
+            }
+        }
+    }]
+}
 
 export let lineTrackHistoryLegend = {
     show: true,
@@ -107,6 +127,7 @@ export let lineTrackHistoryLegend = {
 
 export let lineTrackHistoryOptions = {
     colors: colors,
+    title: {},
     xaxis: {
         type: 'numeric',
         decimalsInFloat: 0,
@@ -120,6 +141,7 @@ export let lineTrackHistoryOptions = {
         },
     },
     yaxis: {
+        type: 'numeric',
         title: {
             rotate: 0,
             offsetX: -20,
@@ -130,7 +152,7 @@ export let lineTrackHistoryOptions = {
         labels: {
             rotate: 0,
             style: {
-                fontSize: "1rem"
+                fontSize: "1.0rem",
             },
         },
     },
@@ -160,6 +182,21 @@ export let lineTrackHistoryOptions = {
         intersect: false,
     },
     legend: lineTrackHistoryLegend,
+    responsive: [{
+        breakpoint: 570,
+        options: {
+            xaxis: {
+                tickAmount: 3,
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        fontSize: "0.75rem"
+                    }
+                }
+            }
+        }
+    }]
 };
 
 export let donutRunDistanceOptions = {
@@ -190,12 +227,26 @@ export let donutRunDistanceOptions = {
     },
     legend: {
         fontSize: "16px",
-    }
+        position: "bottom",
+    },
+    responsive: [{
+        breakpoint: 600,
+        options: {
+            title: {
+                align: "center",
+                offsetY: -5,
+                text: "Runs per distance range"
+            }
+        }
+    }]
 }
 
 
 
 export let SpeedDistanceScatterOptions = {
+    title: {
+        text: "Minutes",
+    },
     chart: {
         zoom: {
             enabled: false
@@ -208,10 +259,6 @@ export let SpeedDistanceScatterOptions = {
     },
     yaxis: {
         labels: {
-            offsetX: -10,
-            formatter: value => {
-                return value + " Minutes";
-            },
             style: {
                 fontSize: "1.0rem",
             },
@@ -221,10 +268,19 @@ export let SpeedDistanceScatterOptions = {
         tickAmount: 3,
         labels: {
             style: {
+                colors: ["white", "white", "white", "white", "white", "white",],
                 fontSize: "1.0rem",
             },
         },
     },
+    responsive: [{
+        breakpoint: 570,
+        options: {
+            xaxis: {
+                tickAmount: 3,
+            },
+        }
+    }]
 };
 
 
@@ -245,11 +301,6 @@ export let daysRanMonthOptions = {
     yaxis: {
         show: true,
         labels: {
-            formatter: value => {
-                if (value) {
-                    return "Days " + value;
-                }
-            },
             style: {
                 fontSize: "0.9rem",
             },
@@ -289,19 +340,25 @@ export let daysRanMonthOptions = {
             show: false,
         },
         y: {
-            formatter: (value, { series, seriesIndex, dataPointIndex, w }) => {
-                console.log(series);
-                console.log(seriesIndex);
-                console.log(dataPointIndex);
-                console.log(w);
-                console.log("aqui");
-                return value
+            formatter: value => {
+                return value;
             }
         },
         marker: {
             show: true,
         },
     },
+    responsive: [{
+        breakpoint: 500,
+        options: {
+            title: {
+                text: 'Distance on the last 100 Days',
+            },
+            chart: {
+                height: "300px",
+            }
+        }
+    }]
 };
 
    
@@ -316,7 +373,6 @@ export let syncedOptionsArea = {
         id: 'yt',
         group: 'social',
         type: 'area',
-        // height: 160
     },
     title: {
         text: "Pace",
@@ -351,6 +407,35 @@ export let syncedOptionsArea = {
             fontSize: "1.2rem",
         },
     },
+    responsive: [{
+        breakpoint: 500,
+        options: {
+            dataLabels: {
+                style: {
+                    fontSize: "0.7rem"
+                }
+            },
+            xaxis: {
+                labels: {
+                    offsetY: 10,
+                    style: {
+                        fontSize: "0.8rem",
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    offsetX: -10,
+                    style: {
+                        fontSize: "0.8rem"
+                    },
+                    formatter: value => {
+                        return value.toFixed(2);
+                    }
+                }
+            }
+        }
+    }],
 };
 
 export let syncedOptionsArea2 = {
@@ -383,6 +468,9 @@ export let syncedOptionsArea2 = {
             style: {
                 fontSize: "1.0rem",
             },
+            formatter: value => {
+                return value.toFixed(2);
+            }
         },
     },
     xaxis: {
@@ -397,6 +485,35 @@ export let syncedOptionsArea2 = {
             fontSize: "1.2rem",
         },
     },
+    responsive: [{
+        breakpoint: 500,
+        options: {
+            dataLabels: {
+                style: {
+                    fontSize: "0.7rem"
+                }
+            },
+            xaxis: {
+                labels: {
+                    offsetY: 10,
+                    style: {
+                        fontSize: "0.8rem",
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    offsetX: -10,
+                    style: {
+                        fontSize: "0.8rem"
+                    },
+                    formatter: value => {
+                        return value.toFixed(2);
+                    }
+                }
+            }
+        }
+    }],
 };
 
 
@@ -517,7 +634,16 @@ export let paceTimePredictionsOptions = {
                 text: "Today",
             }
         }],
-    }
+    },
+    title: {},
+    responsive: [{
+        breakpoint: 685,
+        options: {
+            xaxis: {
+                tickAmount: 3,
+            }
+        }
+    }]
 };
 
 

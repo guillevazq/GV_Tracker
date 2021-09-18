@@ -39,7 +39,7 @@ const Following = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="follow-btn">
+                            <div className="follow-btn following-btn">
                                 {follower.is_favorite ? (
                                     <i onClick={() => doActionAndGetFollows(removeFavoriteUser, follower.username)} className="fas fa-star fav-star"></i>
                                 ) : (

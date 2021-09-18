@@ -70,9 +70,7 @@ const DistanceTimeBar = ({abreviatedUnit, personalRuns, followingRuns, following
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [timeRangeDistanceMonths]);
 
-    distanceTimeBarOptions.yaxis.labels.formatter = value => {
-        return value + abreviatedUnit;
-    };
+    distanceTimeBarOptions.title.text = abreviatedUnit;
 
     return <ReactApexChart xaxis={{categories: []}} type="bar" series={distanceTimeBarSeries} options={chartOptions} height={450} />;
 };

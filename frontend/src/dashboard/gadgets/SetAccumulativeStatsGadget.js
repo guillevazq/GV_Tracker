@@ -40,7 +40,7 @@ const SetAccumulativeStatsGadget = ({abreviatedUnit, runs}) => {
     let [maxSpeedMinutes, maxSpeedSeconds] = secondsToMinutesSeconds(Math.min(...speedArr));
 
     let titles = ["Best Speed", "Total Distance", "Average Speed", "Total Time", "Percentile"];
-    let icons = ["fighter-jet", "running", "flag-checkered", "clock", "medal"];
+    let icons = ["tachometer-alt", "running", "flag-checkered", "clock", "medal"];
     let units = [`MIN /${abreviatedUnit}`, `${abreviatedUnit}`, `MIN /${abreviatedUnit}`, "HRS", "%"];
     let stats = [null, totalDistance, null, null, 100.0];
     let minutes = [maxSpeedMinutes, null, averageSpeedMinutes, totalHoursRan, null];
@@ -58,6 +58,7 @@ const SetAccumulativeStatsGadget = ({abreviatedUnit, runs}) => {
                     seconds={seconds[index]} 
                     index={index}
                     key={index}
+                    className={`${icons[index]}-icon-div`}
                     />
                 );
             })}
@@ -65,7 +66,7 @@ const SetAccumulativeStatsGadget = ({abreviatedUnit, runs}) => {
     );
 };
 
-const AccumulativeStatsGadget = ({title, stat, unit, icon, minutes, seconds, index}) => {
+const AccumulativeStatsGadget = ({title, stat, unit, icon, minutes, seconds, index, className}) => {
 
     const formatTime = value => {
         value = parseInt(value).toFixed(0);
@@ -84,20 +85,20 @@ const AccumulativeStatsGadget = ({title, stat, unit, icon, minutes, seconds, ind
     let easing = "linear";
 
     return (
-        <div style={{backgroundColor: getColor(index)}} className="icon_stat_gadget">
+        <div style={{backgroundColor: getColor(index)}} className={`icon_stat_gadget ${className}`}>
             <div className="stat_number_name">
                 <div className="total_number">
                     {stat ? (
                         <>
                             <AnimatedNumber easing={easing} duration={currentDelay} formatValue={formatDistance} value={stat} />
-                            <small style={{fontSize: '1.0rem', marginLeft: '3px'}}>{unit}</small>
+                            <small>{unit}</small>
                         </>
                     ) : (
                         <p>
                             <AnimatedNumber easing={easing} duration={currentDelay} formatValue={formatTime} value={minutes} />
                             :
                             <AnimatedNumber easing={easing} duration={currentDelay} formatValue={formatTime} value={seconds} />
-                            <small style={{fontSize: '1.0rem', marginLeft: '3px'}}>{unit}</small>
+                            <small>{unit}</small>
                         </p>
                     )}
                 </div>

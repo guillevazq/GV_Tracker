@@ -75,41 +75,80 @@ const SingleRun = ({runFunctions, abreviatedUnit, dateRun, distance, seconds, co
                 </div>
             </div>
         ) : (
-            <div data-key={dataKey} className={"single-run " + backgroundRun}>
-                {cap && (
-                    <div className="important-stat">
-                        {authorUsername === username ? (
-                            <p>You</p>
-                        ) : (
-                            <p>{authorUsername}</p>
+            <>
+                <div data-key={dataKey} className={"single-run " + backgroundRun + " desktop-run"}>
+                    {cap && (
+                        <div className="important-stat">
+                            {authorUsername === username ? (
+                                <p>You</p>
+                            ) : (
+                                <p>{authorUsername}</p>
+                            )}
+                        </div>
+                    )}
+                    <div className="important-stat days-ago">
+                        <p>{timeAgo}</p>
+                    </div>
+                    <div className="important-stat pace-single-run">
+                        <p style={{backgroundColor: color}}>{minutes_per_km}:{seconds_per_km} Min /{abreviatedUnit}</p>
+                    </div>
+                    <div className="important-stat total_distance">
+                        <p>{distance.toFixed(2)} {abreviatedUnit}</p>
+                    </div>
+                    <div className="important-stat total_time-bold">
+                        <p>{hoursFormatted}:{minutesFormatted}:{secondsFormatted}</p>
+                    </div>
+                    <div className="icons" >
+                        {editCapability && (
+                            <div className="edit-icon">
+                                <i style={{cursor: "pointer"}} onClick={setRunInEditMode} className="far fa-edit"></i>
+                            </div>
+                        )}
+                        {authorUsername === username && !cap && (
+                            <div className="delete-icon">
+                                <i style={{cursor: "pointer"}} onClick={deleteItem} className="far fa-trash-alt"></i>
+                            </div>
                         )}
                     </div>
-                )}
-                <div className="important-stat days-ago">
-                    <p>{timeAgo}</p>
                 </div>
-                <div className="important-stat pace-single-run">
-                    <p style={{backgroundColor: color}}>{minutes_per_km}:{seconds_per_km} Min /{abreviatedUnit}</p>
-                </div>
-                <div className="important-stat total_distance">
-                    <p>{distance.toFixed(2)} {abreviatedUnit}</p>
-                </div>
-                <div className="important-stat total_time-bold">
-                    <p>{hoursFormatted}:{minutesFormatted}:{secondsFormatted}</p>
-                </div>
-                <div className="icons" >
-                    {editCapability && (
-                        <div className="edit-icon">
-                            <i style={{cursor: "pointer"}} onClick={setRunInEditMode} className="far fa-edit"></i>
+                <div data-key={dataKey} className={"single-run " + backgroundRun + " mobile-run"}>
+                    {cap && (
+                        <div className="important-stat">
+                            {authorUsername === username ? (
+                                <p>You</p>
+                            ) : (
+                                <p>{authorUsername}</p>
+                            )}
                         </div>
                     )}
-                    {authorUsername === username && !cap && (
-                        <div className="delete-icon">
-                            <i style={{cursor: "pointer"}} onClick={deleteItem} className="far fa-trash-alt"></i>
+                    <div className="important-stat days-ago">
+                        <p>{timeAgo}</p>
+                    </div>
+                    <div className="distance-pace-div">
+                        <div className="important-stat total_distance">
+                            <p>{distance.toFixed(2)} {abreviatedUnit}</p>
                         </div>
-                    )}
+                        <div className="important-stat pace-single-run">
+                            <p style={{backgroundColor: color}}>{minutes_per_km}:{seconds_per_km} Min /{abreviatedUnit}</p>
+                        </div>
+                    </div>
+                    <div className="important-stat total_time-bold">
+                        <p>{hoursFormatted}:{minutesFormatted}:{secondsFormatted}</p>
+                    </div>
+                    <div className="icons" >
+                        {editCapability && (
+                            <div className="edit-icon">
+                                <i style={{cursor: "pointer"}} onClick={setRunInEditMode} className="far fa-edit"></i>
+                            </div>
+                        )}
+                        {authorUsername === username && !cap && (
+                            <div className="delete-icon">
+                                <i style={{cursor: "pointer"}} onClick={deleteItem} className="far fa-trash-alt"></i>
+                            </div>
+                        )}
+                    </div>
                 </div>
-            </div>
+            </>
         )}
         </>
     );

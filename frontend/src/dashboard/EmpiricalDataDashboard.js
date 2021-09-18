@@ -150,7 +150,7 @@ const EmpiricalDataDashboard = props => {
                     ) : (
                         <div className="donut_run_distance">
                             <DonutRunDistance
-                                abreviatedUnit={abreviatedUnit}
+                                abreviatedUnit={unit}
                                 personalRuns={personalRuns}
                                 followingRuns={followingRuns}
                                 followingRunsVisibility={followingRunsVisibility} />
@@ -183,7 +183,7 @@ const EmpiricalDataDashboard = props => {
                     <div className="distance_time_bar">
                         <DistanceTimeBar
                             favoriteRunners={favoriteRunners}
-                            abreviatedUnit={abreviatedUnit}
+                            abreviatedUnit={unit}
                             personalRuns={personalRuns}
                             followingRuns={followingRuns}
                             timeRangeDistanceMonths={timeRangeDistanceMonths}
@@ -201,8 +201,8 @@ const EmpiricalDataDashboard = props => {
                     </div>
                 </div>
                 <div className="last_charts">
+                    <SyncedPaceDistance runs={personalRuns} abreviatedUnit={abreviatedUnit} unit={unit} />
                     <DaysRanMonth  runs={personalRuns} abreviatedUnit={abreviatedUnit} />
-                    <SyncedPaceDistance runs={personalRuns} abreviatedUnit={abreviatedUnit} />
                 </div>
             </div>
         ) : (

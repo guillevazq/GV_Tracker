@@ -65,15 +65,19 @@ const LineTrackHistory = ({abreviatedUnit, personalRuns, followingRuns, followin
         };
     };
 
-    lineTrackHistoryOptions.yaxis.labels.formatter = value => {
-        return value.toFixed(2) + " Minutes / " + abreviatedUnit;
-    };
+    lineTrackHistoryOptions.title.text =  " Minutes / " + abreviatedUnit;
 
     if (series.length >= 5) {
         lineTrackHistoryOptions.legend.show = false;
     };
 
-    return <ReactApexChart options={lineTrackHistoryOptions} series={series} type="line" height={400} />;
+
+    return (
+        <>
+            {console.log(series)}
+            <ReactApexChart options={lineTrackHistoryOptions} series={series} type="line" width={"100%"} height={400} />;
+        </>
+    )
 };
 
 export default LineTrackHistory;

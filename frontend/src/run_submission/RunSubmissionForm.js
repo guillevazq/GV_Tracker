@@ -2,12 +2,14 @@ import React, {useState, useContext, useEffect} from "react";
 
 // Context
 import {RunsContext} from '../context/RunsContext';
+import {NotificationContext} from "../context/NotificationContext";
 
 // UI
 import Button from '@material-ui/core/Button';
 
 const RunSubmissionForm = ({setTransformToUnit, unit}) => {
     const {addRun, toggleSubmitForm, submitFormVisibility} = useContext(RunsContext);
+    const {addAlert} = useContext(NotificationContext);
 
     let now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -41,11 +43,22 @@ const RunSubmissionForm = ({setTransformToUnit, unit}) => {
 
     const submitRun = e => {
         e.preventDefault();
+        let timeVerification = parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds);
+        if (timeVerification <= 0) {
+            return addAlert("Run Time Error", "The run must be at least 1 second", "danger", "top-center");
+        };
+        if (distance < 0.1) {
+            return addAlert("Invalid distance", "The distance has to be at least 0.1", "danger", "top-center");
+        };
+        let dateVerified = new Date(dateRun).getTime();
+        if (isNaN(dateVerified)) {
+            return addAlert("Invalid date", "The date entered was invalid", "danger", "top-center");
+        }
         let convertedDistance = distance;
         if (unit === "Miles") {
             convertedDistance = parseFloat(convertedDistance) * 1.609344;
         };
-        addRun(hours, minutes, seconds, convertedDistance, parseInt(new Date(dateRun).getTime() / 1000));
+        addRun(hours, minutes, seconds, convertedDistance, parseInt(dateVerified / 1000));
         setTransformToUnit(false);
     };
 
@@ -92,7 +105,7 @@ const RunSubmissionForm = ({setTransformToUnit, unit}) => {
                     </div>
                     <div className="password-field distance-input-div">
                         <small>Distance ({unit})</small>
-                        <input required step={"0.000000000000001"} min={0} type="number" name="distance" id="distance" value={distance}
+                        <input required step={"0.000000000000001"} type="number" name="distance" id="distance" value={distance}
                         onChange={e => setDistance(e.target.value)}/>
                     </div>
                     <input max={today} value={dateRun} onChange={e => setDateRun(e.target.value)} type="datetime-local" name="date" id="date" />

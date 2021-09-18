@@ -38,7 +38,7 @@ const Followers = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="follow-btn">
+                            <div className="follow-btn follower-item">
                                 {follower.followed_by_you === "request-sent" && (
                                     <Button className="cancel-request disabled-request" variant="contained" color="inherit">
                                         Request Sent

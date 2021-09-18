@@ -109,20 +109,12 @@ export const darkModeGraph = {
         axisTicks: {
           color: "white",
         },
-        title: {
-          style: {
-            color: "white",
-          }
-        },
         labels: {
             style: {
                 colors: darkModeColors,
             },
         },
         axisBorder: {
-            color: 'white',
-        },
-        axisTicks: {
             color: 'white',
         },
         title: {
@@ -132,16 +124,16 @@ export const darkModeGraph = {
         },
       },
     yaxis: {
-        title: {
-          style: {
-            color: "white",
-          }
+      title: {
+        style: {
+          color: "white",
+        }
+      },
+      labels: {
+        style: {
+            colors: darkModeColors,
         },
-        labels: {
-            style: {
-                colors: darkModeColors,
-            },
-        },
+      },
     },
 };
 

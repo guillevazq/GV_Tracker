@@ -57,9 +57,7 @@ const PaceTimePredictions = ({abreviatedUnit, runs, unit, predictionFunction}) =
         };
     };
 
-    paceTimePredictionsOptions.yaxis.labels.formatter = value => {
-        return value.toFixed(2) + " Min / " + abreviatedUnit;
-    };
+    paceTimePredictionsOptions.title.text = " Minutes / " + abreviatedUnit;
 
     if (predictionFunction) {
         let markerSizes = [];

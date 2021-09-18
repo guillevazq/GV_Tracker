@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 
 // Context
 import {RunsContext} from '../context/RunsContext';
+import {NotificationContext} from '../context/NotificationContext';
 
 // UI
 import Button from '@material-ui/core/Button';
@@ -9,6 +10,8 @@ import Button from '@material-ui/core/Button';
 const RunEditForm = ({toggleEditForm, unit, setTransformToUnit}) => {
 
     const {editRun, editFormData, cleanEditFormData} = useContext(RunsContext);
+    const {addAlert} = useContext(NotificationContext);
+
     let initialMinutes = editFormData["minutes"];
     let initialSeconds = editFormData["seconds"];
     let initialDistance = editFormData["distance"];
@@ -50,6 +53,17 @@ const RunEditForm = ({toggleEditForm, unit, setTransformToUnit}) => {
 
     const submitEditedRun = e => {
         e.preventDefault();
+        let timeVerification = parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds);
+        if (timeVerification <= 0) {
+            return addAlert("Run Time Error", "The run must be at least 1 second", "danger", "top-center");
+        };
+        if (distance < 0.1) {
+            return addAlert("Invalid distance", "The distance has to be at least 0.1", "danger", "top-center");
+        };
+        let dateVerified = new Date(dateRun).getTime();
+        if (isNaN(dateVerified)) {
+            return addAlert("Invalid date", "The date entered was invalid", "danger", "top-center");
+        }
         let convertedDistance = distance;
         if (unit === "Miles") {
             convertedDistance = parseFloat(convertedDistance) * 1.609344;
@@ -90,7 +104,7 @@ const RunEditForm = ({toggleEditForm, unit, setTransformToUnit}) => {
                     <input max={today} value={dateRun} onChange={e => setDateRun(e.target.value)} type="datetime-local" name="date" id="date" />
                     <div className="buttons-div-edit">
                         <Button onClick={cancelEdit} variant="contained">Cancel</Button>
-                        <Button type="submit" variant="contained" color="secondary">Save changes</Button>
+                        <Button type="submit" variant="contained" color="secondary">Save</Button>
                     </div>
                 </div>
             </form>
