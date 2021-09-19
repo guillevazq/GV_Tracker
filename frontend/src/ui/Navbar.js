@@ -4,8 +4,7 @@ import {AuthenticationContext} from "../context/AuthenticationContext";
 import {SocialContext} from '../context/SocialContext';
 
 const Navbar = ({darkmode, setDarkmode}) => {
-  const authenticationContext = useContext(AuthenticationContext);
-  const {isLogged, setTokenFromLS, logout, username} = authenticationContext;
+  const {isLogged, setTokenFromLS, logout, username} = useContext(AuthenticationContext);
   const {getSettings} = useContext(SocialContext);
   const [classBurger, setClassBurger] = useState(false);
 
@@ -31,13 +30,16 @@ const Navbar = ({darkmode, setDarkmode}) => {
     };
   };
 
-  let currentPath = window.location.href;
-  let anchorTags = document.getElementsByTagName("a");
-  for (var i = 0; i < anchorTags.length; i++) {
-    if (anchorTags[i].href === currentPath) {
-      anchorTags[i].style.color = "black";    
+  useEffect(() => {
+    let currentPath = window.location.href;
+    let anchorTags = document.getElementsByTagName("a");
+    for (var i = 0; i < anchorTags.length; i++) {
+      if (anchorTags[i].href === currentPath) {
+        anchorTags[i].style.color = "black";    
+      };
     };
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location, isLogged]);
 
   const logOutUser = e => {
     e.preventDefault();

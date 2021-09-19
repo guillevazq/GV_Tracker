@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RunningHistory = props => {
     const {isLogged} = useContext(AuthenticationContext);
-    const {unit, getSettings} = useContext(SocialContext);
+    const {unit, getSettings, isVerified, getFollows} = useContext(SocialContext);
     const {
         getRuns,
         personalRuns,
@@ -41,8 +41,16 @@ const RunningHistory = props => {
     const [transformToUnit, setTransformToUnit] = useState(false);
 
     useEffect(() => {
+        if (isVerified === false) {
+            props.history.push("/verify-email");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isVerified]);
+
+    useEffect(() => {
         getSettings();
-        getRuns()
+        getRuns();
+        getFollows();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -63,7 +71,7 @@ const RunningHistory = props => {
 
     return (
         <>
-        {(personalRuns && isLogged && transformToUnit) ? (
+        {(personalRuns && isLogged && transformToUnit && isVerified) ? (
             <div className="run-info-page">
                 <div className='recent-runs-div'>
                     <RecentRuns followingRunsVisibility={false} editCapability={true} personalRuns={personalRuns} title={"All Runs"} toggleEditForm={toggleEditForm}/>

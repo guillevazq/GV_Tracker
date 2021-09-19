@@ -15,6 +15,7 @@ import RunningHistory from './run_submission/RunningHistory';
 
 import AccountSettings from './users/settings/AccountSettings';
 import ForgotPassword from './users/authentication/ForgotPassword';
+import VerifyEmail from "./users/authentication/VerifyEmail";
 
 // Color Theme
 import {createTheme} from "@material-ui/core";
@@ -91,6 +92,7 @@ const App = () => {
                     <Route component={Login} exact path='/login' />
                     <Route component={Register} exact path='/register' />
                     <Route component={ForgotPassword} exact path='/forgotpassword' />
+                    <Route component={VerifyEmail} exact path='/verify-email' />
 
                     <Route component={EmpiricalDataDashboard} exact path='/' />
                     <Route component={PredictionsDashboard} exact path='/predictions' />

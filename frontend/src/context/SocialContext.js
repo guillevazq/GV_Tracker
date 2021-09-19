@@ -35,18 +35,20 @@ const SocialState = props => {
         weekly_goal: null,
         unit: null,
         abreviatedUnit: null,
+        is_verified: null,
     };
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const getFollows = () => {
         axios.get("http://localhost:8000/users/follows/me/follows/", generateHeader()).then(response => {
-            const {follower_data, following_data, recieved_requests_data, sent_requests_data} = response.data;
+            const {follower_data, following_data, recieved_requests_data, sent_requests_data, is_account_verified} = response.data;
             dispatch({type: "SET_FOLLOWS", payload: {
                 followers: follower_data,
                 following: following_data,
                 recieved_follow_requests: recieved_requests_data,
                 sent_follow_requests: sent_requests_data,
+                is_verified: is_account_verified,
             }});
         }).catch(error => {
             console.log(error);
@@ -155,6 +157,23 @@ const SocialState = props => {
         });
     };
 
+    const verifyCode = async code => {
+        return axios.post(`http://localhost:8000/users/verification-code/`, {code}, generateHeader()).then(response => {
+            getFollows();
+            addAlert("Account Verified", "You've succesfully verified your account", "success", "top-center")
+            // dispatch({type: 'SET_SETTINGS', payload: {...response.data}});
+        }).catch(error => {
+            handleError(error);
+        });
+    };
+
+    const sendVerificationMail = async () => {
+        axios.get(`http://localhost:8000/users/send-verification-mail/`, generateHeader()).then(response => {
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
     const getUnit = () => state.unit;
 
     return (
@@ -167,6 +186,7 @@ const SocialState = props => {
             weekly_goal: state.weekly_goal,
             unit: state.unit,
             abreviatedUnit: state.abreviatedUnit,
+            isVerified: state.is_verified,
             doActionAndGetFollows,
             getFollows,
             followUser,
@@ -180,6 +200,8 @@ const SocialState = props => {
             getSettings,
             updateSettings,
             getUnit,
+            verifyCode,
+            sendVerificationMail,
         }}>
             {props.children}
         </SocialContext.Provider>

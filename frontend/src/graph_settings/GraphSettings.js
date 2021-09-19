@@ -44,7 +44,7 @@ export let distanceTimeBarOptions = {
         categories: [],
         labels: {
             style: {
-                fontSize: "1.1rem"
+                fontSize: "1.0rem"
             }
         }
     },
@@ -55,25 +55,25 @@ export let distanceTimeBarOptions = {
             }
         },
     },
-    responsive: [{
-        breakpoint: 500,
-        options: {
-            xaxis: {
-                labels: {
-                    style: {
-                        fontSize: "0.8rem"
-                    }
-                }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        fontSize: "0.8rem"
-                    }
-                }
-            }
-        }
-    }]
+    // responsive: [{
+    //     breakpoint: 500,
+    //     options: {
+    //         xaxis: {
+    //             labels: {
+    //                 style: {
+    //                     fontSize: "0.8rem"
+    //                 }
+    //             }
+    //         },
+    //         yaxis: {
+    //             labels: {
+    //                 style: {
+    //                     fontSize: "0.8rem"
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }]
 }
 
 export let lineTrackHistoryLegend = {
@@ -129,6 +129,7 @@ export let lineTrackHistoryOptions = {
     colors: colors,
     title: {},
     xaxis: {
+        tickAmount: 3,
         type: 'numeric',
         decimalsInFloat: 0,
         labels: {
@@ -182,21 +183,18 @@ export let lineTrackHistoryOptions = {
         intersect: false,
     },
     legend: lineTrackHistoryLegend,
-    responsive: [{
-        breakpoint: 570,
-        options: {
-            xaxis: {
-                tickAmount: 3,
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        fontSize: "0.75rem"
-                    }
-                }
-            }
-        }
-    }]
+    // responsive: [{
+    //     breakpoint: 570,
+    //     options: {
+    //         yaxis: {
+    //             labels: {
+    //                 style: {
+    //                     fontSize: "0.75rem"
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }]
 };
 
 export let donutRunDistanceOptions = {
@@ -229,16 +227,6 @@ export let donutRunDistanceOptions = {
         fontSize: "16px",
         position: "bottom",
     },
-    responsive: [{
-        breakpoint: 600,
-        options: {
-            title: {
-                align: "center",
-                offsetY: -5,
-                text: "Runs per distance range"
-            }
-        }
-    }]
 }
 
 
@@ -268,19 +256,10 @@ export let SpeedDistanceScatterOptions = {
         tickAmount: 3,
         labels: {
             style: {
-                colors: ["white", "white", "white", "white", "white", "white",],
                 fontSize: "1.0rem",
             },
         },
     },
-    responsive: [{
-        breakpoint: 570,
-        options: {
-            xaxis: {
-                tickAmount: 3,
-            },
-        }
-    }]
 };
 
 
@@ -706,6 +685,14 @@ export let treeMapDistancesOptions = {
             enableShades: false,
         },
     },
+    responsive: [{
+        breakpoint: 500,
+        options: {
+            chart: {
+                height: "200px",
+            }
+        }
+    }]
 };
 
 export const MeasurementUnits = [

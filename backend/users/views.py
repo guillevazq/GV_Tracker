@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.apple.views import AppleOAuth2Adapter
@@ -47,6 +49,9 @@ class FollowsView(views.APIView):
 
         if request.user == target_user:
             return Response({'detail': 'You cannot do this to your own profile'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if not request_user_serializer.data["is_verified"]:
+            return Response({'detail': "Account not verified"}, status=status.HTTP_401_UNAUTHORIZED)
 
         elif action == "follow-user":
             if request.user.pk in target_user_blocked:
@@ -201,6 +206,38 @@ class ChangeSettings(views.APIView):
 
         return Response(SettingsSerializer(user_settings).data, status=status.HTTP_200_OK)
 
+class VerificationCode(views.APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
+        follows_user = Follows.objects.get(user=request.user)
+
+        try:
+            code_submitted = request.data["code"]
+            code_submitted = int(code_submitted)
+        except:
+            return Response({'detail': "Code empty"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if code_submitted != int(follows_user.verification_code):
+            return Response({'detail': "Code doesn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            follows_user.verify_user()
+            return Response({'detail': "User verified"}, status=status.HTTP_202_ACCEPTED)
+
+class SendMail(views.APIView):
+    def get(self, request, *args, **kwargs):
+        curr_user_follows = Follows.objects.get(user=request.user)
+        if curr_user_follows.is_verified:
+            return Response({'detail': "User is already verified"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        time_since_last_mail = curr_user_follows.time_since_last_mail()
+        if time_since_last_mail < 60:
+            return Response({'detail': "You have to wait at least one minute since the last sent mail"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        elif time_since_last_mail > 60 * 15:
+            curr_user_follows.generate_new_code();
+
+        send_mail("Account Activation Code", f"The code to verify your email and activate your account is {curr_user_follows.verification_code}", settings.EMAIL_HOST_USER, [request.user.email], fail_silently=False)
+        return Response({'detail': "Email sent"}, status=status.HTTP_200_OK)
 
 class TwitterLogin(SocialLoginView):
     serializer_class = TwitterLoginSerializer

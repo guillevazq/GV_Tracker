@@ -1,9 +1,15 @@
+from random import randint
+import time
+
 from django.db import models
-from django.db.models.signals import post_init, post_save
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
 from runs.models import Run
+
+def generate_random_verification_code():
+    return randint(100_000, 999_999)
 
 class Follows(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="main_user")
@@ -14,6 +20,25 @@ class Follows(models.Model):
     recieved_follow_requests = models.ManyToManyField(User, blank=True, related_name="recieved_requests")
     favorite_followed_users = models.ManyToManyField(User, blank=True, related_name="favorite_users")
     blocked_users = models.ManyToManyField(User, blank=True, related_name="blocked_users")
+    verification_code = models.CharField(default=generate_random_verification_code, max_length=6)
+    is_verified = models.BooleanField(default=False)
+    last_sent_email = models.PositiveIntegerField(default=0)
+
+    def generate_new_code(self):
+        self.verification_code = generate_random_verification_code()
+        self.save()
+
+    def time_since_last_mail(self):
+        seconds_since_last_mail = time.time() - self.last_sent_email
+        return seconds_since_last_mail
+    
+    def set_new_mail_time(self):
+        self.last_sent_email = time.time()
+        self.save()
+
+    def verify_user(self):
+        self.is_verified = True
+        self.save()
 
     def start_following(self, account):
         self.following.add(account)
@@ -48,6 +73,9 @@ class Follows(models.Model):
     def set_account_public(self):
         self.is_private = False
         self.save()
+
+    def is_account_verified(self):
+        return self.is_verified
 
     def add_favorite_user(self, account):
         self.favorite_followed_users.add(account)
@@ -165,7 +193,7 @@ class UserSettings(models.Model):
 # Signals
 def create_profile(sender, instance, created, **kwargs):
     if created: 
-        Follows.objects.create(user=instance)
+        curr_user_follows = Follows.objects.create(user=instance)
         UserSettings.objects.create(user=instance)
 
 post_save.connect(create_profile, User)

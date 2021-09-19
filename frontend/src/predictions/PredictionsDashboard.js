@@ -16,7 +16,14 @@ const PredictionsDashboard = props => {
 
     const {isLogged} = useContext(AuthenticationContext);
     const {personalRuns, getRuns, getPredictionFunction, predictionFunction} = useContext(RunsContext);
-    const {abreviatedUnit, weekly_goal, unit} = useContext(SocialContext);
+    const {abreviatedUnit, weekly_goal, unit, isVerified, getFollows} = useContext(SocialContext);
+
+    useEffect(() => {
+        if (isVerified === false) {
+            props.history.push("/verify-email");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isVerified]);
 
     useEffect(() => {
         if (personalRuns) {
@@ -37,6 +44,7 @@ const PredictionsDashboard = props => {
 
     useEffect(() => {
         getRuns();
+        getFollows();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -50,7 +58,7 @@ const PredictionsDashboard = props => {
 
     return (
         <>
-            {(isLogged && personalRuns && weeklyGoal && monthlyGoal && abreviatedUnit && predictionFunction) ? (
+            {(isLogged && personalRuns && weeklyGoal && monthlyGoal && abreviatedUnit && predictionFunction && isVerified) ? (
                 <div className="predictions-dashboard">
                     <PaceTimePredictions
                         predictionFunction={predictionFunction}

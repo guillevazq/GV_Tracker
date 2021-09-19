@@ -158,6 +158,10 @@ div.notification-container--top-center .notification .notification__item .notifi
   grid-column: span 6;
 }
 
+.title-mobile-donut {
+  display: none;
+}
+
 .icon_stat_gadget {
   border-radius: 7px;
   background-color: red;
@@ -561,6 +565,27 @@ div.notification-container--top-center .notification .notification__item .notifi
 .submission-div .form-login .form-fields-add-run, .submission-div .register-div .form-register .form-fields-add-run, .register-div .submission-div .form-register .form-fields-add-run, .submission-div .reset-password .form-reset .form-fields-add-run, .reset-password .submission-div .form-reset .form-fields-add-run {
   -ms-grid-rows: (1fr)[2];
       grid-template-rows: repeat(2, 1fr);
+}
+
+.login-div .form-login .form-fields.verify-acc, .register-div .form-login .form-fields.verify-acc, .reset-password .form-login .form-fields.verify-acc, .register-div .form-register .form-fields.verify-acc, .reset-password .form-reset .form-fields.verify-acc {
+  -ms-grid-rows: (1fr)[1];
+      grid-template-rows: repeat(1, 1fr);
+}
+
+.code-input p {
+  color: #3069c0;
+}
+
+.code-input > div {
+  margin: auto;
+}
+
+.btns-verification {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 1rem;
 }
 
 .register-div .form-fields-register {
@@ -2319,6 +2344,12 @@ div.notification-container--top-center .notification .notification__item .notifi
 }
 
 @media (max-width: 500px) {
+  .title-mobile-donut {
+    display: block;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
   .predictions-dashboard .goals-predictions .apexcharts-legend {
     display: none;
   }
@@ -2346,6 +2377,7 @@ div.notification-container--top-center .notification .notification__item .notifi
   }
   .empirical_data_dashboard .top_charts .treemap-distances {
     margin-left: 10px;
+    margin-bottom: 30px;
   }
   .empirical_data_dashboard .last_charts {
     margin-bottom: 0px;

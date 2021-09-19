@@ -74,8 +74,7 @@ const LineTrackHistory = ({abreviatedUnit, personalRuns, followingRuns, followin
 
     return (
         <>
-            {console.log(series)}
-            <ReactApexChart options={lineTrackHistoryOptions} series={series} type="line" width={"100%"} height={400} />;
+            <ReactApexChart options={lineTrackHistoryOptions} series={series} type="line" width={"100%"} height={400} />
         </>
     )
 };

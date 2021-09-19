@@ -123,10 +123,15 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
 )
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = os.getenv("ACTUAL_MAIL")
+EMAIL_HOST_PASSWORD = os.getenv("MAIL_PASSWORD")
+
 SITE_ID = 1
 ACCOUNT_USERNAME_BLACKLIST = []
 

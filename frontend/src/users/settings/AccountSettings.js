@@ -14,7 +14,7 @@ import Loader from '../../ui/Loader';
 
 const AccountSettings = props => {
     const {setTokenFromLS, email, isLogged} = useContext(AuthenticationContext);
-    const {language, unit, weekly_goal} = useContext(SocialContext);
+    const {language, unit, weekly_goal, isVerified, getFollows} = useContext(SocialContext);
     const [currentPage, setCurrentPage] = useState(<Details />);
 
     const setPage = (e, component) => {
@@ -34,8 +34,16 @@ const AccountSettings = props => {
     };
 
     useEffect(() => {
+        if (isVerified === false) {
+            props.history.push("/verify-email");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isVerified]);
+
+    useEffect(() => {
         // Get user info and set in state
         setTokenFromLS();
+        getFollows();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -55,7 +63,7 @@ const AccountSettings = props => {
 
     return (
         <div className="account-settings">
-            {(email && language && weekly_goal && unit) ? (
+            {(email && language && weekly_goal && unit && isVerified) ? (
                 <>
                     <ul className="side-menu-bar">
                         {menus.map((menu, index) => (

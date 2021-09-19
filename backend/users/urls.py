@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import TwitterLogin, FacebookLogin, AppleLogin, GoogleLogin, FollowsView, ChangeFollowStatus, ChangeSettings
+from .views import *
 from dj_rest_auth.registration.views import VerifyEmailView
 
 urlpatterns = [
@@ -8,6 +8,8 @@ urlpatterns = [
     path('account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
     path('follows/<str:username>/<str:action>/', FollowsView.as_view(), name="follows"),
     path('follow-visibility/<str:privacy_type>/', ChangeFollowStatus.as_view(), name="change-follow-visibility"),
+    path('verification-code/', VerificationCode.as_view(), name='verify-code'),
+    path('send-verification-mail/', SendMail.as_view(), name='verify-mail'),
     path('settings/', ChangeSettings.as_view(), name='change-user-settings'),
     
     # Social logins

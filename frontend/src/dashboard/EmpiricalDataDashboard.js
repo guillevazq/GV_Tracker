@@ -27,7 +27,7 @@ import {SocialContext} from '../context/SocialContext';
 
 const EmpiricalDataDashboard = props => {
     const {isLogged} = useContext(AuthenticationContext);
-    const {abreviatedUnit, getSettings, unit} = useContext(SocialContext);
+    const {abreviatedUnit, getSettings, unit, isVerified, getFollows} = useContext(SocialContext);
 
     const {
         favoriteRunners,
@@ -48,12 +48,13 @@ const EmpiricalDataDashboard = props => {
     const [timeRange, setTimeRange] = useState(getTimeRangeLine());
     const [timeRangeDistanceMonths, setTimeRangeDistanceMonths] = useState(getTimeRangeLineDistanceMonths());
     const [numberOfRuns, setNumberOfRuns] = useState(getNumberRunsChart());
-
     const [transformToUnit, setTransformToUnit] = useState(false);
+
     useEffect(() => {
         getSettings();
         getRuns();
         getFavoriteRunners();
+        getFollows();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -84,6 +85,13 @@ const EmpiricalDataDashboard = props => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLogged]);
+
+    useEffect(() => {
+        if (isVerified === false) {
+            props.history.push("/verify-email");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isVerified]);
     
     const handleChangeSeeFriends = e => {
         localStorage.setItem("s-f", e.target.checked);
@@ -112,7 +120,7 @@ const EmpiricalDataDashboard = props => {
 
     return (
         <>
-        {(isLogged && personalRuns && followingRuns && unit && transformToUnit && favoriteRunners) ? (
+        {(isLogged && personalRuns && followingRuns && unit && transformToUnit && favoriteRunners && isVerified) ? (
             <div className="empirical_data_dashboard">
                 <div className="general-settings">
                     <div className="see-friends-activity">
@@ -149,6 +157,7 @@ const EmpiricalDataDashboard = props => {
                             followingRunsVisibility={followingRunsVisibility} />
                     ) : (
                         <div className="donut_run_distance">
+                            <h3 className="title-mobile-donut">Runs per distance range</h3>
                             <DonutRunDistance
                                 abreviatedUnit={unit}
                                 personalRuns={personalRuns}
