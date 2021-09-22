@@ -10,7 +10,7 @@ const NotificationState = props => {
             title,
             message,
             type,
-            container: position,
+            container: "top-center",
             dismiss: {
                 duration: 3000,
                 onScreen: true,

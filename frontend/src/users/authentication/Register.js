@@ -78,7 +78,7 @@ const Register = props => {
                             <div className="password-field">
                                 <FormControl variant="outlined">
                                     <InputLabel htmlFor="password">Password</InputLabel>
-                                    <OutlinedInput type={passwordVisibility ? "text" : "password"} id="password" value={password2}
+                                    <OutlinedInput type={passwordVisibility ? "text" : "password"} id="password1" value={password2}
                                         labelWidth={83}
                                         onChange={e => setPassword2(e.target.value)}
                                         endAdornment={

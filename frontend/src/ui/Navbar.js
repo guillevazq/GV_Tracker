@@ -39,7 +39,7 @@ const Navbar = ({darkmode, setDarkmode}) => {
       };
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location, isLogged]);
+  }, [window, isLogged]);
 
   const logOutUser = e => {
     e.preventDefault();

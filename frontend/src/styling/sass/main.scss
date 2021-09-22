@@ -44,16 +44,14 @@ a:link
 }
 
 // Notification settings
-div.notification-container--top-center {
+.notification-container--top-center {
   .notification {
-    width: 100% !important;
     .notification__item {
-      height: 100px;
       .notification__title {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
       }
       .notification__message {
-        font-size: 1rem;
+        font-size: 1.0rem;
       }
     }
   }
@@ -1276,6 +1274,7 @@ div.notification-container--top-center {
 }
 
 .register-div {
+  padding-bottom: 5px;
   .username-field, .email-field, .password-field {
     &>div {
       width: 100%;
@@ -1744,8 +1743,10 @@ div.notification-container--top-center {
           .single-run {
             padding-left: 5px;
             padding-right: 5px;
-            font-size: 1.1rem;
-            white-space: nowrap;
+            font-size: 0.9rem;
+            // white-space: nowrap;
+            padding-top: 10px;
+            padding-bottom: 10px;
             .pace-single-run {
               margin: auto;
               p {
@@ -1768,6 +1769,25 @@ div.notification-container--top-center {
 }
 
 @media (max-width: 800px) {
+  .login-div {
+    .form-login {
+      .verify-acc {
+        button {
+          font-size: 0.8rem;
+        }
+        .code-input {
+          margin: auto;
+          &>div {
+            text-align: center;
+            width: 300px !important;
+          }
+          input {
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+  }
   .followers {
     .single-follower {
       .recieved-requests {
@@ -1843,6 +1863,20 @@ div.notification-container--top-center {
 }
 
 @media (max-width: 685px) {
+  .notification-container--top-center {
+    width: 400px;
+    .notification {
+      width: 300px !important;
+      .notification__item {
+        .notification__title {
+          font-size: 0.9rem;
+        }
+        .notification__message {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
   .goals-predictions {
     grid-template-columns: repeat(1, 1fr);
   }
@@ -1872,12 +1906,6 @@ div.notification-container--top-center {
   .account-settings {
     .actual-account-settings {
       .fields-available {
-        &>div {
-          // margin: auto;
-        }
-        .monthly-goal-change-field {
-          // margin: auto;
-        }
         .email-change-field {
           grid-column-end: 11;
           // text-align: center;
@@ -1997,7 +2025,7 @@ div.notification-container--top-center {
     }
   }
   #not-logged-links {
-    height: 20%;
+    height: 25%;
     justify-content: space-between;
   }
   .links-mobile.links-active {
@@ -2144,6 +2172,17 @@ div.notification-container--top-center {
 
 
 @media (max-width: 500px) {
+  .account-settings {
+    .actual-account-settings {
+      .fields-available {
+        .email-change-field {
+          .MuiInputBase-input {
+            width: 85%;
+          }
+        }
+      }
+    }
+  }
   .title-mobile-donut {
     display: block;
     text-align: center;
@@ -2168,7 +2207,7 @@ div.notification-container--top-center {
   }
   .predictions-dashboard {
     .main-graph-predictions {
-      width: 100%;
+      width: 95%;
       margin: auto;
       h1 {
         font-size: 1.5rem;
@@ -2266,7 +2305,7 @@ div.notification-container--top-center {
   .submission-div {
     .form-login {
       width: 90%;
-      padding: 5px;
+      padding: 10px;
       padding-top: 20px;
       padding-bottom: 20px;
       .form-fields {

@@ -3,24 +3,21 @@ import React, {useState, useContext, useEffect} from 'react';
 // UI
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/core/Icon';
+import TextField from '@material-ui/core/TextField';
+// import ReactCodeInput from 'react-verification-code-input';
 
 // Context
 import {AuthenticationContext} from '../../context/AuthenticationContext';
 import {SocialContext} from '../../context/SocialContext';
-import ReactCodeInput from 'react-verification-code-input';
 
 const Login = props => {
     const {isLogged} = useContext(AuthenticationContext);
     const {isVerified, getFollows, verifyCode, sendVerificationMail} = useContext(SocialContext);
     const [emailSent, setEmailSent] = useState(false);
+    const [code, setCode] = useState("");
 
     const getCode = () => {
-        let inputFields = document.getElementsByClassName("code-input")[0].getElementsByTagName("input");
-        let codeFromInput = "";
-        for (let i = 0; i < inputFields.length; i++) {
-            codeFromInput += inputFields[i].value;
-        };
-        return codeFromInput;
+        return code;
     };
 
     const sendVerificationCode = () => {
@@ -62,10 +59,8 @@ const Login = props => {
                     <form className="form-login">
                         <h3>Verify Code</h3>
                         <div className="form-fields verify-acc">
-                            {/* <TextField variant="outlined" id="code" label="Verification Code" value={code} onChange={e => setCode(e.target.value)} /> */}
-                            <div className="code-input">
-                                <ReactCodeInput autoFocus={true} />
-                            </div>
+                                <TextField variant="outlined" id="code" label="Verification Code" value={code} onChange={e => setCode(e.target.value)} />
+                                {/* <ReactCodeInput autoFocus={true} /> */}
                             <div className="btns-verification">
                                 <Button endIcon={emailSent ? emailSent : <SendIcon>send</SendIcon>} style={{
                                     cursor: emailSent ? "not-allowed" : "pointer"

@@ -37,20 +37,12 @@ a:link {
   text-decoration: none;
 }
 
-div.notification-container--top-center .notification {
-  width: 100% !important;
+.notification-container--top-center .notification .notification__item .notification__title {
+  font-size: 1.3rem;
 }
 
-div.notification-container--top-center .notification .notification__item {
-  height: 100px;
-}
-
-div.notification-container--top-center .notification .notification__item .notification__title {
-  font-size: 1.2rem;
-}
-
-div.notification-container--top-center .notification .notification__item .notification__message {
-  font-size: 1rem;
+.notification-container--top-center .notification .notification__item .notification__message {
+  font-size: 1.0rem;
 }
 
 .empirical_data_dashboard {
@@ -1528,6 +1520,10 @@ div.notification-container--top-center .notification .notification__item .notifi
   grid-gap: 2rem;
 }
 
+.register-div {
+  padding-bottom: 5px;
+}
+
 .register-div .username-field > div, .register-div .email-field > div, .register-div .password-field > div {
   width: 100%;
 }
@@ -1978,8 +1974,9 @@ div.notification-container--top-center .notification .notification__item .notifi
   .run-info-page .recent-runs-div .recent-runs-box .actual-recent-runs .single-run {
     padding-left: 5px;
     padding-right: 5px;
-    font-size: 1.1rem;
-    white-space: nowrap;
+    font-size: 0.9rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
   .run-info-page .recent-runs-div .recent-runs-box .actual-recent-runs .single-run .pace-single-run {
     margin: auto;
@@ -1997,6 +1994,19 @@ div.notification-container--top-center .notification .notification__item .notifi
 }
 
 @media (max-width: 800px) {
+  .login-div .form-login .verify-acc button, .register-div .form-login .verify-acc button, .reset-password .form-login .verify-acc button, .register-div .form-register .verify-acc button, .reset-password .form-reset .verify-acc button {
+    font-size: 0.8rem;
+  }
+  .login-div .form-login .verify-acc .code-input, .register-div .form-login .verify-acc .code-input, .reset-password .form-login .verify-acc .code-input, .register-div .form-register .verify-acc .code-input, .reset-password .form-reset .verify-acc .code-input {
+    margin: auto;
+  }
+  .login-div .form-login .verify-acc .code-input > div, .register-div .form-login .verify-acc .code-input > div, .reset-password .form-login .verify-acc .code-input > div, .register-div .form-register .verify-acc .code-input > div, .reset-password .form-reset .verify-acc .code-input > div {
+    text-align: center;
+    width: 300px !important;
+  }
+  .login-div .form-login .verify-acc .code-input input, .register-div .form-login .verify-acc .code-input input, .reset-password .form-login .verify-acc .code-input input, .register-div .form-register .verify-acc .code-input input, .reset-password .form-reset .verify-acc .code-input input {
+    font-size: 0.7rem;
+  }
   .followers .single-follower .recieved-requests {
     display: -ms-grid;
     display: grid;
@@ -2062,6 +2072,18 @@ div.notification-container--top-center .notification .notification__item .notifi
 }
 
 @media (max-width: 685px) {
+  .notification-container--top-center {
+    width: 400px;
+  }
+  .notification-container--top-center .notification {
+    width: 300px !important;
+  }
+  .notification-container--top-center .notification .notification__item .notification__title {
+    font-size: 0.9rem;
+  }
+  .notification-container--top-center .notification .notification__item .notification__message {
+    font-size: 0.8rem;
+  }
   .goals-predictions {
     -ms-grid-columns: (1fr)[1];
         grid-template-columns: repeat(1, 1fr);
@@ -2203,7 +2225,7 @@ div.notification-container--top-center .notification .notification__item .notifi
     color: white;
   }
   #not-logged-links {
-    height: 20%;
+    height: 25%;
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
@@ -2344,6 +2366,9 @@ div.notification-container--top-center .notification .notification__item .notifi
 }
 
 @media (max-width: 500px) {
+  .account-settings .actual-account-settings .fields-available .email-change-field .MuiInputBase-input {
+    width: 85%;
+  }
   .title-mobile-donut {
     display: block;
     text-align: center;
@@ -2361,7 +2386,7 @@ div.notification-container--top-center .notification .notification__item .notifi
     font-size: 1.0rem;
   }
   .predictions-dashboard .main-graph-predictions {
-    width: 100%;
+    width: 95%;
     margin: auto;
   }
   .predictions-dashboard .main-graph-predictions h1 {
@@ -2439,7 +2464,7 @@ div.notification-container--top-center .notification .notification__item .notifi
   }
   .submission-div .form-login, .submission-div .register-div .form-register, .register-div .submission-div .form-register, .submission-div .reset-password .form-reset, .reset-password .submission-div .form-reset {
     width: 90%;
-    padding: 5px;
+    padding: 10px;
     padding-top: 20px;
     padding-bottom: 20px;
   }
