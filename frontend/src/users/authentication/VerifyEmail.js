@@ -4,7 +4,6 @@ import React, {useState, useContext, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
-// import ReactCodeInput from 'react-verification-code-input';
 
 // Context
 import {AuthenticationContext} from '../../context/AuthenticationContext';
@@ -16,17 +15,13 @@ const Login = props => {
     const [emailSent, setEmailSent] = useState(false);
     const [code, setCode] = useState("");
 
-    const getCode = () => {
-        return code;
-    };
-
     const sendVerificationCode = () => {
-        verifyCode(getCode());
+        verifyCode(code);
     };
 
     const resendEmail = async () => {
         sendVerificationMail();
-        for (let i = 60; i > 0; i--) {
+        for (let i = 10; i > 0; i--) {
             setEmailSent(i);
             await new Promise(r => setTimeout(r, 1000)); 
         };
@@ -57,10 +52,9 @@ const Login = props => {
             {isLogged && isVerified === false && (
                 <div className="login-div">
                     <form className="form-login">
-                        <h3>Verify Code</h3>
+                        <h3>Verify Email</h3>
                         <div className="form-fields verify-acc">
                                 <TextField variant="outlined" id="code" label="Verification Code" value={code} onChange={e => setCode(e.target.value)} />
-                                {/* <ReactCodeInput autoFocus={true} /> */}
                             <div className="btns-verification">
                                 <Button endIcon={emailSent ? emailSent : <SendIcon>send</SendIcon>} style={{
                                     cursor: emailSent ? "not-allowed" : "pointer"

@@ -2,7 +2,11 @@ import React, {useReducer, createContext, useContext} from "react";
 
 import {NotificationContext} from "./NotificationContext";
 
+// HTTP Client
 import axios from "axios";
+
+// Backend URL
+import {backendUrl} from './contextGlobalVars';
 
 export const SocialContext = createContext();
 
@@ -41,7 +45,7 @@ const SocialState = props => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const getFollows = () => {
-        axios.get("http://localhost:8000/users/follows/me/follows/", generateHeader()).then(response => {
+        axios.get(`${backendUrl}/users/follows/me/follows/`, generateHeader()).then(response => {
             const {follower_data, following_data, recieved_requests_data, sent_requests_data, is_account_verified} = response.data;
             dispatch({type: "SET_FOLLOWS", payload: {
                 followers: follower_data,
@@ -51,7 +55,7 @@ const SocialState = props => {
                 is_verified: is_account_verified,
             }});
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
@@ -64,7 +68,7 @@ const SocialState = props => {
     };
 
     const followUser = async username => {
-        return axios.get(`http://localhost:8000/users/follows/${username}/follow-user/`, generateHeader()).then(response => {
+        return axios.get(`${backendUrl}/users/follows/${username}/follow-user/`, generateHeader()).then(response => {
             if (response.data.detail === "You've already sent a follow request to this user") {
                 addAlert("Request warning", "You've already sent a follow request to this user", "warning", "top-center");
             } else if (response.data.detail === "Follow request sent succesfully") {
@@ -73,64 +77,64 @@ const SocialState = props => {
                 addAlert("Request warning", response.data.detail, "warning", "top-center");
             };
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
             handleError(error);
         });
     };
 
     const unfollowUser = async username => {
-        return axios.get(`http://localhost:8000/users/follows/${username}/unfollow-user/`, generateHeader()).then(response => {
-            console.log(response);
+        return axios.get(`${backendUrl}/users/follows/${username}/unfollow-user/`, generateHeader()).then(response => {
+            // console.log(response);
         }).catch(error => {
-            console.log(error.response);
+            // console.log(error.response);
         });
     };
 
     const cancelRequest = async username => {
-        return axios.get(`http://localhost:8000/users/follows/${username}/cancel-follow-request/`, generateHeader()).then(response => {
-            console.log(response);
+        return axios.get(`${backendUrl}/users/follows/${username}/cancel-follow-request/`, generateHeader()).then(response => {
+            // console.log(response);
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
     const acceptFriendRequest = async username => {
-        return axios.get(`http://localhost:8000/users/follows/${username}/accept-follow-request/`, generateHeader()).then(response => {
-            console.log(response);
+        return axios.get(`${backendUrl}/users/follows/${username}/accept-follow-request/`, generateHeader()).then(response => {
+            // console.log(response);
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
     const rejectUserRequest = async username => {
-        return axios.get(`http://localhost:8000/users/follows/${username}/reject-follow-request/`, generateHeader()).then(response => {
-            console.log(response);
+        return axios.get(`${backendUrl}/users/follows/${username}/reject-follow-request/`, generateHeader()).then(response => {
+            // console.log(response);
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
     const removeFollower = async username => {
-        return axios.get(`http://localhost:8000/users/follows/${username}/remove-follower/`, generateHeader()).then(response => {
-            console.log(response);
+        return axios.get(`${backendUrl}/users/follows/${username}/remove-follower/`, generateHeader()).then(response => {
+            // console.log(response);
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
     const addFavoriteUser = async username => {
-        return axios.get(`http://localhost:8000/users/follows/${username}/add-favorite-user/`, generateHeader()).then(response => {
-            console.log(response);
+        return axios.get(`${backendUrl}/users/follows/${username}/add-favorite-user/`, generateHeader()).then(response => {
+            // console.log(response);
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
     const removeFavoriteUser = async username => {
-        return axios.get(`http://localhost:8000/users/follows/${username}/remove-favorite-user/`, generateHeader()).then(response => {
-            console.log(response);
+        return axios.get(`${backendUrl}/users/follows/${username}/remove-favorite-user/`, generateHeader()).then(response => {
+            // console.log(response);
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
@@ -141,36 +145,58 @@ const SocialState = props => {
     };
 
     const getSettings = () => {
-        axios.get(`http://localhost:8000/users/settings/`, generateHeader()).then(response => {
+        axios.get(`${backendUrl}/users/settings/`, generateHeader()).then(response => {
             dispatch({type: 'SET_SETTINGS', payload: {...response.data}});
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
     const updateSettings = async settingsObject => {
-        return axios.put(`http://localhost:8000/users/settings/`, settingsObject, generateHeader()).then(response => {
+        return axios.put(`${backendUrl}/users/settings/`, settingsObject, generateHeader()).then(response => {
             dispatch({type: 'SET_SETTINGS', payload: {...response.data}});
             addAlert("Settings changed!", "You've succesfully changed your settings", "success", "top-center")
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
-    const verifyCode = async code => {
-        return axios.post(`http://localhost:8000/users/verification-code/`, {code}, generateHeader()).then(response => {
-            getFollows();
-            addAlert("Account Verified", "You've succesfully verified your account", "success", "top-center")
-            // dispatch({type: 'SET_SETTINGS', payload: {...response.data}});
+    const verifyChangePasswordCode = async (email, code, password1, password2, redirectToHomePage) => {
+        return axios.post(`${backendUrl}/users/verification-password-code/`, {
+            email,
+            code,
+            password1,
+            password2,
+        }).then(response => {
+            addAlert("Password Changed", "You've succesfully changed your password", "success", "top-center")
+            redirectToHomePage();
         }).catch(error => {
             handleError(error);
         });
     };
 
-    const sendVerificationMail = async () => {
-        axios.get(`http://localhost:8000/users/send-verification-mail/`, generateHeader()).then(response => {
+    const verifyCode = async code => {
+        return axios.post(`${backendUrl}/users/verification-code/`, {code}, generateHeader()).then(response => {
+            getFollows();
+            addAlert("Account Verified", "You've succesfully verified your account", "success", "top-center")
         }).catch(error => {
+            handleError(error);
+        });
+    };
+
+    const sendResetPasswordMail = async email => {
+        axios.post(`${backendUrl}/users/send-reset-password-mail/`, {email}).then(response => {})
+        .catch(error => {
             console.log(error);
+            handleError(error);
+        });
+    };
+
+
+    const sendVerificationMail = async () => {
+        axios.get(`${backendUrl}/users/send-verification-mail/`, generateHeader()).then(response => {
+        }).catch(error => {
+            // console.log(error);
         });
     };
 
@@ -202,6 +228,8 @@ const SocialState = props => {
             getUnit,
             verifyCode,
             sendVerificationMail,
+            sendResetPasswordMail,
+            verifyChangePasswordCode,
         }}>
             {props.children}
         </SocialContext.Provider>

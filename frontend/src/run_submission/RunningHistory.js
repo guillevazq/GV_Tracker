@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RunningHistory = props => {
-    const {isLogged} = useContext(AuthenticationContext);
+    const {isLogged, setNewCurrentNavigationMenu} = useContext(AuthenticationContext);
     const {unit, getSettings, isVerified, getFollows} = useContext(SocialContext);
     const {
         getRuns,
@@ -48,6 +48,7 @@ const RunningHistory = props => {
     }, [isVerified]);
 
     useEffect(() => {
+        setNewCurrentNavigationMenu("runs");
         getSettings();
         getRuns();
         getFollows();

@@ -13,7 +13,7 @@ import Social from "./Social";
 import Loader from '../../ui/Loader';
 
 const AccountSettings = props => {
-    const {setTokenFromLS, email, isLogged} = useContext(AuthenticationContext);
+    const {setTokenFromLS, email, isLogged, setNewCurrentNavigationMenu} = useContext(AuthenticationContext);
     const {language, unit, weekly_goal, isVerified, getFollows} = useContext(SocialContext);
     const [currentPage, setCurrentPage] = useState(<Details />);
 
@@ -41,6 +41,7 @@ const AccountSettings = props => {
     }, [isVerified]);
 
     useEffect(() => {
+        setNewCurrentNavigationMenu("account");
         // Get user info and set in state
         setTokenFromLS();
         getFollows();

@@ -26,7 +26,7 @@ import {RunsContext} from '../context/RunsContext';
 import {SocialContext} from '../context/SocialContext';
 
 const EmpiricalDataDashboard = props => {
-    const {isLogged} = useContext(AuthenticationContext);
+    const {isLogged, setNewCurrentNavigationMenu} = useContext(AuthenticationContext);
     const {abreviatedUnit, getSettings, unit, isVerified, getFollows} = useContext(SocialContext);
 
     const {
@@ -51,6 +51,7 @@ const EmpiricalDataDashboard = props => {
     const [transformToUnit, setTransformToUnit] = useState(false);
 
     useEffect(() => {
+        setNewCurrentNavigationMenu("home");
         getSettings();
         getRuns();
         getFavoriteRunners();

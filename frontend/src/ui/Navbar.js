@@ -3,15 +3,40 @@ import React, {useContext, useEffect, useState} from "react";
 import {AuthenticationContext} from "../context/AuthenticationContext";
 import {SocialContext} from '../context/SocialContext';
 
-const Navbar = ({darkmode, setDarkmode}) => {
-  const {isLogged, setTokenFromLS, logout, username} = useContext(AuthenticationContext);
+const Navbar = props => {
+  const {darkmode} = props;
+  const {isLogged, setTokenFromLS, logout, username, currMenu} = useContext(AuthenticationContext);
   const {getSettings} = useContext(SocialContext);
   const [classBurger, setClassBurger] = useState(false);
+
+  const setColorActiveNavigationMenu = () => {
+    let anchorTags = document.getElementsByTagName("a");
+    for (var i = 0; i < anchorTags.length; i++) {
+      if (anchorTags[i].textContent.toLowerCase() === currMenu) {
+        anchorTags[i].style.color = "black";
+      } else {
+        anchorTags[i].style.color = "white";
+        anchorTags[i].onmouseenter = e => {
+          e.target.style.color = "black";
+        };
+        anchorTags[i].onmouseleave = e => {
+          if (currMenu !== e.target.textContent.toLowerCase()) {
+            e.target.style.color = "white";
+          };
+        };
+      };
+    };
+  };
 
   useEffect(() => {
     setTokenFromLS();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogged, username]);
+
+  useEffect(() => {
+    setColorActiveNavigationMenu();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currMenu, isLogged])
 
   useEffect(() => {
     getSettings();
@@ -22,24 +47,11 @@ const Navbar = ({darkmode, setDarkmode}) => {
     if (e.target.checked) {
       localStorage.setItem("DM", "y");
       window.location.reload(false);
-      setDarkmode(true);
     } else {
       localStorage.setItem("DM", "n");
       window.location.reload(false);
-      setDarkmode(false);
     };
   };
-
-  useEffect(() => {
-    let currentPath = window.location.href;
-    let anchorTags = document.getElementsByTagName("a");
-    for (var i = 0; i < anchorTags.length; i++) {
-      if (anchorTags[i].href === currentPath) {
-        anchorTags[i].style.color = "black";    
-      };
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window, isLogged]);
 
   const logOutUser = e => {
     e.preventDefault();
@@ -50,11 +62,11 @@ const Navbar = ({darkmode, setDarkmode}) => {
     <>
       <div className="navbar-gv">
         <div className="important-pages">
-          <h1>
+          <a href="/" className="title-gv">
             GV <span>Tracker</span>
-          </h1>
+          </a>
           <div className="main-pages">
-            {isLogged && (
+            {isLogged === true && (
               <>
                 <a href="/">HOME</a>
                 <a href="/predictions">PREVISION</a>
@@ -64,27 +76,30 @@ const Navbar = ({darkmode, setDarkmode}) => {
           </div>
         </div>
         <div className="user-flag">
-          {isLogged ? (
+          {isLogged === true && (
               <>
                   <a href="/account">Account</a>
                   <a onClick={logOutUser} href="/logout">Logout</a>
               </>
-          ) : (
+          )}
+          {isLogged === false && (
               <>
                   <a href="/login">Login</a>
                   <a href="/register">Register</a>
               </>
           )}
-          <div className="nightmode-switcher">
-              <label className="switch">
-                  <input checked={darkmode} onChange={handleDarkModeSwitcher} type="checkbox" />
-                  <span className="slider round"></span>
-              </label>
-          </div>
+          {isLogged !== null && (
+            <div className="nightmode-switcher">
+                <label className="switch">
+                    <input checked={darkmode} onChange={handleDarkModeSwitcher} type="checkbox" />
+                    <span className="slider round"></span>
+                </label>
+            </div>
+          )}
         </div>
       </div>
       <div id={!isLogged && "not-logged-links"} className={!classBurger ? "links-mobile" : "links-mobile links-active"}>
-        {isLogged ? (
+        {isLogged === true && (
             <>
               <a href="/">Home</a>
               <a href="/predictions">Prevision</a>
@@ -92,7 +107,8 @@ const Navbar = ({darkmode, setDarkmode}) => {
               <a href="/account">Account</a>
               <a onClick={logOutUser} href="/logout">Logout</a>
             </>
-        ) : (
+        )}
+        {isLogged === false && (
             <>
               <a href="/login">Login</a>
               <a href="/register">Register</a>
@@ -117,7 +133,7 @@ const Navbar = ({darkmode, setDarkmode}) => {
                     <span className="slider round"></span>
                 </label>
             </div>
-        </div>
+        </div> 
       </div>
     </>
   );

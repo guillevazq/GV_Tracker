@@ -1,8 +1,12 @@
 import React, {createContext, useReducer, useContext} from "react"; 
 
+import {NotificationContext} from "./NotificationContext";
+
+// HTTP Client
 import axios from "axios";
 
-import {NotificationContext} from "./NotificationContext";
+// Backend URL
+import {backendUrl} from './contextGlobalVars';
 
 export const RunsContext = createContext(); 
 
@@ -64,7 +68,7 @@ const RunState = props => {
         seconds = parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds);
         distance = parseFloat(distance);
 
-        axios.post("http://localhost:8000/runs/get/true/", {seconds, distance, unix_date: dateRun}, {
+        axios.post(`${backendUrl}/runs/get/true/`, {seconds, distance, unix_date: dateRun}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: currentToken,
@@ -86,10 +90,10 @@ const RunState = props => {
     const getFollowingRuns = () => {
         let currentToken = localStorage.getItem("authentication-token");
         currentToken = "Token " + currentToken;
-        axios.get("http://localhost:8000/runs/get/true/", {headers: {Authorization: currentToken}}).then(response => {
+        axios.get(`${backendUrl}/runs/get/true/`, {headers: {Authorization: currentToken}}).then(response => {
             dispatch({type: 'SET_FOLLOWING_RUNS', payload: {runs: response.data}});
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
@@ -97,10 +101,10 @@ const RunState = props => {
         let currentToken = localStorage.getItem("authentication-token");
         currentToken = "Token " + currentToken;
 
-        axios.get("http://localhost:8000/runs/get/false/", {headers: {Authorization: currentToken}}).then(response => {
+        axios.get(`${backendUrl}/runs/get/false/`, {headers: {Authorization: currentToken}}).then(response => {
             dispatch({type: 'SET_PERSONAL_RUNS', payload: {runs: response.data}});
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
@@ -108,7 +112,7 @@ const RunState = props => {
         let currentToken = localStorage.getItem("authentication-token");
         currentToken = "Token " + currentToken;
 
-        axios.delete("http://localhost:8000/runs/" + id, {headers: {Authorization: currentToken}}).then(response => {
+        axios.delete(`${backendUrl}/runs/` + id, {headers: {Authorization: currentToken}}).then(response => {
             getRuns();
         }).catch(error => {
             handleError(error);
@@ -226,7 +230,7 @@ const RunState = props => {
 
     const editRun = (seconds, distance, date, id) => {
         let currentToken = localStorage.getItem("authentication-token");
-        axios.put(`http://localhost:8000/runs/${id}/`, {seconds, distance, unix_date: date}, {
+        axios.put(`${backendUrl}/runs/${id}/`, {seconds, distance, unix_date: date}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Token " + currentToken,
@@ -244,7 +248,7 @@ const RunState = props => {
     const getPredictionFunction = () => {
         let step = getRunRange();
         let currentToken = localStorage.getItem("authentication-token");
-        axios.get(`http://localhost:8000/runs/prediction_function/${step}`, {
+        axios.get(`${backendUrl}/runs/prediction_function/${step}`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Token " + currentToken,
@@ -252,7 +256,7 @@ const RunState = props => {
         }).then(response => {
             dispatch({type: 'SET_FUNCTION', payload: {predictionFunction: response.data.data}});
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 
@@ -349,7 +353,7 @@ const RunState = props => {
 
     const getFavoriteRunners = () => {
         let currentToken = "Token " + localStorage.getItem("authentication-token");
-        axios.get("http://localhost:8000/users/follows/me/follows/", {
+        axios.get(`${backendUrl}/users/follows/me/follows/`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: currentToken,
@@ -357,7 +361,7 @@ const RunState = props => {
         }).then(response => {
             dispatch({type: "SET_FAVORITE_RUNNERS", payload: {favoriteRunners: response.data.favorites_data}})
         }).catch(error => {
-            console.log(error);
+            // console.log(error);
         });
     };
 

@@ -1,6 +1,7 @@
 import React, {createContext} from 'react';
 import {store} from 'react-notifications-component';
 
+// Notification context
 export const NotificationContext = createContext();
 
 const NotificationState = props => {

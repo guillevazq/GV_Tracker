@@ -15,7 +15,7 @@ import Button from '@material-ui/core/Button';
 import {AuthenticationContext} from '../../context/AuthenticationContext';
 
 const Login = props => {
-    const {logIn, isLogged} = useContext(AuthenticationContext);
+    const {logIn, isLogged, setNewCurrentNavigationMenu} = useContext(AuthenticationContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -35,6 +35,11 @@ const Login = props => {
             logIn(username, password);
         };
     };
+
+    useEffect(() => {
+        setNewCurrentNavigationMenu("login");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (isLogged) {

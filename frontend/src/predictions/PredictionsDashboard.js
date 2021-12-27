@@ -14,7 +14,7 @@ import Loader from "../ui/Loader";
 
 const PredictionsDashboard = props => {
 
-    const {isLogged} = useContext(AuthenticationContext);
+    const {isLogged, setNewCurrentNavigationMenu} = useContext(AuthenticationContext);
     const {personalRuns, getRuns, getPredictionFunction, predictionFunction} = useContext(RunsContext);
     const {abreviatedUnit, weekly_goal, unit, isVerified, getFollows} = useContext(SocialContext);
 
@@ -43,6 +43,7 @@ const PredictionsDashboard = props => {
     }, [weekly_goal]);
 
     useEffect(() => {
+        setNewCurrentNavigationMenu("prevision")
         getRuns();
         getFollows();
         // eslint-disable-next-line react-hooks/exhaustive-deps

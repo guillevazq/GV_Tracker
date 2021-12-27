@@ -16,7 +16,7 @@ import {AuthenticationContext} from '../../context/AuthenticationContext';
 
 const Register = props => {
 
-    const {register, isLogged} = useContext(AuthenticationContext);
+    const {register, isLogged, setNewCurrentNavigationMenu} = useContext(AuthenticationContext);
 
     const registerUser = e => {
         e.preventDefault();
@@ -40,6 +40,11 @@ const Register = props => {
     };
 
     useEffect(() => {
+        setNewCurrentNavigationMenu("register");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
         if (isLogged) {
             props.history.push("/");
         };
@@ -54,15 +59,20 @@ const Register = props => {
                         <h3>Register</h3>
                         <div className="form-fields form-fields-register">
                             <div className="username-field">
-                                <TextField variant="outlined" id="username" label="Username" value={username} onChange={e => setUsername(e.target.value)} />
+                                <TextField required variant="outlined" id="username" label="Username" value={username} onChange={e => setUsername(e.target.value)} />
+                                {(username.length < 4 || username.length > 40) ? (
+                                    <div className="length-username-red">{username.length}/40</div>
+                                ): (
+                                    <div className="length-username-green">{username.length}/40</div>
+                                )}
                             </div>
                             <div className="email-field">
-                                <TextField variant="outlined" id="email" label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+                                <TextField required variant="outlined" id="email" label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
                             </div>
                             <div className="password-field">
                                 <FormControl variant="outlined">
                                     <InputLabel htmlFor="password">Password</InputLabel>
-                                    <OutlinedInput type={passwordVisibility ? "text" : "password"} id="password" value={password1}
+                                    <OutlinedInput required type={passwordVisibility ? "text" : "password"} id="password" value={password1}
                                         labelWidth={83}
                                         onChange={e => setPassword(e.target.value)}
                                         endAdornment={
@@ -78,7 +88,7 @@ const Register = props => {
                             <div className="password-field">
                                 <FormControl variant="outlined">
                                     <InputLabel htmlFor="password">Password</InputLabel>
-                                    <OutlinedInput type={passwordVisibility ? "text" : "password"} id="password1" value={password2}
+                                    <OutlinedInput required type={passwordVisibility ? "text" : "password"} id="password1" value={password2}
                                         labelWidth={83}
                                         onChange={e => setPassword2(e.target.value)}
                                         endAdornment={

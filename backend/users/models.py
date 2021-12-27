@@ -20,9 +20,11 @@ class Follows(models.Model):
     recieved_follow_requests = models.ManyToManyField(User, blank=True, related_name="recieved_requests")
     favorite_followed_users = models.ManyToManyField(User, blank=True, related_name="favorite_users")
     blocked_users = models.ManyToManyField(User, blank=True, related_name="blocked_users")
+
     verification_code = models.CharField(default=generate_random_verification_code, max_length=6)
-    is_verified = models.BooleanField(default=False)
     last_sent_email = models.PositiveIntegerField(default=0)
+
+    is_verified = models.BooleanField(default=False)
 
     def generate_new_code(self):
         self.verification_code = generate_random_verification_code()

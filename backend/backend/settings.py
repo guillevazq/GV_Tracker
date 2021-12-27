@@ -1,16 +1,22 @@
 import os
-from dotenv import load_dotenv
+
 from pathlib import Path
 
-load_dotenv()
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+
+SECRET_DJANGO_KEY = os.getenv("SECRET_DJANGO_KEY")
+ACTUAL_MAIL = os.getenv("ACTUAL_MAIL")
+MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR_2 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.getenv("SECRET_DJANGO_KEY")
+SECRET_KEY = SECRET_DJANGO_KEY
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware', # To comply with CORS
     'django.middleware.common.CommonMiddleware',
@@ -72,7 +79,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+# WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -108,6 +115,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -119,22 +127,20 @@ REST_FRAMEWORK = {
 }
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    'http://localhost:8000',
+    'https://gv-tracker-frontend.herokuapp.com',
+    # 'http://localhost:3000',
 )
 
 ACCOUNT_EMAIL_REQUIRED = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
-EMAIL_HOST_USER = os.getenv("ACTUAL_MAIL")
-EMAIL_HOST_PASSWORD = os.getenv("MAIL_PASSWORD")
+EMAIL_HOST_USER = ACTUAL_MAIL
+EMAIL_HOST_PASSWORD = MAIL_PASSWORD
 
 SITE_ID = 1
 ACCOUNT_USERNAME_BLACKLIST = []
 
 ACCOUNT_USERNAME_VALIDATORS = 'users.validators.custom_username_validators'
 ACCOUNT_ADAPTER = 'users.adapter.UsernameMaxAdapter'
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True

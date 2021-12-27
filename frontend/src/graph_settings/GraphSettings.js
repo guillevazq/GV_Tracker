@@ -396,7 +396,7 @@ export let syncedOptionsArea = {
             },
             xaxis: {
                 labels: {
-                    offsetY: 10,
+                    offsetY: 0,
                     style: {
                         fontSize: "0.8rem",
                     }
@@ -457,6 +457,9 @@ export let syncedOptionsArea2 = {
             formatter: value => {
                 return "Run " + value;
             },
+            style: {
+                fontSize: "1.0rem",
+            },
         },
     },
     dataLabels: {
@@ -474,7 +477,7 @@ export let syncedOptionsArea2 = {
             },
             xaxis: {
                 labels: {
-                    offsetY: 10,
+                    offsetY: 0,
                     style: {
                         fontSize: "0.8rem",
                     }

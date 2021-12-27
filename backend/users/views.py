@@ -1,6 +1,9 @@
+import json
 from django.contrib.auth.models import User
+from django.core.checks.messages import Error
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.apple.views import AppleOAuth2Adapter
@@ -223,7 +226,71 @@ class VerificationCode(views.APIView):
             follows_user.verify_user()
             return Response({'detail': "User verified"}, status=status.HTTP_202_ACCEPTED)
 
-class SendMail(views.APIView):
+class VerifyPasswordReset(views.APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            email = request.data['email']
+            code = request.data['code']
+            password1 = request.data['password1']
+            password2 = request.data['password2']
+        except:
+            return Response({'detail': "Arguments not provided"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            curr_user = User.objects.get(email=email)
+            user_follows = Follows.objects.get(user__email=email)
+        except:
+            return Response({'detail': "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        if password1 != password2:
+            return Response({'detail': "Password don't match"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if len(str(password1)) <= 8 or len(str(password1)) >= 50:
+            return Response({'detail': "Password length has to be from 8 to 50 characters"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if int(code) != int(user_follows.verification_code):
+            return Response({'detail': "Code doesn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        else:
+            # Change password
+            curr_user.set_password(password1)
+            curr_user.save()
+            # user_follows.generate_new_code()
+            return Response({'detail': "Password Changed"}, status=status.HTTP_202_ACCEPTED)
+
+class SendResetPasswordMail(views.APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            email = request.data['email']
+        except:
+            return Response({'detail': "Email not found"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+        try:
+            curr_user_follows = Follows.objects.get(user__email=email)
+        except:
+            return Response({'detail': "Not found"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+        if request.user.id != None:
+            return Response({'detail': "Not permitted"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        time_since_last_mail = curr_user_follows.time_since_last_mail()
+        if time_since_last_mail < 10:
+            return Response({'detail': "You have to wait at least one minute since the last sent mail"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        curr_user_follows.generate_new_code()
+
+        send_mail(
+            "Account Activation Code",
+            f"Hello {curr_user_follows.user.username}, the code to reset your password is {curr_user_follows.verification_code}",
+            settings.EMAIL_HOST_USER,
+            [email],
+            fail_silently=False
+        )
+        return Response({'detail': "Success"}, status=status.HTTP_200_OK)
+
+class SendVerificationMail(views.APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         curr_user_follows = Follows.objects.get(user=request.user)
         if curr_user_follows.is_verified:
@@ -236,7 +303,17 @@ class SendMail(views.APIView):
         elif time_since_last_mail > 60 * 15:
             curr_user_follows.generate_new_code();
 
-        send_mail("Account Activation Code", f"The code to verify your email and activate your account is {curr_user_follows.verification_code}", settings.EMAIL_HOST_USER, [request.user.email], fail_silently=False)
+        try:
+            send_mail(
+                "Account Activation Code", 
+                f"The code to verify your email is {curr_user_follows.verification_code}", 
+                settings.EMAIL_HOST_USER, 
+                [request.user.email], 
+                fail_silently=False
+            )
+        except Exception as exc:
+            print(exc)
+
         return Response({'detail': "Email sent"}, status=status.HTTP_200_OK)
 
 class TwitterLogin(SocialLoginView):

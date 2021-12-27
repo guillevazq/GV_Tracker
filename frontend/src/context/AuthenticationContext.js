@@ -6,6 +6,9 @@ import axios from 'axios';
 // Notification context
 import {NotificationContext} from './NotificationContext';
 
+// Backend URL
+import {backendUrl} from './contextGlobalVars';
+
 export const AuthenticationContext = createContext();
 
 const reducer = (state, action) => {
@@ -20,6 +23,8 @@ const reducer = (state, action) => {
             return {...state, email: action.payload.email};
         case 'SET_USERNAME':
             return {...state, username: action.payload.username};
+        case 'CURRENT_NAVIGATION_MENU':
+            return {...state, currMenu: action.payload.currMenu};
         default:
             return state;
     };
@@ -36,6 +41,7 @@ const AuthenticationState = props => {
         isLogged: null,
         username: null,
         darkmode: false,
+        currMenu: "",
     };
 
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -44,7 +50,11 @@ const AuthenticationState = props => {
         headers: {
             'Content-Type': 'application/json'
         }
-    } 
+    };
+
+    const setNewCurrentNavigationMenu = currMenu => {
+        dispatch({type: 'CURRENT_NAVIGATION_MENU', payload: {currMenu}});
+    };
 
     const setTokenFromLS = () => {
         let tokenLS = localStorage.getItem("authentication-token");
@@ -56,7 +66,7 @@ const AuthenticationState = props => {
     }
 
     const checkForTokenValidity = (token, greetUserTitle=false, greetUserMessage=false) => {
-        axios.get("http://localhost:8000/users/user/", {
+        axios.get(`${backendUrl}/users/user/`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Token " + token + "",
@@ -74,7 +84,7 @@ const AuthenticationState = props => {
     };
 
     const logout = () => {
-        axios.post("http://localhost:8000/users/logout/", {}, {
+        axios.post(`${backendUrl}/users/logout/`, {}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Token " + state.token + "",
@@ -98,7 +108,7 @@ const AuthenticationState = props => {
         if (password1 !== password2) {
             addAlert("Passwords don't match!", "The password fields didn't match", "danger", "top-center");
         } else {
-            axios.post('http://localhost:8000/users/registration/', {username, email, password1, password2}, requestJSONConfig).then(response => {
+            axios.post(`${backendUrl}/users/registration/`, {username, email, password1, password2}, requestJSONConfig).then(response => {
                 setTokenInLS(response.data.key);
                 checkForTokenValidity(response.data.key, "Welcome", "Your account was created succesfully");
             }).catch(error => {
@@ -108,16 +118,17 @@ const AuthenticationState = props => {
     };
 
     const logIn = (username, password) => {
-        axios.post('http://localhost:8000/users/login/', {username, password}, requestJSONConfig).then(response => {
+        axios.post(`${backendUrl}/users/login/`, {username, password}, requestJSONConfig).then(response => {
             setTokenInLS(response.data.key);
             checkForTokenValidity(response.data.key, "Hi", "You've succesfully logged into your account");
+            setNewCurrentNavigationMenu("");
         }).catch(error => {
             handleError(error);
         });
     };
 
     const sendResetPasswordEmail = email => {
-        axios.post("http://localhost:8000/users/password/reset/", {email}, {
+        axios.post(`${backendUrl}/users/password/reset/`, {email}, {
             headers: {
                 "Content-Type": "application/json",
             }
@@ -128,24 +139,9 @@ const AuthenticationState = props => {
         });
     };
 
-    const resetPasswordInAccount = (new_password1, new_password2) => {
-        let token = localStorage.getItem("authentication-token");
-        axios.post("http://localhost:8000/users/password/change/", {new_password1, new_password2}, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Token " + token + "",
-            }
-        }).then(response => {
-            addAlert("Password reset", "Password was reset successfully", "success", "top-center")
-            checkForTokenValidity(token);
-        }).catch(error => {
-            handleError(error, true);
-        });
-    };
-
     const changeUsername = username => {
         let token = localStorage.getItem("authentication-token");
-        axios.put("http://localhost:8000/users/user/", {username}, {
+        axios.put(`${backendUrl}/users/user/`, {username}, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Token " + token + "",
@@ -165,14 +161,15 @@ const AuthenticationState = props => {
             username: state.username,
             email: state.email,
             darkmode: state.darkmode,
+            currMenu: state.currMenu,
             logIn,
             register,
             setTokenFromLS,
             logout,
             handleError,
             sendResetPasswordEmail,
-            resetPasswordInAccount,
             changeUsername,
+            setNewCurrentNavigationMenu,
         }}>
             {props.children}
         </AuthenticationContext.Provider>

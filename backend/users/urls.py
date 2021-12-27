@@ -1,15 +1,15 @@
 from django.urls import path, include
 from .views import *
-from dj_rest_auth.registration.views import VerifyEmailView
 
 urlpatterns = [
     path('', include('dj_rest_auth.urls')),
     path('registration/', include('dj_rest_auth.registration.urls')),
-    path('account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
     path('follows/<str:username>/<str:action>/', FollowsView.as_view(), name="follows"),
     path('follow-visibility/<str:privacy_type>/', ChangeFollowStatus.as_view(), name="change-follow-visibility"),
     path('verification-code/', VerificationCode.as_view(), name='verify-code'),
-    path('send-verification-mail/', SendMail.as_view(), name='verify-mail'),
+    path('verification-password-code/', VerifyPasswordReset.as_view(), name='verify-email-code'),
+    path('send-verification-mail/', SendVerificationMail.as_view(), name='verify-mail'),
+    path('send-reset-password-mail/', SendResetPasswordMail.as_view(), name='reset-password-mail'),
     path('settings/', ChangeSettings.as_view(), name='change-user-settings'),
     
     # Social logins

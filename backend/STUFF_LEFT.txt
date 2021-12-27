@@ -1,0 +1,14 @@
+- light theme not loading navbar properly? DONE
+- synced charts bottom text not displaying properly graphs DONE
+- make darkmode switcher appear when other navbar stuff appears DONE
+- on load, it flashes a white screen DONE
+- dont remove navbar when loading DONE
+- darkmode not working DONE
+
+- add run form responsiveness
+
+change when pushing
+- global variables of django settings.py
+- debug=FALSE
+- change global vars frontend backendurl
+- change url whitelist in settings.py
